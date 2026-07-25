@@ -10,7 +10,7 @@ In high-electricity markets the number is **negative** — the participant pays 
 
 This is the worst possible magnitude. Too small to motivate anyone, and large enough to convert a volunteer into a paid contractor — which triggers every tax, platform-policy, and fraud problem in the second half of this document.
 
-![What a participant would earn](../docs/figures/fig7_participant_earnings.png)
+![What a participant would earn](../docs/figures/fig8_participant_earnings.png)
 
 ## Where the money goes
 

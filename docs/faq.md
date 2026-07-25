@@ -40,9 +40,15 @@ One switch in the main view. No confirmation dialog that argues with you, no ret
 
 ### Will other people's stuff run on my phone?
 
-**Under the current recommended design, no.** Your device runs a model for you. Shared capacity goes only to vetted scientific batch work from identified institutions.
+Yes — that's the point of the network, and here is exactly what that does and doesn't mean.
 
-We considered routing other people's AI prompts to volunteer devices and decided against it, because it would put legal exposure on you that you couldn't reasonably evaluate. The reasoning is in the [threat model](threat-model.md#content-liability). This is the design decision we're least certain about, and it costs us the most appealing part of the pitch.
+**What can run:** inference and a fixed set of audited scientific task types. Nothing else. **A job is a prompt plus a task-type ID — never a script, a binary, or a container**, so mining, password cracking, malware, and proxy abuse aren't possible on your device. Not "against policy" — there is no execution path for them. See [task-types.md](task-types.md).
+
+**What we filter:** content policy is enforced at dispatch, before a job reaches you. Volunteers are never the filter.
+
+**What you can turn off:** you can opt out of serving open requests entirely and contribute only to vetted research batch jobs.
+
+**What we can't fix:** running a model requires the text in memory, so a determined node operator *could* read what their own device processes. Only hardware TEEs solve that and coverage is patchy. We mitigate structurally — you never learn who asked, and consecutive turns of a conversation go to different machines — but we're not going to promise privacy the architecture can't deliver. [Detail](threat-model.md#6-what-this-design-cannot-do).
 
 ### Do I get paid? Do I get tokens?
 
@@ -100,9 +106,11 @@ A 28-layer model split across 28 phones at 40ms per hop spends over a second of 
 
 ### Isn't this just Folding@home with extra steps?
 
-Folding@home is the direct ancestor and we're happy to say so. Two differences: phones are far more numerous than the PCs that ran Folding@home (~1.2 billion capable devices vs ~1 million machines at peak), and this network also serves interactive AI to its participants rather than only consuming their compute.
+Folding@home is the direct ancestor and we're happy to say so. Two differences: the substrate is far larger (~1.2 billion capable phones and ~920 million desktops, against ~1 million machines at Folding@home's peak), and this network also serves interactive AI back to its participants rather than only consuming their compute.
 
-We're not claiming to have invented volunteer computing. We're claiming the substrate got a thousand times bigger.
+One notable similarity we've had to accept: the scientific work happens mostly on PCs, same as it always did. A discrete GPU does the science of about 32 phones, so [85% of our scientific capacity is the desktop tier](../WHITEPAPER.md#41-the-desktop-tier). The phones are what's new; the science is still mostly gaming rigs.
+
+We're not claiming to have invented volunteer computing.
 
 ### You're centralised. So what's decentralised about it?
 
@@ -134,9 +142,15 @@ iOS background execution limits effectively forbid this. An iOS node can realist
 
 ### Can I run a workload on this?
 
-Not yet — there's no network. When there is, the target workload shape is **embarrassingly parallel**: millions of independent tasks. Virtual screening, materials search, ensemble simulations, signal search, independent-replica molecular dynamics.
+Not yet — there's no network. And when there is, there's a constraint you need to know about up front:
 
-If your problem needs tight coupling between processors, this is the wrong instrument and we'll tell you so.
+**You cannot submit code.** The network runs a fixed catalogue of [audited task types](task-types.md), because it never executes arbitrary code on a volunteer's machine. You submit *data and parameters* against an existing task type. If the work you need isn't in the catalogue, you request a new type, it gets a public review and a security audit, and it ships in a signed client release — weeks to months.
+
+That is a real limitation and it rules out a lot of research. It's the price of being able to promise volunteers that their hardware can't be misused.
+
+The shape that fits: **embarrassingly parallel** — millions of independent, bounded, verifiable tasks. Virtual screening, materials search, ensemble parameter sweeps, signal scans, independent-replica MD.
+
+If your problem needs tight coupling between processors, this is the wrong instrument and we'll say so.
 
 ### What will it cost?
 

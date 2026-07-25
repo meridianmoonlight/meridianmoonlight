@@ -150,6 +150,113 @@
       "folding_at_home_multiple": 38.253083055374944
     }
   ],
+  "desktop": {
+    "fleet": 920000000.0,
+    "classes": [
+      {
+        "name": "Discrete GPU",
+        "count": 250000000.0,
+        "share": 0.2717391304347826,
+        "usable_bandwidth_gbs": 262.5,
+        "tokens_per_sec_burst": 55.85106382978723,
+        "tokens_per_sec_sustained": 49.148936170212764,
+        "sustained_tops": 0.7863829787234041,
+        "fp32_sustained_tflops": 9.600000000000001
+      },
+      {
+        "name": "Apple Silicon",
+        "count": 70000000.0,
+        "share": 0.07608695652173914,
+        "usable_bandwidth_gbs": 84.0,
+        "tokens_per_sec_burst": 17.872340425531913,
+        "tokens_per_sec_sustained": 15.727659574468083,
+        "sustained_tops": 0.2516425531914893,
+        "fp32_sustained_tflops": 3.2
+      },
+      {
+        "name": "CPU only (16GB+)",
+        "count": 600000000.0,
+        "share": 0.6521739130434783,
+        "usable_bandwidth_gbs": 30.0,
+        "tokens_per_sec_burst": 16.666666666666668,
+        "tokens_per_sec_sustained": 14.666666666666668,
+        "sustained_tops": 0.088,
+        "fp32_sustained_tflops": 0.2
+      }
+    ],
+    "weighted_tokens_per_sec": 24.11757631822387,
+    "weighted_sustained_tops_int8": 0.29022904717853837,
+    "weighted_sustained_tflops_fp32": 2.982608695652174,
+    "thermal_derate": 0.88,
+    "availability": {
+      "night_peak": 0.32252499999999995,
+      "mean_over_24h": 0.196124000853174,
+      "global_min": 0.15362470218833735,
+      "global_max": 0.25178077685788613,
+      "components": {
+        "p_left_on_overnight": 0.35,
+        "p_network": 0.97,
+        "p_idle": 0.95,
+        "daytime": 0.12
+      }
+    },
+    "folding_parity_mixed_fleet": 4102836.570392387,
+    "folding_parity_dgpu_only": 1274703.7533012577,
+    "full_fleet_exaflops": 538.1642583411094,
+    "full_fleet_folding_multiple": 224.23510764212892,
+    "science_advantage_vs_mobile": 9.984462953057744,
+    "dgpu_science_advantage_vs_mobile": 32.1365804669847,
+    "parity_machines_saved_vs_mobile": 7.620448252831954,
+    "by_scale": [
+      {
+        "enrolled": 100000.0,
+        "exaflops_fp32": 0.058496115037077114,
+        "folding_at_home_multiple": 0.024373381265448798,
+        "tokens_per_sec": 473003.5558411827
+      },
+      {
+        "enrolled": 500000.0,
+        "exaflops_fp32": 0.2924805751853856,
+        "folding_at_home_multiple": 0.121866906327244,
+        "tokens_per_sec": 2365017.779205913
+      },
+      {
+        "enrolled": 1000000.0,
+        "exaflops_fp32": 0.5849611503707712,
+        "folding_at_home_multiple": 0.243733812654488,
+        "tokens_per_sec": 4730035.558411826
+      },
+      {
+        "enrolled": 2500000.0,
+        "exaflops_fp32": 1.4624028759269279,
+        "folding_at_home_multiple": 0.60933453163622,
+        "tokens_per_sec": 11825088.896029567
+      },
+      {
+        "enrolled": 10000000.0,
+        "exaflops_fp32": 5.849611503707711,
+        "folding_at_home_multiple": 2.43733812654488,
+        "tokens_per_sec": 47300355.58411827
+      },
+      {
+        "enrolled": 100000000.0,
+        "exaflops_fp32": 58.49611503707711,
+        "folding_at_home_multiple": 24.373381265448796,
+        "tokens_per_sec": 473003555.8411827
+      },
+      {
+        "enrolled": 920000000.0,
+        "exaflops_fp32": 538.1642583411094,
+        "folding_at_home_multiple": 224.23510764212892,
+        "tokens_per_sec": 4351632713.73888
+      }
+    ]
+  },
+  "combined": {
+    "science_exaflops_full_both": 629.9716576740093,
+    "science_folding_multiple_both": 262.4881906975039,
+    "desktop_share_of_science": 0.8542674131216117
+  },
   "sensitivity": [
     {
       "parameter": "Sustained FP32 fraction (0.5x / 2x)",

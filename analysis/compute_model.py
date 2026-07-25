@@ -205,6 +205,140 @@ THERMAL_DERATE = 0.70  # sustained vs burst, 8-hour run while charging
 FLAGSHIP_NPU_PEAK_TOPS = 45.0
 
 
+# ===========================================================================
+# 2b. THE DESKTOP TIER
+# ===========================================================================
+# Desktops are better nodes than phones in almost every dimension: more RAM, real
+# GPUs, active cooling, mains power, no app-store review, and no background
+# execution limits. They are also where scientific batch work belongs, because
+# FP32 throughput on a discrete GPU is roughly two orders of magnitude above a
+# phone's.
+#
+# Two corrections applied to the earlier desktop estimates:
+#
+#   1. The same bandwidth wall applies. A "80 TOPS" gaming GPU decoding an 8B Q4
+#      model at batch 1 is bound by its ~350 GB/s of VRAM bandwidth, not by its
+#      tensor cores. Peak TOPS overstates decode throughput here just as badly as
+#      it does on mobile.
+#
+#   2. Availability is LOWER than mobile, not higher. Phones get plugged in
+#      nightly as a matter of habit; desktops get switched off. This is the one
+#      place the desktop tier loses, and it partly cancels correction (1) when
+#      computing crossover points.
+#
+# Machine counts are estimates of the installed base able to host a node at all.
+
+DESKTOP_DGPU_COUNT = 250e6         # gaming and workstation discrete GPUs
+DESKTOP_APPLE_COUNT = 70e6         # Apple Silicon Macs (unified memory)
+DESKTOP_CPU_ONLY_COUNT = 600e6     # 16GB+ RAM, integrated graphics only
+
+
+@dataclass
+class DesktopClass:
+    name: str
+    count: float
+    peak_bandwidth_gbs: float       # VRAM or unified/system memory bandwidth
+    usable_fraction: float
+    model_params_b: float           # desktops can host larger models than phones
+    weight_gb: float
+    fp32_peak_tflops: float         # this is what the science case rests on
+    fp32_sustained_fraction: float  # active cooling + mains power -> high
+
+
+DESKTOP_CLASSES = [
+    DesktopClass(
+        name="Discrete GPU",
+        count=DESKTOP_DGPU_COUNT,
+        peak_bandwidth_gbs=350.0,      # fleet average across 1650/3050/3060/4060/4070+
+        usable_fraction=0.75,          # GPU memory subsystems are efficient
+        model_params_b=8.0,
+        weight_gb=4.70,                # 8B at Q4_K_M
+        fp32_peak_tflops=12.0,         # fleet average, not a flagship
+        fp32_sustained_fraction=0.80,
+    ),
+    DesktopClass(
+        name="Apple Silicon",
+        count=DESKTOP_APPLE_COUNT,
+        peak_bandwidth_gbs=120.0,      # M1 68 -> M2/M3 100 -> Pro/Max far higher
+        usable_fraction=0.70,
+        model_params_b=8.0,
+        weight_gb=4.70,
+        fp32_peak_tflops=4.0,
+        fp32_sustained_fraction=0.80,
+    ),
+    DesktopClass(
+        name="CPU only (16GB+)",
+        count=DESKTOP_CPU_ONLY_COUNT,
+        peak_bandwidth_gbs=50.0,       # dual-channel DDR4/DDR5
+        usable_fraction=0.60,
+        model_params_b=3.0,
+        weight_gb=1.80,
+        fp32_peak_tflops=0.25,         # AVX2/AVX-512 across ~8 cores
+        fp32_sustained_fraction=0.80,
+    ),
+]
+
+DESKTOP_FLEET = sum(d.count for d in DESKTOP_CLASSES)
+
+# Desktop thermal derate is much gentler than mobile: a tower with fans on mains
+# power holds its clocks nearly indefinitely.
+DESKTOP_THERMAL_DERATE = 0.88
+
+# Desktop contribution gate. Same shape as mobile, different probabilities.
+# The dominant term is simply whether the machine is left powered on.
+P_DESKTOP_LEFT_ON = 0.35        # most people shut down; enthusiasts do not
+P_DESKTOP_NETWORK = 0.97        # wired or permanent Wi-Fi
+P_DESKTOP_IDLE = 0.95
+DESKTOP_DAYTIME_AVAILABILITY = 0.12   # idle at a desk during the working day
+
+DESKTOP_NIGHT_PEAK = P_DESKTOP_LEFT_ON * P_DESKTOP_NETWORK * P_DESKTOP_IDLE
+
+
+def per_desktop_inference():
+    """Per-class and fleet-weighted desktop throughput. Same physics as mobile."""
+    rows = []
+    for d in DESKTOP_CLASSES:
+        usable_bw = d.peak_bandwidth_gbs * d.usable_fraction
+        toks_burst = usable_bw / d.weight_gb
+        toks_sustained = toks_burst * DESKTOP_THERMAL_DERATE
+        ops_per_token = 2.0 * d.model_params_b * 1e9
+        share = d.count / DESKTOP_FLEET
+        rows.append(
+            {
+                "name": d.name,
+                "count": d.count,
+                "share": share,
+                "usable_bandwidth_gbs": usable_bw,
+                "tokens_per_sec_burst": toks_burst,
+                "tokens_per_sec_sustained": toks_sustained,
+                "sustained_tops": toks_sustained * ops_per_token / 1e12,
+                "fp32_sustained_tflops": d.fp32_peak_tflops * d.fp32_sustained_fraction,
+            }
+        )
+    w_tok = sum(r["share"] * r["tokens_per_sec_sustained"] for r in rows)
+    w_tops = sum(r["share"] * r["sustained_tops"] for r in rows)
+    w_flops = sum(r["share"] * r["fp32_sustained_tflops"] for r in rows)
+    return rows, w_tok, w_tops, w_flops
+
+
+def desktop_availability(local_h):
+    """Desktop equivalent of device_availability(). Lower ceiling than mobile."""
+    return DESKTOP_DAYTIME_AVAILABILITY + (
+        DESKTOP_NIGHT_PEAK - DESKTOP_DAYTIME_AVAILABILITY
+    ) * _night_weight(local_h)
+
+
+def desktop_availability_profile(n: int = 24 * 12):
+    hours = np.linspace(0, 24, n, endpoint=False)
+    vals = np.array(
+        [
+            float(np.sum(DEVICE_DENSITY * desktop_availability(local_hour(_LON_GRID, h))))
+            for h in hours
+        ]
+    )
+    return hours, vals
+
+
 def per_device_inference():
     """Returns per-class and fleet-weighted inference throughput."""
     rows = []
@@ -447,6 +581,67 @@ def compute_all() -> dict:
 
     scales = [1e3, 1e4, 1e5, 1e6, 1e7, 3e7, 1e8, 3e8, CAPABLE_FLEET_TODAY]
 
+    # =================================================================
+    # DESKTOP TIER
+    # =================================================================
+    d_rows, d_tok, d_tops, d_flops = per_desktop_inference()
+    _, d_avail = desktop_availability_profile()
+    d_mean = float(d_avail.mean())
+    d_min = float(d_avail.min())
+    d_max = float(d_avail.max())
+
+    def desktop_science_exaflops(enrolled: float) -> float:
+        return enrolled * d_mean * d_flops * 1e12 / 1e18
+
+    # Folding@home parity, per desktop class and for the mixed fleet. This is the
+    # headline the desktop tier exists to produce: it is roughly an order of
+    # magnitude fewer machines than the mobile equivalent.
+    dgpu = d_rows[0]
+    desktop_parity_mixed = fah_flops / (d_mean * d_flops * 1e12)
+    desktop_parity_dgpu_only = fah_flops / (d_mean * dgpu["fp32_sustained_tflops"] * 1e12)
+
+    desktop_full_exaflops = desktop_science_exaflops(DESKTOP_FLEET)
+
+    desktop = {
+        "fleet": DESKTOP_FLEET,
+        "classes": d_rows,
+        "weighted_tokens_per_sec": d_tok,
+        "weighted_sustained_tops_int8": d_tops,
+        "weighted_sustained_tflops_fp32": d_flops,
+        "thermal_derate": DESKTOP_THERMAL_DERATE,
+        "availability": {
+            "night_peak": DESKTOP_NIGHT_PEAK,
+            "mean_over_24h": d_mean,
+            "global_min": d_min,
+            "global_max": d_max,
+            "components": {
+                "p_left_on_overnight": P_DESKTOP_LEFT_ON,
+                "p_network": P_DESKTOP_NETWORK,
+                "p_idle": P_DESKTOP_IDLE,
+                "daytime": DESKTOP_DAYTIME_AVAILABILITY,
+            },
+        },
+        "folding_parity_mixed_fleet": desktop_parity_mixed,
+        "folding_parity_dgpu_only": desktop_parity_dgpu_only,
+        "full_fleet_exaflops": desktop_full_exaflops,
+        "full_fleet_folding_multiple": desktop_full_exaflops / FOLDING_AT_HOME_PEAK_EXAFLOPS,
+        # How much more scientific throughput one desktop delivers than one phone.
+        "science_advantage_vs_mobile": d_flops / w_flops,
+        "dgpu_science_advantage_vs_mobile": dgpu["fp32_sustained_tflops"] / w_flops,
+        # And how many fewer machines that translates into.
+        "parity_machines_saved_vs_mobile": enrolled_to_match_fah / desktop_parity_mixed,
+        "by_scale": [
+            {
+                "enrolled": s,
+                "exaflops_fp32": desktop_science_exaflops(s),
+                "folding_at_home_multiple": desktop_science_exaflops(s)
+                / FOLDING_AT_HOME_PEAK_EXAFLOPS,
+                "tokens_per_sec": s * d_mean * d_tok,
+            }
+            for s in [1e5, 5e5, 1e6, 2.5e6, 1e7, 1e8, DESKTOP_FLEET]
+        ],
+    }
+
     results = {
         "fleet": {
             "smartphone_install_base": SMARTPHONE_INSTALL_BASE,
@@ -513,6 +708,15 @@ def compute_all() -> dict:
         ],
     }
 
+    results["desktop"] = desktop
+    # Combined fleets, which is what the network actually looks like.
+    results["combined"] = {
+        "science_exaflops_full_both": full_fleet_exaflops + desktop_full_exaflops,
+        "science_folding_multiple_both": (full_fleet_exaflops + desktop_full_exaflops)
+        / FOLDING_AT_HOME_PEAK_EXAFLOPS,
+        "desktop_share_of_science": desktop_full_exaflops
+        / (full_fleet_exaflops + desktop_full_exaflops),
+    }
     results["sensitivity"] = sensitivity(mean_avail)
     return results
 
@@ -790,6 +994,76 @@ def fig_roadmap(R):
     plt.close(fig)
 
 
+def fig_tiers(R):
+    """Why the desktop tier carries the science, and the mobile tier the mission."""
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12.6, 5.6),
+                                   gridspec_kw={"width_ratios": [1, 1.1]})
+    d = R["desktop"]
+
+    # ---- left: sustained FP32 per machine, log scale --------------------
+    names = [c["name"] for c in d["classes"]] + ["Phone\n(fleet average)"]
+    vals = [c["fp32_sustained_tflops"] for c in d["classes"]] + [
+        R["per_device"]["weighted_sustained_tflops_fp32"]
+    ]
+    colors = [BLUE, TEAL, SLATE, AMBER]
+    bars = ax1.bar(names, vals, color=colors, width=0.62, zorder=3)
+    ax1.set_yscale("log")
+    ax1.set_ylabel("Sustained FP32 per machine (TFLOPS)")
+    ax1.set_title("Scientific throughput is a desktop story")
+    for b, v in zip(bars, vals):
+        ax1.annotate(f"{v:,.2f}" if v < 1 else f"{v:,.1f}",
+                     (b.get_x() + b.get_width() / 2, v),
+                     textcoords="offset points", xytext=(0, 6),
+                     ha="center", fontweight="bold")
+    ax1.annotate(
+        f"One discrete GPU does the scientific\nwork of about "
+        f"{d['dgpu_science_advantage_vs_mobile']:,.0f} phones.\n"
+        "A CPU-only desktop does less than one.",
+        xy=(0.97, 0.34), xycoords="axes fraction", ha="right",
+        fontsize=10, color=DEEP,
+        bbox=dict(boxstyle="round,pad=0.5", fc="white", ec=BLUE, lw=1.3),
+    )
+    ax1.grid(axis="x", visible=False)
+    ax1.tick_params(axis="x", labelsize=9.5)
+
+    # ---- right: machines needed for Folding@home parity ----------------
+    labels = ["Phones", "Desktops\n(mixed fleet)", "Desktops\n(discrete GPU only)"]
+    counts = [
+        R["crossovers"]["enrolled_to_match_folding_at_home_peak"],
+        d["folding_parity_mixed_fleet"],
+        d["folding_parity_dgpu_only"],
+    ]
+    cols = [AMBER, TEAL, BLUE]
+    ypos = np.arange(len(labels))
+    ax2.barh(ypos, counts, color=cols, height=0.55, zorder=3)
+    for y, v in zip(ypos, counts):
+        ax2.annotate(f"  {_si(v)} machines", (v, y), textcoords="offset points",
+                     xytext=(6, 0), va="center", fontweight="bold", fontsize=10.5)
+    ax2.set_yticks(ypos)
+    ax2.set_yticklabels(labels, fontsize=10.5)
+    ax2.set_xscale("log")
+    ax2.set_xlim(counts[2] / 4, counts[0] * 6)
+    ax2.set_xlabel("Machines needed to match Folding@home's peak, sustained")
+    ax2.set_title("Which is why desktop-first is the faster proof")
+    ax2.xaxis.set_major_formatter(FuncFormatter(_si))
+    ax2.grid(axis="y", visible=False)
+    ax2.invert_yaxis()
+
+    ax2.annotate(
+        f"Desktops reach parity with about\n"
+        f"{d['parity_machines_saved_vs_mobile']:,.0f}x fewer machines — despite\n"
+        f"being switched off more often "
+        f"({d['availability']['mean_over_24h']:.0%} vs {R['availability']['mean_over_24h']:.0%}\n"
+        f"mean availability).",
+        xy=(0.40, 0.20), xycoords="axes fraction", fontsize=10, color=DEEP,
+        bbox=dict(boxstyle="round,pad=0.5", fc="white", ec=TEAL, lw=1.3),
+    )
+
+    fig.suptitle("Two tiers, two jobs", fontsize=15, fontweight="bold", color=INK)
+    fig.savefig(FIGDIR / "fig7_tiers.png", dpi=155)
+    plt.close(fig)
+
+
 def fig_sensitivity(R):
     fig, ax = plt.subplots(figsize=(11, 4.8))
     rows = R["sensitivity"]
@@ -941,6 +1215,90 @@ def write_numbers_md(R: dict, path: Path):
             f"{row['folding_at_home_multiple']:.3f}x |"
         )
 
+    d = R["desktop"]
+    L.append("\n## The desktop tier\n")
+    L.append(
+        "Desktops are better nodes than phones in almost every dimension: more RAM, real "
+        "GPUs, active cooling, mains power, no app-store review, and no background-execution "
+        "limits. They lose on exactly one axis, and it matters — **people switch desktops off, "
+        "and plug phones in.**\n"
+    )
+    L.append("| Class | Machines | Sustained tok/s | Sustained FP32 |")
+    L.append("|---|---|---|---|")
+    for dc in d["classes"]:
+        L.append(
+            f"| {dc['name']} | {_si(dc['count'])} | {dc['tokens_per_sec_sustained']:.0f} | "
+            f"**{dc['fp32_sustained_tflops']*1000:,.0f} GFLOPS** |"
+        )
+    L.append(
+        f"| **Fleet-weighted** | {_si(d['fleet'])} | {d['weighted_tokens_per_sec']:.0f} | "
+        f"**{d['weighted_sustained_tflops_fp32']*1000:,.0f} GFLOPS** |"
+    )
+
+    da = d["availability"]
+    L.append("\n### Desktop availability is lower than mobile\n")
+    L.append("| Quantity | Desktop | Mobile |")
+    L.append("|---|---|---|")
+    L.append(
+        f"| Left on / plugged in overnight | {da['components']['p_left_on_overnight']:.0%} | "
+        f"{a['components']['p_charges_overnight']:.0%} |"
+    )
+    L.append(f"| Overnight peak (joint) | {da['night_peak']:.1%} | {a['night_peak']:.1%} |")
+    L.append(f"| **Mean over 24h** | **{da['mean_over_24h']:.1%}** | **{a['mean_over_24h']:.1%}** |")
+    L.append(f"| Daily floor | {da['global_min']:.1%} | {a['global_min']:.1%} |")
+
+    L.append("\n### And yet it wins the science case decisively\n")
+    L.append("| Comparison | Value |")
+    L.append("|---|---|")
+    L.append(
+        f"| One desktop vs one phone, scientific FP32 | "
+        f"**{d['science_advantage_vs_mobile']:,.0f}x** |"
+    )
+    L.append(
+        f"| One discrete GPU vs one phone | "
+        f"**{d['dgpu_science_advantage_vs_mobile']:,.0f}x** |"
+    )
+    L.append(
+        f"| Folding@home parity, phones | "
+        f"{_si(c['enrolled_to_match_folding_at_home_peak'])} devices |"
+    )
+    L.append(
+        f"| Folding@home parity, mixed desktops | "
+        f"**{_si(d['folding_parity_mixed_fleet'])} machines** |"
+    )
+    L.append(
+        f"| Folding@home parity, discrete GPUs only | "
+        f"**{_si(d['folding_parity_dgpu_only'])} machines** |"
+    )
+    L.append(
+        f"| Fewer machines needed than mobile | "
+        f"{d['parity_machines_saved_vs_mobile']:,.0f}x |"
+    )
+    L.append(
+        f"| Full desktop fleet ({_si(d['fleet'])}) | "
+        f"{d['full_fleet_exaflops']:,.0f} exaFLOPS, "
+        f"{d['full_fleet_folding_multiple']:,.0f}x Folding@home |"
+    )
+    comb = R["combined"]
+    L.append(
+        f"| Both fleets at full enrolment | "
+        f"{comb['science_exaflops_full_both']:,.0f} exaFLOPS "
+        f"({comb['desktop_share_of_science']:.0%} of it from desktops) |"
+    )
+    L.append(
+        f"\n**This is the argument for building the desktop client first.** Reaching parity with "
+        f"the largest volunteer computing effort in history needs roughly "
+        f"{_si(d['folding_parity_dgpu_only'])} gaming PCs, against "
+        f"{_si(c['enrolled_to_match_folding_at_home_peak'])} phones. The mobile fleet remains the "
+        "mission and the scale story; the desktop fleet is the research instrument.\n"
+    )
+    L.append(
+        "The same bandwidth wall applies to desktop inference, incidentally: a discrete GPU "
+        f"decoding an 8B model at batch 1 sustains about {d['classes'][0]['tokens_per_sec_sustained']:.0f} "
+        "tokens/sec, bound by VRAM bandwidth rather than by its tensor cores. Peak TOPS "
+        "overstates desktop decode throughput exactly as badly as it does mobile.\n"
+    )
+
     L.append("\n## Sensitivity\n")
     L.append("Effect on the Folding@home-parity enrolment figure.\n")
     L.append("| Assumption varied | Low | High |")
@@ -970,6 +1328,7 @@ def main():
     fig_follow_the_moon(R)
     fig_science_capacity(R)
     fig_roadmap(R)
+    fig_tiers(R)
     fig_sensitivity(R)
 
     a, p, c, f, s = (
@@ -994,8 +1353,27 @@ def main():
     print(f"  Full fleet .............................. {f['exaflops_fp32_sustained']:,.0f} exaFLOPS,"
           f" {f['folding_at_home_years_per_year']:,.0f}x F@h")
     print(f"  Days for one Folding@home-year .......... {f['days_to_deliver_one_folding_at_home_year']:.1f}")
+    d = R["desktop"]
+    print("-" * 72)
+    print("  DESKTOP TIER")
+    print(f"    Machines in scope ..................... {_si(d['fleet'])}")
+    print(f"    Mean availability (vs mobile) ......... {d['availability']['mean_over_24h']:.1%}"
+          f"  (mobile {a['mean_over_24h']:.1%})")
+    print(f"    Sustained FP32 per machine ............ {d['weighted_sustained_tflops_fp32']*1000:,.0f} GFLOPS")
+    print(f"    Science advantage vs one phone ........ {d['science_advantage_vs_mobile']:,.0f}x"
+          f"  (dGPU alone {d['dgpu_science_advantage_vs_mobile']:,.0f}x)")
+    print(f"    Folding@home parity, mixed ............ {_si(d['folding_parity_mixed_fleet'])} machines")
+    print(f"    Folding@home parity, dGPU only ........ {_si(d['folding_parity_dgpu_only'])} machines")
+    print(f"    ... vs phones ......................... {_si(c['enrolled_to_match_folding_at_home_peak'])} devices"
+          f"  ({d['parity_machines_saved_vs_mobile']:,.0f}x fewer)")
+    print(f"    Full desktop fleet .................... {d['full_fleet_exaflops']:,.0f} exaFLOPS,"
+          f" {d['full_fleet_folding_multiple']:,.0f}x F@h")
+    print(f"    Both fleets combined .................. "
+          f"{R['combined']['science_exaflops_full_both']:,.0f} exaFLOPS"
+          f"  ({R['combined']['desktop_share_of_science']:.0%} from desktops)")
     print("=" * 72)
-    print(f"Wrote analysis/numbers.json, analysis/NUMBERS.md, and 6 figures to docs/figures/")
+    n_figs = len(list(FIGDIR.glob("fig*.png")))
+    print(f"Wrote analysis/numbers.json, analysis/NUMBERS.md, and {n_figs} figures to docs/figures/")
 
 
 if __name__ == "__main__":

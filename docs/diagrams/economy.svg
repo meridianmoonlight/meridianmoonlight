@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 620" width="1020" height="620" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="e-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#FFB454"/>
+    </marker>
+    <marker id="e-arwc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6FC3E8"/>
+    </marker>
+  </defs>
+
+  <rect width="1020" height="620" fill="#0A0E20"/>
+
+  <text x="40" y="44" fill="#FFB454" font-size="11.5" letter-spacing="3">MERIDIAN MOONLIGHT — THE COMPUTE ECONOMY</text>
+  <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">Earn compute by giving compute. No money crosses here.</text>
+
+  <!-- contributor loop -->
+  <rect x="40" y="108" width="270" height="130" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.5"/>
+  <text x="62" y="136" fill="#FFB454" font-size="10" letter-spacing="2">CONTRIBUTE</text>
+  <text x="62" y="162" fill="#EAEDFA" font-size="14.5" font-weight="600">Hours, not horsepower</text>
+  <text x="62" y="186" fill="#8D97C2" font-size="11">Credits accrue for reliable overnight</text>
+  <text x="62" y="202" fill="#8D97C2" font-size="11">availability. A four-year-old phone</text>
+  <text x="62" y="218" fill="#8D97C2" font-size="11">earns the same as a new flagship.</text>
+
+  <line x1="312" y1="173" x2="382" y2="173" stroke="#FFB454" stroke-width="1.5" marker-end="url(#e-arw)"/>
+
+  <rect x="384" y="108" width="252" height="130" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.5"/>
+  <text x="406" y="136" fill="#FFB454" font-size="10" letter-spacing="2">CREDITS</text>
+  <text x="406" y="162" fill="#EAEDFA" font-size="14.5" font-weight="600">A usage allowance</text>
+  <text x="406" y="186" fill="#8D97C2" font-size="11">Verified work only. Capped per</text>
+  <text x="406" y="202" fill="#8D97C2" font-size="11">device per day. Decays over</text>
+  <text x="406" y="218" fill="#8D97C2" font-size="11">months so it never becomes savings.</text>
+
+  <line x1="638" y1="173" x2="708" y2="173" stroke="#FFB454" stroke-width="1.5" marker-end="url(#e-arw)"/>
+
+  <rect x="710" y="108" width="270" height="130" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.5"/>
+  <text x="732" y="136" fill="#FFB454" font-size="10" letter-spacing="2">SPEND</text>
+  <text x="732" y="162" fill="#EAEDFA" font-size="14.5" font-weight="600">Priority and headroom</text>
+  <text x="732" y="186" fill="#8D97C2" font-size="11">Queue priority, larger models, longer</text>
+  <text x="732" y="202" fill="#8D97C2" font-size="11">context — and the right to submit</text>
+  <text x="732" y="218" fill="#8D97C2" font-size="11">your own batch job.</text>
+
+  <!-- loop back -->
+  <path d="M845 240 L845 274 L175 274 L175 242" fill="none" stroke="#FFB454" stroke-opacity="0.45" stroke-width="1.5" marker-end="url(#e-arw)"/>
+  <text x="452" y="266" fill="#8D97C2" font-size="10.5">the loop closes — spending returns capacity to the pool</text>
+
+  <!-- the floor -->
+  <rect x="40" y="304" width="940" height="86" rx="3" fill="#0A0E20" stroke="#6FC3E8" stroke-width="1.5"/>
+  <text x="62" y="332" fill="#6FC3E8" font-size="10" letter-spacing="2">THE FLOOR — UNCONDITIONAL</text>
+  <text x="62" y="358" fill="#EAEDFA" font-size="14.5" font-weight="600">Free access for everyone, at zero balance, forever</text>
+  <text x="62" y="380" fill="#8D97C2" font-size="11.5">Credits buy priority and headroom — never access. If the free tier ever degrades to make credits attractive, the project has failed.</text>
+
+  <!-- money side, separate -->
+  <line x1="40" y1="420" x2="980" y2="420" stroke="#2A3468" stroke-dasharray="4 4"/>
+  <text x="40" y="444" fill="#8D97C2" font-size="10" letter-spacing="2">SEPARATE LEDGER — WHERE ACTUAL MONEY LIVES</text>
+
+  <rect x="40" y="458" width="440" height="118" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="62" y="486" fill="#6FC3E8" font-size="10" letter-spacing="2">IN</text>
+  <text x="62" y="512" fill="#EAEDFA" font-size="14" font-weight="600">Institutions buy batch time</text>
+  <text x="62" y="534" fill="#8D97C2" font-size="11">Labs and public-health bodies pay ordinary</text>
+  <text x="62" y="550" fill="#8D97C2" font-size="11">currency for scheduled overnight capacity,</text>
+  <text x="62" y="566" fill="#8D97C2" font-size="11">drawn only from surplus.</text>
+
+  <line x1="484" y1="517" x2="534" y2="517" stroke="#6FC3E8" stroke-width="1.5" marker-end="url(#e-arwc)"/>
+
+  <rect x="540" y="458" width="440" height="118" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="562" y="486" fill="#6FC3E8" font-size="10" letter-spacing="2">OUT</text>
+  <text x="562" y="512" fill="#EAEDFA" font-size="14" font-weight="600">Hosting, audits, developer accounts</text>
+  <text x="562" y="534" fill="#8D97C2" font-size="11">Posted on a public ledger, permanently.</text>
+  <text x="562" y="550" fill="#8D97C2" font-size="11">Contributors are never paid — which is what</text>
+  <text x="562" y="566" fill="#8D97C2" font-size="11">keeps them volunteers, not contractors.</text>
+</svg>

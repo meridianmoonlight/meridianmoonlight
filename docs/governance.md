@@ -47,6 +47,19 @@ Commitments that are deliberately hard to change:
 6. **Compute-sharing is always the stated purpose.** Never bundled into an app that appears to do something else.
 7. **Participant experience outranks paying workloads.** Named explicitly because [the pressure will be real](../WHITEPAPER.md#103-the-honest-gap): if institutional batch work becomes the revenue source, someone will eventually propose prioritising it. This makes that trade-off a public decision rather than a quiet one.
 8. **Measurements get published, including bad ones.** Thermals, battery, energy cost, availability.
+9. **The free floor is unconditional.** Credits buy priority and headroom, never access. *If the free tier ever degrades to make credits attractive, the project has failed at its purpose.*
+10. **Credits are never currency and never votes.** Non-transferable, non-purchasable, non-redeemable, decaying. Tying governance influence to accumulated credits is prohibited.
+11. **Contributors are never paid in money.** Reciprocation is in capability. This is what keeps them volunteers rather than unlicensed contractors, and [the arithmetic that makes cash pointless anyway is published](../analysis/ECONOMICS.md).
+12. **Paid work is surplus-only, and buying does not buy influence.** The nine rules in [economy.md](economy.md#hard-rules-on-paid-work) are constitutional, in particular: public ledger, public buyer register, no exclusivity, no roadmap or routing influence, and a 25% single-buyer revenue cap.
+13. **The network never executes arbitrary code on a volunteer's machine.** Layer 0. Adding a general-purpose runtime — including a sandboxed one — requires the full amendment process, on every tier.
+
+### The task-type catalogue is a governance artefact
+
+Because [Layer 0](../WHITEPAPER.md#35-layer-0-and-the-task-type-catalogue) means the network can only compute what we have implemented, **the maintainers decide what the network is capable of.** That is more power over the project's purpose than the maintainers of most open-source projects hold, and it needs constraining rather than assuming good faith.
+
+Every new [task type](task-types.md) therefore requires a public request, a minimum 14-day comment period, a published security review against fixed acceptance criteria, and a signed release in which participants re-confirm consent to the new work their device may accept. **Paying buyers cannot accelerate this and cannot commission a private task type.**
+
+Refusals of buyers or workloads are logged publicly with a reason — which is also the accountability mechanism against refusing for bad ones.
 
 **Amendment process:** deliberately slow and public. Supermajority of maintainers, a mandatory public comment period, and a written rationale. Any amendment weakening 1–6 should be practically impossible — and if a future steward manages it anyway, that's what the fork right is for.
 

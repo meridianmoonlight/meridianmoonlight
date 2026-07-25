@@ -28,7 +28,7 @@ SITE = ROOT / "site"
 SRC = ROOT / "WHITEPAPER.md"
 OUT = SITE / "whitepaper.html"
 
-REPO = "https://github.com/OWNER/meridian-moonlight"
+REPO = "https://github.com/meridianmoonlight/meridianmoonlight"
 
 
 def github_slugify(value: str, separator: str = "-") -> str:
@@ -301,7 +301,7 @@ def rewrite_links(html: str) -> str:
     html = html.replace('href="WHITEPAPER.md"', 'href="whitepaper.html"')
 
     # The OWNER placeholder in the source document.
-    html = html.replace("https://github.com/OWNER/meridian-moonlight", REPO)
+    html = html.replace("https://github.com/meridianmoonlight/meridianmoonlight", REPO)
     return html
 
 

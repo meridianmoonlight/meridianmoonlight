@@ -75,6 +75,44 @@ The last row is the important one, and it is a retraction. An earlier draft of t
 | 300M | 77M | 950M | 23.03 | 9.595x |
 | 1.2B | 307M | 3.8B | 91.81 | 38.253x |
 
+## The desktop tier
+
+Desktops are better nodes than phones in almost every dimension: more RAM, real GPUs, active cooling, mains power, no app-store review, and no background-execution limits. They lose on exactly one axis, and it matters — **people switch desktops off, and plug phones in.**
+
+| Class | Machines | Sustained tok/s | Sustained FP32 |
+|---|---|---|---|
+| Discrete GPU | 250M | 49 | **9,600 GFLOPS** |
+| Apple Silicon | 70M | 16 | **3,200 GFLOPS** |
+| CPU only (16GB+) | 600M | 15 | **200 GFLOPS** |
+| **Fleet-weighted** | 920M | 24 | **2,983 GFLOPS** |
+
+### Desktop availability is lower than mobile
+
+| Quantity | Desktop | Mobile |
+|---|---|---|
+| Left on / plugged in overnight | 35% | 72% |
+| Overnight peak (joint) | 32.3% | 60.1% |
+| **Mean over 24h** | **19.6%** | **25.7%** |
+| Daily floor | 15.4% | 14.1% |
+
+### And yet it wins the science case decisively
+
+| Comparison | Value |
+|---|---|
+| One desktop vs one phone, scientific FP32 | **10x** |
+| One discrete GPU vs one phone | **32x** |
+| Folding@home parity, phones | 31M devices |
+| Folding@home parity, mixed desktops | **4.1M machines** |
+| Folding@home parity, discrete GPUs only | **1.3M machines** |
+| Fewer machines needed than mobile | 8x |
+| Full desktop fleet (920M) | 538 exaFLOPS, 224x Folding@home |
+| Both fleets at full enrolment | 630 exaFLOPS (85% of it from desktops) |
+
+**This is the argument for building the desktop client first.** Reaching parity with the largest volunteer computing effort in history needs roughly 1.3M gaming PCs, against 31M phones. The mobile fleet remains the mission and the scale story; the desktop fleet is the research instrument.
+
+The same bandwidth wall applies to desktop inference, incidentally: a discrete GPU decoding an 8B model at batch 1 sustains about 49 tokens/sec, bound by VRAM bandwidth rather than by its tensor cores. Peak TOPS overstates desktop decode throughput exactly as badly as it does mobile.
+
+
 ## Sensitivity
 
 Effect on the Folding@home-parity enrolment figure.

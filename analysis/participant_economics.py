@@ -16,7 +16,7 @@ Run:
 Outputs:
     analysis/ECONOMICS.md
     analysis/economics.json
-    docs/figures/fig7_participant_earnings.png
+    docs/figures/fig8_participant_earnings.png
 
 THE SHORT ANSWER
 ----------------
@@ -282,7 +282,7 @@ def fig_earnings(R: dict) -> None:
         "Paying participants: the magnitude is the argument",
         fontsize=15, fontweight="bold", color=INK,
     )
-    fig.savefig(FIGDIR / "fig7_participant_earnings.png", dpi=155)
+    fig.savefig(FIGDIR / "fig8_participant_earnings.png", dpi=155)
     plt.close(fig)
 
 
@@ -317,7 +317,7 @@ def write_md(R: dict, path: Path) -> None:
         "platform-policy, and fraud problem in the second half of this document.\n"
     )
 
-    L.append("![What a participant would earn](../docs/figures/fig7_participant_earnings.png)\n")
+    L.append("![What a participant would earn](../docs/figures/fig8_participant_earnings.png)\n")
     L.append("## Where the money goes\n")
     L.append("| Stage | US$/participant/year |")
     L.append("|---|---|")
@@ -521,7 +521,7 @@ def main() -> None:
           f"{R['payment_rails']['monthly_payout']['fee_fraction']:.0%}")
     print("=" * 72)
     print("Wrote analysis/ECONOMICS.md, analysis/economics.json,")
-    print("      docs/figures/fig7_participant_earnings.png")
+    print("      docs/figures/fig8_participant_earnings.png")
 
 
 if __name__ == "__main__":

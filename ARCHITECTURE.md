@@ -8,11 +8,12 @@ Companion documents: [WHITEPAPER.md](WHITEPAPER.md) for the quantitative argumen
 
 ## 1. Design principles
 
-1. **Local-first.** The default path for a request is the requester's own device. The network is the fallback.
-2. **Whole models only.** No model is ever split across the network.
-3. **Fail closed.** Any ambiguity in the contribution gate resolves to *not contributing*.
-4. **Centralised scaffolding, decentralised building.** Ship a working thing, then remove the centre.
-5. **Measure, then claim.** Every performance figure in this project is either measured or explicitly labelled as modelled.
+1. **Layer 0 - no arbitrary code, ever.** A job is a prompt plus a task-type ID from a compiled-in allowlist. Never a script, binary, container, or WASM module. On every tier. This is the constraint the rest of the security model is built on, and it is not relaxable.
+2. **Local-first.** The default path for a request is the requester's own device. The network is the fallback.
+3. **Whole models only.** No model is ever split across the network.
+4. **Fail closed.** Any ambiguity in the contribution gate resolves to *not contributing*.
+5. **Centralised scaffolding, decentralised building.** Ship a working thing, then remove the centre.
+6. **Measure, then claim.** Every performance figure in this project is either measured or explicitly labelled as modelled.
 
 ---
 
@@ -49,13 +50,24 @@ From M2, the data plane moves peer-to-peer (libp2p) and the coordinator brokers 
 
 ## 3. The node
 
-### 3.1 Platform: Android first
+### 3.1 Two tiers, built in parallel
 
-Android permits a foreground service with a persistent notification, which is exactly the right primitive: the work is visible to the user by construction, and the OS won't kill it mid-request.
+**Mobile is the mission. Desktop is the research instrument.** Both clients are M0 work, because neither blocks the other and they answer different questions.
+
+| | Mobile | Desktop |
+|---|---|---|
+| Carries | Scale, reach, the reason the project exists | 85% of scientific capacity |
+| Model hosted | 1.5B-3B Q4 | 3B-8B Q4 |
+| Gate | Charging + Wi-Fi + screen off + >=80% + cool | Powered + unmetered + idle |
+| Availability | 25.7% mean | 19.6% mean - people switch PCs off |
+| Attestation | Play Integrity / DeviceCheck | TPM 2.0 / App Attest, or none |
+| Blockers to shipping | App-store review, background limits, thermals | None of those |
+
+Android permits a foreground service with a persistent notification - exactly the right primitive: the work is visible by construction and the OS won't kill it mid-request.
+
+**Desktop reaches a working demo faster** because it has no app-store gate, no background-execution limit, and no thermal ceiling. It also hosts larger models, which makes it useful as a reference node for [verification](#5-verification). Its weaker attestation story is handled in [docs/desktop-security.md](docs/desktop-security.md).
 
 iOS is deferred and will be a weaker participant. Background execution limits effectively forbid sustained compute; an iOS node can realistically only contribute while the app is open and charging. We plan for that rather than pretending parity.
-
-A desktop node (Mac/Windows/Linux) is worth building early despite not being the product, because it makes M0 and M1 testable without a fleet of phones and can host larger models as reference/verification nodes.
 
 ### 3.2 Inference runtime
 
@@ -70,7 +82,7 @@ Model per device tier — the router must treat these as *different capabilities
 | <6GB | none | — | Requester only |
 | Desktop | 8B+ | ~4.5 GB+ | Reference / verification node |
 
-Weights must be openly licensed with terms that survive planetary scale. Some widely used "open" licences carry monthly-active-user thresholds and acceptable-use terms that bind downstream distributors. Prefer Apache-2.0 or MIT. Any community-licensed model must have its terms reviewed against projected scale *before* adoption, and the review published. See [WHITEPAPER.md §3.5](WHITEPAPER.md#35-model-selection-and-licensing).
+Weights must be openly licensed with terms that survive planetary scale. Some widely used "open" licences carry monthly-active-user thresholds and acceptable-use terms that bind downstream distributors. Prefer Apache-2.0 or MIT. Any community-licensed model must have its terms reviewed against projected scale *before* adoption, and the review published. See [WHITEPAPER.md §3.6](WHITEPAPER.md#36-model-selection-and-licensing).
 
 ### 3.3 The contribution gate
 
@@ -123,18 +135,20 @@ Peer discovery is a hard problem that adds nothing to proving the core idea work
 
 ## 5. Verification
 
-Language model output is not bit-deterministic across devices — different SoCs, kernels, and quantisation paths produce different tokens from identical inputs. Exact-match comparison is therefore useless, which rules out the obvious approach.
+Language model output is **not bit-deterministic across heterogeneous hardware.** Different SoCs, GPUs, drivers, kernels, thread counts, and quantisation paths change floating-point reduction order; when two logits are close, argmax flips; over hundreds of tokens two *honest* nodes diverge. An earlier draft of this project built verification on cross-node exact match, which would have generated false accusations against honest volunteers.
 
-**Redundant execution with semantic comparison:**
+Four mechanisms, in order of the weight they carry:
 
-1. A sampled fraction of requests goes to 2–3 independent nodes.
-2. Results are compared on distributional/semantic similarity against a threshold, not on exact equality.
-3. Agreement raises reputation; disagreement escalates to a trusted reference node (a desktop node running a larger model) which adjudicates.
-4. Persistent disagreement with consensus reduces reputation until the node is excluded.
+1. **Canary tasks - primary.** Known-answer jobs, indistinguishable from real work, higher rate for new and unattested nodes. Every task type must ship with a way to build them.
+2. **Coordinator re-derivation - primary.** Silent random audits, re-running work on the coordinator or a high-reputation reference node. Compares untrusted output against a *trusted* reference, so heterogeneity is irrelevant.
+3. **Cohort-scoped exact match.** Nodes grouped by SoC/GPU, build, and thread configuration; inside a cohort exact comparison is valid and free. How coarse a cohort can be is measured in M0.
+4. **Semantic tolerance across cohorts.** A published, versioned similarity threshold. Must be independently computable or third-party coordinators cannot interoperate.
+
+**Numeric task types verify best.** Scientific kernels, embeddings, classification, and extraction produce outputs comparable exactly or within a stated tolerance on *any* hardware. Open-ended chat is the hardest case, not the easiest - which is why the desktop tier's trust model is tractable despite weaker attestation.
 
 Sampling rate is a cost dial: verification at 3× redundancy costs 3× the compute. We sample rather than verify everything, and **we publish the sampling rate** — an unpublished rate is indistinguishable from no verification.
 
-Reputation inputs: uptime, latency, completion rate, agreement rate. New nodes start low and earn trust through sustained real work, which is also the main brake on Sybil attacks ([threat model](docs/threat-model.md#sybil-attacks)).
+Reputation inputs: uptime, latency, completion rate, agreement rate. New nodes start at zero and earn trust through sustained verified work, which is also the main brake on Sybil attacks ([threat model](docs/threat-model.md#sybil-resistance)).
 
 Deliberately unsophisticated. It needs no cryptographic novelty, works from the first version, and produces the reputation signal everything else depends on. Verifiable computation schemes (ZK proofs of inference) are research-grade and orders of magnitude too expensive; revisit if that changes.
 
@@ -143,6 +157,8 @@ Deliberately unsophisticated. It needs no cryptographic novelty, works from the 
 ## 6. Batch job framework
 
 Science work is latency-insensitive by construction, which is what makes it a good fit for hardware that vanishes without warning.
+
+**Constrained by Layer 0:** a batch job selects an audited [task type](docs/task-types.md) and supplies data and parameters. It never supplies code. A researcher whose work is not in the catalogue must request a new task type and wait for a signed release - a real product limitation, documented in the catalogue and in [WHITEPAPER 3.5](WHITEPAPER.md#35-layer-0-and-the-task-type-catalogue).
 
 Requirements this imposes:
 
@@ -192,8 +208,10 @@ Metadata is not nothing. Request timing and volume leak information; the coordin
 
 Listed because pretending these are settled would be the actual architectural flaw.
 
-1. **Whether third-party inference is routed at all.** ([threat model](docs/threat-model.md#content-liability)) Current recommendation: no, through M2 — inference stays local, and the network carries only vetted institutional batch work. This defers the most compelling part of the pitch and may be the wrong call.
-2. **Semantic agreement thresholds.** What similarity score constitutes "agreement" for text output is unsolved and probably needs to be empirical, per-model, and published.
+1. **Semantic agreement thresholds.** What similarity score constitutes "agreement" for text output is unsolved, probably needs to be empirical and per-model, and must end up published and independently computable.
+2. **Cohort granularity.** How coarse a hardware cohort can be before exact comparison produces false positives. M0 measures it.
 3. **Sybil resistance without stake or a trusted registry.** We bound the damage rather than solving it. Nobody has solved it without one of those two things, and we've ruled out stake.
 4. **Battery health over years.** No longitudinal data exists and won't for a year. Currently an assumption, and a load-bearing one for trust.
 5. **iOS viability at all.** It may turn out that an iOS node is too weak to be worth the maintenance burden.
+6. **How the task-type catalogue stays legitimate.** Layer 0 makes the maintainers the arbiters of what the network can do. The public request process constrains that imperfectly.
+7. **Ride Acurast's protocol, or build the stack?** They have 250k+ nodes and a working TEE-based network. Owning the consumer layer and the mission on top of someone else's compute layer is a live option and not yet decided.

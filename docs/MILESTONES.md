@@ -6,26 +6,77 @@ Labels used: `M0` `M1` `M2` `M3` `M4` · `android` `coordinator` `protocol` `doc
 
 ---
 
-## M0 — One node lives
+## M0 — One node lives (both tiers, in parallel)
 
-**Goal:** prove the atomic unit works, and **replace the modelled performance figures in the whitepaper with measured ones.**
+**Goal:** prove the atomic unit works on each tier, and **replace the modelled performance figures in the whitepaper with measured ones.**
 
-The second half is the one that matters. If the measurements contradict the model, the model changes and [WHITEPAPER.md](../WHITEPAPER.md) gets revised.
+The second half is the one that matters. If the measurements contradict the model, the model changes and [WHITEPAPER.md](../WHITEPAPER.md) gets revised — which is how the current version came to exist.
+
+**Why both tiers at once.** The desktop client is the faster path to a working demo: no app-store review, no background-execution limits, no thermal ceiling. The mobile client is the mission and produces the thermal and battery data the whitepaper needs. Neither blocks the other, and the coordinator is shared.
+
+**The deliverable that matters most is not code.** It is [#0 below](#0-record-the-60-second-demo).
 
 ---
 
-### #1 Run a 3B GGUF model on Android via llama.cpp
-`M0` `android` `blocker`
+### #0 Record the 60-second demo
+`M0` `blocker` `help-wanted`
 
-Build a minimal Android app that loads a Q4_K_M GGUF model and streams tokens locally. No networking, no UI polish — just proof the runtime works on a real phone.
+A machine on a charger, answering a prompt typed on another machine. Sixty seconds, no narration needed.
+
+In a space full of whitepapers, a video of something running is what turns a skeptic into a contributor. **This goes in the site hero before the link is shared anywhere.**
+
+**Acceptance:** screen recording plus a shot of the physical device. Published in the repo and embedded on the site.
+
+---
+
+### #1a Desktop node: run a model via llama.cpp
+`M0` `desktop` `blocker`
+
+Minimal desktop client (Windows/macOS/Linux) that loads a Q4_K_M GGUF model and streams tokens locally. No app store, no background limits — this is the shortest path to something demonstrable.
 
 **Acceptance:**
-- Loads a 1.5B and a 3B Q4_K_M model on a physical device
-- Streams tokens to a text view
-- Reports decode tok/s and prefill tok/s
-- Documents the JNI build (NDK version, ABI, flags) so someone else can reproduce it
+- Loads an 8B Q4_K_M model on a discrete-GPU machine and a 3B on a CPU-only machine
+- Reports decode and prefill tok/s
+- Runs the contribution gate (idle, powered, unmetered network)
+- Documents the build so someone else can reproduce it
+
+### #1b Mobile node: run a 3B GGUF model on Android via llama.cpp
+`M0` `android` `blocker`
+
+Same, on a phone. Loads 1.5B and 3B Q4_K_M, streams tokens, reports tok/s, documents the JNI build (NDK version, ABI, flags).
 
 **Notes:** llama.cpp has an Android example to start from. Benchmark MLC-LLM against it before committing — [ARCHITECTURE.md §3.2](../ARCHITECTURE.md#32-inference-runtime) treats this as an open comparison, not a settled choice.
+
+---
+
+### #1c Verify Layer 0 in the client
+`M0` `security` `blocker`
+
+Prove the client has **no code-execution path**. A job is a prompt plus a task-type ID from a compiled-in allowlist; there is no interpreter, no plugin loader, no dynamic library load, and no URL from which executable content can be fetched.
+
+**Acceptance:**
+- The task-type allowlist is compiled in, not fetched
+- A job naming an unknown `task_type` is rejected locally
+- A job naming a known type the node hasn't declared is rejected locally
+- A test proves the coordinator cannot introduce a new task type
+- Documented for the eventual external audit
+
+See [threat-model.md](threat-model.md#the-core-design-decision) and [task-types.md](task-types.md).
+
+---
+
+### #1d Measure where bit-exactness actually holds
+`M0` `measurement` `analysis`
+
+The determinism question, settled empirically. Run the same prompt, model, seed, and temperature 0 across as many machine configurations as we can reach and record exactly where outputs are bit-identical.
+
+**This is a fast path, not a dependency** — [verification is designed to work without it](../WHITEPAPER.md#33-verification). What we learn is how coarse a hardware *cohort* can be before exact comparison starts producing false positives.
+
+**Acceptance:**
+- A matrix of (SoC/GPU, driver, build, thread count) → identical or divergent
+- Divergence characterised: at which token, how often
+- A proposed cohort definition for [protocol-spec §7](protocol-spec.md#7-verification)
+- Published even if the answer is "nowhere"
 
 ---
 
@@ -55,9 +106,9 @@ Contribution runs in a foreground service. The notification is always visible wh
 ---
 
 ### #4 Overnight measurement harness
-`M0` `android` `measurement` `blocker`
+`M0` `android` `desktop` `measurement` `blocker`
 
-**The most important issue in M0.** Instrument an 8-hour run and record everything needed to validate or refute the compute model.
+Instrument an 8-hour run on **both tiers** and record everything needed to validate or refute the compute model.
 
 **Acceptance — record at 1-minute intervals:**
 - Decode tok/s (sustained, not burst)
@@ -66,7 +117,7 @@ Contribution runs in a foreground service. The notification is always visible wh
 - Estimated power draw (watts)
 - Interruption events with causes
 
-**Deliverable:** a CSV per run plus a markdown summary with the device name attached, committed to `measurements/`.
+**Deliverable:** a CSV per run plus a markdown summary with the machine named, committed to `measurements/`. Desktop runs additionally record wall power where a meter is available, since 'it was plugged in anyway' is a weaker excuse for a 300W tower than for a phone.
 
 **We publish these including if they are bad.** See the [energy honesty commitment](threat-model.md#energy-cost-and-honesty).
 
@@ -82,11 +133,11 @@ Node.js + TypeScript. Accept `node.register`, `node.capability`, `node.gate`, `n
 ---
 
 ### #6 Coordinator sends a prompt, node answers
-`M0` `coordinator` `android`
+`M0` `coordinator` `android` `desktop`
 
 The M0 demo: `work.assign` → `work.accept` → `work.progress` → `work.result`.
 
-**Acceptance:** a prompt typed on a PC is answered by a phone on a charger across the room, streaming.
+**Acceptance:** a prompt typed on a PC is answered by a phone on a charger across the room, streaming. Same for a desktop node. This is the raw material for [#0](#0-record-the-60-second-demo).
 
 ---
 
@@ -129,14 +180,19 @@ Relay `work.progress` from node to requester. Instrument bytes relayed per token
 
 ---
 
-### #11 Redundant execution and semantic comparison
-`M1` `coordinator` `open-question`
+### #11 Verification: canaries, re-derivation, cohorts
+`M1` `coordinator` `security` `open-question`
 
-Send a sampled fraction to 2–3 nodes and compare.
+Build verification in the order it actually carries weight ([§3.3](../WHITEPAPER.md#33-verification)):
 
-**Blocked on an open question:** the agreement-scoring function is unspecified ([protocol-spec.md §7](protocol-spec.md#7-verification)). Needs a decision, and whatever is chosen must be published and independently computable.
+1. **Canary tasks** — known answers, indistinguishable from real work, higher rate for new nodes
+2. **Coordinator re-derivation** — silent random audits against a trusted reference
+3. **Cohort-scoped exact match** — using the cohort definition from [#1d](#1d-measure-where-bit-exactness-actually-holds)
+4. **Semantic tolerance across cohorts** — the open question below
 
-**Acceptance:** sampling rate configurable and reported to nodes; disagreements logged and escalated; the scoring function documented and versioned.
+**Open question:** the cross-cohort similarity function and threshold are unspecified. Whatever is chosen must be published, versioned, and independently computable, or third-party coordinators cannot interoperate.
+
+**Acceptance:** sampling rate configurable and reported to nodes; canaries indistinguishable in the wire protocol; disagreements escalate to a reference node rather than penalising either party immediately.
 
 ---
 

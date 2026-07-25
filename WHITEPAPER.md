@@ -1,27 +1,34 @@
 # Meridian Moonlight
 
-## A free AI network built from the world's sleeping phones
+## A free AI network built from machines that are already idle overnight
 
-**Version 0.1 — July 2026**
+**Version 0.2 — July 2026**
 **Status: proposal. Nothing in this document has been built yet.**
 
 ---
 
 ## Abstract
 
-Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 1.2 billion smartphones with enough memory to host a modern small language model sit on chargers every night, doing nothing.
+Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 1.2 billion smartphones with enough memory to host a modern small language model sit on chargers every night, and roughly 920 million desktops sit idle beside them, doing nothing.
 
-Meridian Moonlight proposes to use them. Each participating phone runs a *complete* small model locally — never a fragment — and contributes spare capacity only while charging, on Wi-Fi, and idle. Because night circles the planet continuously, the supply of contributed compute migrates westward around the clock and never falls to zero.
+Meridian Moonlight proposes to use both. Each participating machine runs a *complete* small model locally — never a fragment — and contributes spare capacity only while charging or powered, on an unmetered network, and idle. Because night circles the planet continuously, the supply of contributed compute migrates westward around the clock and never falls to zero.
 
-This document is unusual in one respect: **its central quantitative claim is a downward revision of an earlier draft of this same project.** That draft asserted that ~30 million devices (1.4% of the capable fleet) would surpass the largest AI data centre on Earth. That claim was built on peak NPU throughput figures and does not survive a bandwidth-bound analysis. The honest figure is roughly 12 billion devices — more smartphones than exist. **The network will not out-compute a hyperscale data centre in raw operations, and no amount of adoption changes that.**
+**The network never executes arbitrary code on a volunteer's machine.** A job is a prompt plus a task-type ID drawn from an audited, published catalogue — never a script, a binary, or a container. That single constraint eliminates mining, cracking, malware, and proxy abuse structurally rather than by policy, on every tier. Its cost — the network can only compute things already implemented in the client — is stated in [§3.5](#35-layer-0-and-the-task-type-catalogue).
 
-What survives is stronger, because it does not depend on winning a compute race:
+This document is unusual in one respect: **two of its central claims are downward revisions of earlier drafts of this same project.**
 
-1. **The network is self-sufficient at every scale.** Capacity and membership grow together, so each participant's share of capacity is roughly 274,000 output tokens per day — about **9× more than heavy personal use**, and 5× even at the daily supply trough. This ratio is identical at one thousand devices and at one billion. There is no threshold to cross before the network is useful to the people in it.
-2. **The surplus is a research instrument.** At roughly **31 million enrolled devices** the network continuously matches the peak throughput of Folding@home, the largest volunteer computing effort in history. At full enrolment of today's capable fleet it delivers about **92 exaFLOPS sustained, ~38× Folding@home's peak**, indefinitely.
+The first draft asserted that ~30 million devices (1.4% of the capable fleet) would surpass the largest AI data centre on Earth. That was built on peak NPU throughput figures and does not survive a bandwidth-bound analysis. The honest figure is roughly 12 billion devices — more smartphones than exist. **The network will not out-compute a hyperscale data centre in raw operations, and no amount of adoption changes that.**
+
+The second asserted that inference at temperature 0 is deterministic, so honest nodes agree exactly and any result can be re-derived and checked. **That is true on identical hardware and false across a heterogeneous fleet**, and it was load-bearing in three security documents. Verification is rebuilt on canary tasks and coordinator re-derivation in [§3.3](#33-verification).
+
+What survives is stronger, because none of it depends on winning a compute race:
+
+1. **The network is self-sufficient at every scale.** Capacity and membership grow together, so each participant's share is roughly 274,000 output tokens per day — about **9× heavy personal use**, and 5× even at the daily supply trough. Identical at one thousand devices and at one billion. There is no threshold to cross before the network is useful to the people in it.
+2. **The surplus is a research instrument, and it lives on the desktop tier.** A discrete GPU does the scientific work of about **32 phones**. Folding@home parity needs ~31 million phones — or **~1.3 million gaming PCs.** At full enrolment both fleets together deliver about **630 exaFLOPS sustained, ~262× Folding@home's peak**, with 85% of it coming from desktops.
 3. **Its structural advantages are ones data centres cannot copy** — marginal cost near zero, hardware already paid for, no single point of control, and privacy-preserving federated analysis over data that legally cannot be centralised.
+4. **Contributors are reciprocated in capability, not currency.** Non-transferable, decaying compute credits earned by *hours of availability rather than horsepower*, so an old mid-range phone earns like a flagship. Real money sits on a separate public ledger where institutions and companies buy surplus batch capacity. Contributors are never paid, which keeps them volunteers rather than unlicensed contractors.
 
-Every number above is produced by [`analysis/compute_model.py`](analysis/compute_model.py), which is a few hundred lines of commented Python that anyone can run, audit, and disagree with. The assumptions are named constants. The sensitivity of every conclusion to every assumption is published in [§7](#7-sensitivity-what-if-we-are-wrong). We would rather be corrected than believed.
+Every number above is produced by [`analysis/compute_model.py`](analysis/compute_model.py), a few hundred lines of commented Python that anyone can run, audit, and disagree with. The assumptions are named constants. The sensitivity of every conclusion to every assumption is published in [§7](#7-sensitivity-what-if-we-are-wrong). We would rather be corrected than believed.
 
 ---
 
@@ -37,6 +44,9 @@ Every number above is produced by [`analysis/compute_model.py`](analysis/compute
 - [8. What the network is for](#8-what-the-network-is-for)
 - [9. Threat model](#9-threat-model)
 - [10. Economics: who pays](#10-economics-who-pays)
+  - [10.4 Credits, not currency](#104-the-contributor-ledger-credits-not-currency)
+  - [10.5 Corporate and institutional buyers](#105-corporate-and-institutional-buyers)
+  - [10.6 Why the money is not divided](#106-why-the-money-is-not-divided-among-contributors)
 - [11. Governance](#11-governance)
 - [12. Prior art and positioning](#12-prior-art-and-positioning)
 - [13. Roadmap](#13-roadmap)
@@ -139,15 +149,47 @@ The gate is enforced in the client, checked continuously, and fails closed. With
 
 We publish our own thermal and battery measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal device does not get to be selective about its data.
 
-### 3.3 Routing and verification
+### 3.3 Verification
 
-A coordinator matches requests to nodes by capability, current load, geography, and reputation.
+A coordinator matches requests to nodes by capability, current load, geography, and reputation. Then it has to establish that the work was actually done, because a node returning plausible garbage while claiming credit is the cheapest available attack.
 
-Verification is by **redundant execution**: a sampled fraction of requests goes to two or three independent nodes and the results are compared. Language model output is not bit-deterministic across devices, so comparison is semantic rather than exact — agreement is scored on distributional similarity above a threshold, with disagreements escalated to a trusted reference node.
+#### The correction
 
-This is deliberately unsophisticated. It requires no cryptographic novelty, works from day one, and produces the reputation signal that makes everything else tractable. Nodes accrue reputation from uptime, latency, and agreement rate; low-reputation nodes get verified more often and are eventually excluded.
+An earlier draft of this project asserted that *"inference at temperature 0 with a fixed seed is deterministic, so any result can be independently re-derived and checked exactly."* This was the stated basis for trusting the desktop tier — the reframe from *identity-based* to *behaviour-based* trust, which is what makes unattested machines usable at all.
 
-Verified compute is expensive — redundant execution at a 3× rate costs 3× the compute. We spend it on a sampled fraction, not on everything, and we publish the sampling rate.
+**It is true on identical hardware and false across a heterogeneous fleet.** Different SoCs, GPUs, drivers, kernels, thread counts, and quantisation implementations change floating-point reduction order. When two logits are close, argmax flips. Over hundreds of tokens, divergence between two *honest* nodes is near-certain.
+
+Building verification on cross-node exact match would have produced constant false accusations against honest volunteers — a security model that fails in production rather than in review, and fails in the direction that punishes the people we most need.
+
+#### What verification actually rests on
+
+Two mechanisms that work regardless of determinism:
+
+**Canary tasks — primary.** Jobs with known-correct answers, mixed in indistinguishably from real work. A node cannot tell a canary from a paying job, so the only way to pass reliably is to actually compute. New and unattested nodes get a higher rate. Every task type in the catalogue must ship with a way to construct canaries — it is an acceptance criterion, not an afterthought.
+
+**Coordinator re-derivation — primary.** The coordinator silently re-runs a sampled fraction on itself or on a high-reputation reference node. This compares untrusted output against a *trusted* reference rather than between two untrusted peers, so hardware heterogeneity is irrelevant to it.
+
+And two scoped to where they hold:
+
+**Exact match within a hardware cohort.** Nodes are grouped by SoC/GPU, build, and thread configuration. Inside a cohort, bit-exact comparison is valid and free, so we use it. How coarse a cohort can be before false positives appear is an open question that M0 measures.
+
+**Semantic tolerance across cohorts.** A published, versioned similarity function with a stated threshold. It must be independently computable or third-party coordinators cannot interoperate.
+
+#### Numeric work verifies better than chat
+
+| Task family | Comparison | Strength |
+|---|---|---|
+| Scientific kernels (`sci.*`) | Numeric, stated tolerance | **Strongest** — hardware-independent |
+| Embeddings | Vector distance, tolerance | Strong |
+| Classification, extraction | Exact — discrete output | Strong |
+| Summarisation, translation | Semantic threshold | Moderate |
+| Open-ended chat | Cohort exact, else semantic | **Weakest** |
+
+This ordering is worth noticing, because it inverts the intuition. **The scientific and batch workloads are the easiest to police, and open-ended conversation is the hardest.** It is why the desktop tier's trust model is tractable despite having the weaker attestation story: the tier that can prove least about itself happens to run the workload whose output is most checkable.
+
+Verified compute costs real capacity — redundant execution at 3× costs 3× the compute — so we sample rather than check everything, **and we publish the sampling rate.** An unpublished rate is indistinguishable from no verification.
+
+M0 tests reproducibility across machines as a *fast path*, not a dependency. If bit-exactness holds for some hardware pairs, those become cohorts and verification gets cheaper. If it holds nowhere, nothing above changes.
 
 ### 3.4 Centralised scaffolding, decentralised building
 
@@ -157,7 +199,38 @@ Every functioning decentralised system bootstrapped through a centralised phase,
 
 The commitment is testable: **if the protocol spec has not shipped by the end of M3, this criticism is correct and we have failed.**
 
-### 3.5 Model selection and licensing
+### 3.5 Layer 0 and the task-type catalogue
+
+**The network never executes arbitrary code on a volunteer's machine.** A job is a prompt plus a task-type ID. Never a script, never a binary, never a container, never a WASM module. On every tier — there is no privileged desktop tier that runs submitted code.
+
+This eliminates, structurally rather than by policy:
+
+- Crypto mining on someone's battery
+- Password cracking and hash breaking
+- Malware execution and lateral movement
+- Using volunteer addresses as a proxy network
+- Arbitrary file or network access from a job
+
+Competing networks run general-purpose runtimes — Node.js, WASM, containers — because flexibility is useful. **That flexibility is precisely the attack surface.** A volunteer running Moonlight does not have to trust our vetting, our intentions, or our sandbox: there is no execution path for those attacks to use.
+
+We treat that trade as permanent.
+
+#### What it costs, plainly
+
+Because the network cannot run submitted code, everything it can compute must be **implemented in the client, audited, and shipped in a signed release.** The set of computable things is a finite, versioned, public catalogue — [`docs/task-types.md`](docs/task-types.md).
+
+- **A researcher cannot bring a novel simulation.** If their work is not in the catalogue, they wait for a release.
+- **New task types move at the speed of releases and audits** — weeks to months.
+- **Some science is permanently out of reach**, because implementing it as a fixed kernel is impractical.
+- **We are the bottleneck**, which is an uncomfortable amount of power over what the network is used for. A public request process with a mandatory comment period exists to constrain it, and it is imperfect.
+
+This directly limits the most attractive promise in the economy — that a researcher can earn compute rather than buy it ([§10.4](#104-the-contributor-ledger-credits-not-currency)). They can spend credits submitting *data* against an existing task type. They cannot spend credits submitting *code*.
+
+Scientific batch work is supported the same way as inference: as audited task types with fixed input schemas. `sci.dock.score`, `sci.embed.corpus`, `sci.md.replica`, `sci.ensemble.param`, `sci.signal.scan` — each a numeric kernel, each with a defined verification tolerance and a way to build canaries.
+
+A proposed task type whose output cannot be verified is not merely risky, it is unusable: [credits require verified work](#104-the-contributor-ledger-credits-not-currency), so unverifiable work cannot be paid for in the only currency the contributor side has.
+
+### 3.6 Model selection and licensing
 
 Model weights must be openly licensed, and the licence must survive planetary scale. This is a real constraint, not a formality: several widely used "open" model licences carry monthly-active-user thresholds above which separate permission is required, plus acceptable-use terms that bind downstream distributors. A network that intends to reach hundreds of millions of users cannot adopt weights whose licence quietly caps it.
 
@@ -188,6 +261,45 @@ Devices are modelled in three classes, because a fleet average that ignores the 
 | **Fleet-weighted** | 100% | — | — | **12.3** | **299 GFLOPS** |
 
 The mid tier posts a *higher* token rate than the upper-mid tier because it hosts a smaller model. Those tokens are not equivalent in quality — this is a capability/throughput trade, and the router must treat the two tiers as serving different purposes rather than as interchangeable capacity.
+
+### 4.1 The desktop tier
+
+Phones are the mission. **Desktops are the research instrument**, and the case for them is stronger than it first appears.
+
+A desktop is a better node in almost every dimension: more RAM, a real GPU, active cooling, mains power, no app-store review, and no background-execution limits. It loses on exactly one axis, and it matters — **people plug phones in and switch desktops off.**
+
+| Class | Machines | Sustained tok/s | Sustained FP32 |
+|---|---|---|---|
+| Discrete GPU | 250M | 65 | **9,600 GFLOPS** |
+| Apple Silicon | 70M | 16 | 3,200 GFLOPS |
+| CPU only (16GB+) | 600M | 15 | 200 GFLOPS |
+| **Fleet-weighted** | **920M** | **26** | **2,983 GFLOPS** |
+
+Two corrections applied to earlier desktop estimates:
+
+**The same bandwidth wall applies.** A gaming GPU advertised at 80 INT8 TOPS, decoding an 8B Q4 model at batch 1, is bound by its ~350 GB/s of VRAM bandwidth — about 65 tokens/second sustained, not 80 TOPS of useful work. Peak TOPS overstates desktop decode throughput exactly as badly as it does mobile.
+
+**Availability is lower, not higher.** Modelled at 35% left on overnight against 72% of phones plugged in, giving a 19.6% mean against mobile's 25.7%. This is the one place the desktop tier loses, and it partly cancels the first correction when computing crossover points.
+
+#### And it still wins the science case decisively
+
+![Two tiers, two jobs](docs/figures/fig7_tiers.png)
+
+| Comparison | Value |
+|---|---|
+| One desktop vs one phone, scientific FP32 | **10×** |
+| One *discrete GPU* vs one phone | **32×** |
+| Folding@home parity, phones | 31M devices |
+| Folding@home parity, mixed desktops | **4.1M machines** |
+| Folding@home parity, discrete GPUs only | **1.3M machines** |
+| Full desktop fleet (920M) | 538 exaFLOPS, 224× Folding@home |
+| **Both fleets at full enrolment** | **630 exaFLOPS — 85% of it from desktops** |
+
+One detail worth keeping, because it cuts against the tier: **a CPU-only desktop (0.20 TFLOPS) is worse for science than a phone (0.30).** The desktop advantage is entirely the discrete GPU. A campaign to recruit office PCs would add machines and very little science.
+
+This is the argument for building the desktop client in parallel with mobile rather than after it. Reaching parity with the largest volunteer computing effort in history needs roughly 1.3 million gaming PCs against 31 million phones — and desktops have no app-store gate, no thermal ceiling, and no background-execution limit standing between the code and a working demo.
+
+The mobile fleet remains the mission, the scale story, and the reason the project exists. The desktop fleet is what makes the science real inside a year rather than a decade.
 
 ---
 
@@ -342,15 +454,22 @@ Let us be clear about quality: a 3B model is not a frontier model. It is genuine
 
 ![Scientific batch capacity](docs/figures/fig4_science_capacity.png)
 
-| Enrolled devices | Sustained FP32 | vs Folding@home peak |
+| Enrolled | Sustained FP32 | vs Folding@home peak |
 |---|---|---|
+| **Phones** | | |
 | 1 million | 0.08 exaFLOPS | 0.03× |
-| 10 million | 0.77 exaFLOPS | 0.32× |
-| **31 million** | **2.4 exaFLOPS** | **1.0×** |
-| 100 million | 7.7 exaFLOPS | 3.2× |
-| 1.2 billion (full capable fleet) | **92 exaFLOPS** | **38×** |
+| 31 million | 2.4 exaFLOPS | **1.0× — parity** |
+| 1.2 billion (full fleet) | 92 exaFLOPS | 38× |
+| **Desktops** | | |
+| 500 thousand | 0.9 exaFLOPS | 0.39× |
+| **1.3 million (discrete GPU)** | **2.4 exaFLOPS** | **1.0× — parity** |
+| 4.1 million (mixed) | 2.4 exaFLOPS | 1.0× — parity |
+| 920 million (full fleet) | **538 exaFLOPS** | **224×** |
+| **Both at full enrolment** | **630 exaFLOPS** | **262×** |
 
-At full enrolment, roughly **ten days** of the network delivers what Folding@home delivered in a year at its COVID-era peak — the largest volunteer computing effort in history, which produced real published results on viral protein dynamics.
+Note the asymmetry: parity costs 31 million phones or 1.3 million gaming PCs. **85% of the network's scientific capacity comes from the desktop tier**, which is why [§4.1](#41-the-desktop-tier) argues for building both clients in parallel.
+
+At full enrolment of the mobile fleet alone, roughly **ten days** of the network delivers what Folding@home delivered in a year at its COVID-era peak — the largest volunteer computing effort in history, which produced real published results on viral protein dynamics.
 
 That is a genuine claim, and it is roughly 30× smaller than the previous draft's version of it. Both figures are large. Only one is defensible.
 
@@ -370,7 +489,11 @@ What that instrument suits, in rough order of confidence:
 
 ### 8.3 And the boundary
 
-Everything above decomposes into independent tasks. That is not a coincidence; it is a filter. Workloads requiring terabytes per second of inter-processor bandwidth — frontier pre-training above all — are permanently out of scope. Saying so is what makes the rest credible.
+Everything above decomposes into independent tasks. That is not a coincidence; it is a filter. Workloads requiring terabytes per second of inter-processor bandwidth — frontier pre-training above all — are permanently out of scope.
+
+**And a second filter that is ours rather than physics':** every workload above must exist as an audited task type in the client before it can run at all ([§3.5](#35-layer-0-and-the-task-type-catalogue)). A researcher cannot bring a novel simulation. That is a real limit on this section — the list above describes what the catalogue could grow to contain, not what it contains today, which is nothing.
+
+Saying both of these plainly is what makes the rest credible.
 
 ---
 
@@ -458,9 +581,53 @@ Under Option B in [§9.2](#92-the-hard-problem-whose-content-runs-on-whose-phone
 
 A structural risk deserves naming: if institutional batch work becomes the revenue source, there will be pressure to prioritise paying workloads over participant experience. The governance model has to make that trade-off explicit and public rather than leaving it to whoever is running the coordinator.
 
-### 10.4 Why we don't sell the compute and pay participants
+### 10.4 The contributor ledger: credits, not currency
 
-This is the most frequent suggestion the project receives, and it deserves a costed answer rather than an appeal to principle. Full workings: [`analysis/ECONOMICS.md`](analysis/ECONOMICS.md), generated by [`analysis/participant_economics.py`](analysis/participant_economics.py).
+Contributors are reciprocated, and not in money. Full design in [`docs/economy.md`](docs/economy.md).
+
+**Compute credits are a unit of participation, not a unit of value.** They cannot be bought, sold, transferred, or cashed out. They decay on a ~90-day half-life so they never become an asset. They are never votes, because tying influence to accumulated credits builds a plutocracy and turns the credit into something a regulator would reasonably call a security.
+
+**Earned by hours of reliable availability, not by throughput.** This is the most important design choice in the system. Paying by tokens generated would systematically reward whoever owns the best hardware — meaning the people who least need free AI would accumulate the most access to it. For a project whose reason to exist is serving people locked out by cost, that would be a quiet betrayal. Availability is also the contribution that actually matters, since the thesis is *coverage across time zones*, not peak performance.
+
+It has a security dividend too: because credits track hours rather than horsepower, a fake fleet gains nothing from claiming fast hardware. It would have to genuinely stay online and genuinely pass canaries.
+
+**Spent on** queue priority, larger models, longer context, and — the genuinely scarce thing — submitting your own batch job. That last one is the real economy: a researcher with a parallel workload and no budget earns compute instead of buying it. With the hard limit from [§3.5](#35-layer-0-and-the-task-type-catalogue): they submit *data* against an existing task type, never code.
+
+**The free floor is unconditional.** Credits buy priority and headroom, never access. *If the free tier ever degrades to make credits attractive, the project has failed at its purpose* — and that sentence is a hard constraint in the constitution, not a slogan.
+
+Adding credits does reintroduce some incentive to game the network, which the original threat model relied on being absent. Non-transferability, daily per-device caps, and verification-gated earning contain it. The residual risk is meaningfully above zero and far below a token economy, where the attack directly produces a sellable asset.
+
+### 10.5 Corporate and institutional buyers
+
+The scenario is worth taking seriously: instead of building data centres and buying frontier-lab subscriptions, large companies route their parallelisable workloads through the network and pay into it. That is the intended primary revenue line, and we are not squeamish about corporate money — we are careful about what it can buy.
+
+| Tier | Rate | Priority |
+|---|---|---|
+| **Public research** — universities, public-health bodies, non-profits | Lowest published rate; free allocation by application | Highest of the paid tiers |
+| **Commercial** — companies of any size | Standard published rate | Below public research |
+| **Sponsor** — funding beyond own usage | Standard rate plus contribution; publicly acknowledged | **No priority advantage whatsoever** |
+
+Rates are published, identical within a tier, and never negotiated privately. A buyer's size moves neither their rate nor their queue position.
+
+Nine hard rules, stated as constraints rather than preferences:
+
+1. **Surplus only.** Paid work runs above what participants need; the free floor is reserved first, always.
+2. **Never preempts free access**, even at peak.
+3. **Public buyer register.** Every buyer named, with what they bought and spent. Anonymous corporate compute purchasing is unavailable at any price.
+4. **Public ledger.** Every payment in and expense out, posted permanently, reconciled quarterly.
+5. **No exclusivity** — not on a capability, task type, region, or time window.
+6. **No influence.** Paying buys compute. Not routing preference, roadmap influence, governance participation, or a veto. Buyers are customers, not stakeholders.
+7. **Concentration cap of 25% of annual revenue.** Approaching it triggers public disclosure and a plan to reduce dependence. A funder large enough to end the project by leaving is a governance problem regardless of conduct.
+8. **Catalogue only.** Paying does not accelerate a task type past public review, and does not buy a private one.
+9. **Refusal is allowed and logged publicly**, with a reason — which is also the accountability mechanism against refusing for bad reasons.
+
+Revenue priority: infrastructure, then security audits, then development, then a **research grant pool** giving free allocation to researchers who cannot pay, then reserve. That fourth item is the point of the whole arrangement — commercial buyers subsidise public science. Nothing goes to contributor payouts, equity, or dividends; there are no shares to hold.
+
+**Rule 6 will be tested.** A large buyer will eventually ask for something the rules forbid, and the answer has to be no, in public. That is far easier to write now than to do later, which is exactly why it is written now.
+
+### 10.6 Why the money is not divided among contributors
+
+The obvious next step from §10.5 — split the payments across the network — is the most frequent suggestion this project receives. It deserves a costed answer rather than an appeal to principle. Full workings: [`analysis/ECONOMICS.md`](analysis/ECONOMICS.md), generated by [`analysis/participant_economics.py`](analysis/participant_economics.py).
 
 **The magnitude settles it.** One phone contributes roughly 673 TFLOP-hours a year. Interruptible, unverified compute on consumer hardware does not fetch cloud rates, and after utilisation, verification overhead, and platform costs, about **$1.32 a year** reaches the participant. Their own electricity — around 9.3 kWh at the wall — costs more than that in most of the world:
 
@@ -471,7 +638,7 @@ This is the most frequent suggestion the project receives, and it deserves a cos
 | United Kingdom ($0.29/kWh) | $1.32 | −$2.69 | **−$1.37** |
 | Germany ($0.40/kWh) | $1.32 | −$3.71 | **−$2.40** |
 
-![What a participant would earn](docs/figures/fig7_participant_earnings.png)
+![What a participant would earn](docs/figures/fig8_participant_earnings.png)
 
 In most markets the participant would **pay to contribute**. A deliberately optimistic scenario — full cloud pricing, 80% utilisation, a 10% platform cut — reaches about **$8 a year**. That is roughly one hour of minimum wage, annually.
 
@@ -532,11 +699,19 @@ The moat is not the protocol — the protocol is meant to be copied. The moat is
 
 Every milestone ships something that runs.
 
-### M0 — One node lives (month 0–1, 1 device)
+### M0 — One node lives (month 0–1, both tiers in parallel)
 
-Prove the atomic unit. An Android app runs a 3B GGUF model via llama.cpp, streams tokens locally, enforces the contribution gate, reports capability to a coordinator, and survives an eight-hour overnight run.
+Prove the atomic unit on each tier. A desktop client and an Android app each run a GGUF model via llama.cpp, stream tokens locally, enforce the contribution gate, report capability to a shared coordinator, and survive an eight-hour run.
 
-**Deliverable that matters most: measured tok/s, sustained watts, and thermals from real devices, published as a table — replacing the modelled figures in [§5](#5-the-bandwidth-wall).** If the measurements contradict the model, the model changes and this document is revised.
+Both at once because they are not competing: the desktop client has no app-store review, no background-execution limit, and no thermal ceiling, so it reaches a demo fastest; the mobile client produces the thermal and battery data this document needs.
+
+**Three deliverables matter more than the code:**
+
+1. **Measured tok/s, sustained watts, and thermals from real machines**, published as a table with the hardware named — replacing the modelled figures in [§5](#5-the-bandwidth-wall) and [§4.1](#41-the-desktop-tier).
+2. **Where bit-exactness actually holds**, across SoC/GPU, driver, build, and thread count — which sets the cohort definition in [§3.3](#33-verification). Published even if the answer is "nowhere".
+3. **A sixty-second video of it working.** In a field full of whitepapers, that is what turns a skeptic into a contributor.
+
+If the measurements contradict the model, the model changes and this document is revised.
 
 ### M1 — The network answers (month 1–3, ~100 devices)
 
@@ -567,6 +742,10 @@ The claims in this document that could be shown wrong, and what would show it:
 | Claim | How to falsify |
 |---|---|
 | Phones sustain ~12 tok/s fleet-weighted on a 3B Q4 model | Measure it. M0. If real devices manage 3 tok/s, the inference case weakens sharply |
+| Bit-exact output is unavailable across mixed hardware | Run the same prompt, model, and seed across many configurations. M0. If it *is* reproducible broadly, verification gets cheaper and we say so |
+| A discrete GPU sustains ~9.6 TFLOPS FP32 | Measure it. M0. The entire desktop science case rests on this |
+| Only ~35% of desktops are left on overnight | Instrument it. M1–M2. If it is 60%, desktop parity halves |
+| Layer 0 holds — the client has no code-execution path | Audit it. An external reviewer should try to find one |
 | Mobile GPUs sustain ~300 GFLOPS FP32 over hours | Measure it. This is our least certain input and the science case rests on it |
 | ~60% of enrolled devices are available overnight | Instrument it. M1–M2. Telemetry from real enrolled devices |
 | Availability never falls below ~14% | Publish the measured 24-hour curve. M2 |
@@ -698,9 +877,15 @@ For the record, the claims from the earlier draft of this project that this docu
 | One night of the full fleet > one year of Folding@home at peak | ~10 days of the full fleet ≈ one Folding@home-year | INT8 NPU figures were compared against FP throughput |
 | A full year ≈ 2,000 Folding@home-years | ~38 Folding@home-years | Same |
 | 95% overnight availability | 60.1% | The original ignored that availability is a conjunction of three behaviours |
-| Availability floor ~6% | ~14.1% | An artefact of modelling geography as four point clusters |
+| Availability floor ~6%, later "roughly a third" | ~14.1% | The 6% was an artefact of four point clusters; the "third" was unsupported |
+| Inference at temp 0 is deterministic, so honest nodes agree exactly | **True only within a hardware cohort** | Different SoCs, drivers, kernels, thread counts, and quantisation paths flip argmax when logits are close. Two honest nodes diverge over hundreds of tokens. This was load-bearing in three security documents and in two diagrams |
+| Desktop dGPU ≈ 80 TOPS of useful throughput | ~65 tok/s sustained on an 8B model | The bandwidth wall applies to VRAM too |
+| Desktop availability implicitly ≥ mobile | 19.6% vs mobile 25.7% | People plug phones in and switch desktops off |
+| Desktop crossover ~2.5M machines | 1.3M dGPU / 4.1M mixed | Survives roughly intact — the two corrections above partly cancel |
 
-Two of those revisions are upward. Most are sharply downward.
+Two of those revisions are upward, and one — the desktop crossover — survives largely unchanged. Most are sharply downward.
+
+The determinism entry is the one worth dwelling on, because it is a different *kind* of error from the compute overstatement. The first draft was too optimistic about a number. This one was wrong about a mechanism, and had it shipped, the desktop trust model would have generated false accusations against honest volunteers — failing in production, in the direction that punishes exactly the people the project depends on.
 
 The reason to print this table rather than silently ship better numbers: the project's only real asset is that its numbers can be trusted. That is worth more than any of the claims we just deleted.
 
@@ -717,6 +902,6 @@ pip install numpy matplotlib
 python analysis/compute_model.py
 ```
 
-**Found an error?** That is the most useful thing you can do for this project. Open an issue: <https://github.com/OWNER/meridian-moonlight/issues>
+**Found an error?** That is the most useful thing you can do for this project. Open an issue: <https://github.com/meridianmoonlight/meridianmoonlight/issues>
 
 **Accessibility note.** No figure in this project uses red as a signal colour. Roughly 8% of men — including this project's author — cannot reliably distinguish red from green, and infrastructure documentation should be legible to the people writing it.

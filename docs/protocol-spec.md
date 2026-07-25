@@ -150,7 +150,8 @@ Sent on every state change. `eligible` is the node's own conjunction of all cond
 ```json
 {
   "work_id": "wk_01J8XK...",
-  "kind": "inference",
+  "task_type": "infer.chat",
+  "task_version": 0,
   "deadline": "2026-07-25T02:15:00Z",
   "payload": {
     "prompt": "...",
@@ -162,9 +163,11 @@ Sent on every state change. `eligible` is the node's own conjunction of all cond
 }
 ```
 
-`kind` is `inference` or `batch`. Under the [recommended content policy](threat-model.md#content-liability), `kind: "inference"` carrying third-party prompts is **not routed to volunteer devices** through M2 — the network carries only `kind: "batch"` from vetted institutions. The message type exists in the spec so the decision is visible rather than implicit.
+**`task_type` is the Layer 0 boundary.** It names an entry in [the audited catalogue](task-types.md) that is implemented *in the client*. There is no field anywhere in this protocol that carries code, bytecode, a container reference, or a URL to fetch executable content from — and adding one would be a breaking change to the security model, not just to the schema.
 
-`seed` is included for verification reproducibility, with the caveat that identical seeds do **not** produce identical output across different SoCs, kernels, or quantisation paths — which is why verification is semantic. See §7.
+**A node MUST reject any `task_type` it has not declared support for in `node.capability`, and MUST reject any `task_type` absent from the allowlist compiled into its own build.** A compromised coordinator therefore cannot introduce new work types; see [threat-model.md](threat-model.md#coordinator-compromise).
+
+`seed` is included for reproducibility where it is meaningful. Identical seeds do **not** produce identical output across different SoCs, kernels, thread counts, or quantisation paths, so seed equality is not a verification mechanism on its own. See §7.
 
 ### 6.2 `work.accept` / `work.reject`
 
@@ -202,15 +205,31 @@ A node MAY reject with `busy`, `gate_ineligible`, `model_mismatch`, `payload_too
 
 ## 7. Verification
 
-The coordinator sends a sampled fraction of work to 2–3 independent nodes.
+Language model output is **not bit-deterministic across heterogeneous hardware.** Different SoCs, kernels, thread counts, and quantisation paths change floating-point reduction order; when two logits are close, argmax flips; over hundreds of tokens two *honest* nodes diverge. Verification therefore cannot be built on cross-node exact comparison.
 
-Language model output is **not bit-deterministic across devices**. Different SoCs, kernels, and quantisation paths yield different tokens from identical inputs and seeds. Exact comparison is therefore useless.
+Four mechanisms, in order of how much weight they carry:
 
-Agreement is scored semantically against a threshold. **The scoring function and threshold are unspecified in v0.1 and are an open research question** — see [ARCHITECTURE.md §10](../ARCHITECTURE.md#10-unresolved). Candidates: embedding cosine similarity, token-level distributional divergence, or a reference-model judge. Whatever is chosen must be published, versioned, and independently computable, or third-party coordinators cannot interoperate.
+**1. Canary tasks — primary.** Jobs with known-correct answers, indistinguishable from real work. Every task type in [the catalogue](task-types.md) must ship with a way to construct them. Nodes are never told which jobs are canaries. New and unattested nodes receive a higher rate.
 
-Numerical batch results are usually directly comparable within tolerance, which makes verification of scientific work both cheaper and stronger than for text.
+**2. Coordinator re-derivation — primary.** The coordinator silently re-runs a sampled fraction on itself or a high-reputation reference node. Compares untrusted output against a *trusted* reference rather than between two untrusted peers, so heterogeneity is irrelevant.
 
-Disagreement escalates to a trusted reference node. Persistent disagreement with consensus reduces reputation until exclusion.
+**3. Cohort-scoped exact match.** Nodes are grouped into cohorts by `soc`, `client.version`, and thread configuration, reported in `node.capability`. **Within** a cohort, bit-exact comparison is valid and free. The coordinator advertises cohort membership in `node.registered`.
+
+**4. Semantic tolerance across cohorts.** A published, versioned similarity function with a stated threshold. The function and threshold **must** be published and independently computable, or third-party coordinators cannot interoperate — see §11.
+
+### Verification by output kind
+
+| Task-type family | Comparison | Strength |
+|---|---|---|
+| `sci.*` | Numeric, stated tolerance | **Strongest** — hardware-independent |
+| `infer.embed` | Vector distance, stated tolerance | Strong |
+| `infer.classify`, `infer.extract` | Exact — discrete output | Strong |
+| `infer.summarise`, `infer.translate` | Semantic threshold | Moderate |
+| `infer.chat` | Cohort exact, else semantic | **Weakest** |
+
+Note the ordering: the scientific and batch workloads verify *better* than open-ended chat, because their outputs are numerically comparable on any hardware. This is why the desktop tier's trust model is tractable despite weaker attestation.
+
+Disagreement escalates to a trusted reference node rather than immediately penalising either party. Persistent disagreement with an adjudicated result reduces reputation until exclusion.
 
 ## 8. Reputation
 
@@ -240,11 +259,12 @@ A single scalar in `[0, 1]`, starting at 0, accruing slowly through sustained ve
 
 ## 11. Open questions before v1.0
 
-1. **Semantic agreement scoring** — function and threshold (§7).
-2. **Reputation function disclosure** — how open without being gameable (§8).
-3. **Requester–node unlinkability** — required before any third-party inference routing ships ([threat model](threat-model.md#deanonymisation-of-requesters)).
-4. **Batch job submission** — separate document, M2.
-5. **P2P transport** — libp2p stream multiplexing, NAT traversal, M2.
-6. **Attestation on non-attested platforms** — sideloaded and F-Droid builds must participate without being second-class beyond the reputation ceiling.
+1. **Semantic agreement scoring** — the function and threshold for cross-cohort comparison (§7). Must end up published and independently computable.
+2. **Cohort definition** — how coarse can a hardware cohort be before exact match starts producing false positives? M0 measures this.
+3. **Reputation function disclosure** — how open without being gameable (§8).
+4. **Requester–node unlinkability** — the mechanism that makes [prompt harvesting](desktop-security.md#threat-2--prompt-harvesting) structurally hard, including how session turns are split across nodes.
+5. **Batch job submission** — how an institution submits data against a catalogue task type. Separate document, M2.
+6. **P2P transport** — libp2p stream multiplexing, NAT traversal, M2.
+7. **Attestation on unattested platforms** — sideloaded, F-Droid, and no-TPM desktop builds must participate without being second-class beyond the reputation ceiling ([trust ladder](desktop-security.md#partial-attestation-is-still-available)).
 
 Comments on any of these: [open an issue](../../issues/new).
