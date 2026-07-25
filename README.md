@@ -55,6 +55,8 @@ A discrete GPU does the scientific work of about **32 phones**. Desktops are onl
 
 Which is why M0 targets both tiers in parallel: the desktop client is the faster path to a working demo, and the mobile client is the mission.
 
+**Desktops also raise the ceiling on the AI itself.** A 32B-class model needs 22GB, which only ~30M desktops can run fast enough to hold a conversation — but that means **~331,000 enthusiast machines would serve 100,000 concurrent conversations** against a model in the tier people currently pay for. Everywhere else here capability needs scale; this needs a small number of the right machines. The costs — harder verification, contention with the science tier, and concentration on ~6% of nodes — are in [analysis/LADDER.md](analysis/LADDER.md).
+
 ---
 
 ## We retract our own headline claim
@@ -200,6 +202,7 @@ ARCHITECTURE.md            Technical design and the reasoning
 analysis/
   compute_model.py         Single source of numeric truth. Run it.
   participant_economics.py Why contributors aren't paid in cash
+  model_ladder.py          What bigger models on desktops would change
   NUMBERS.md · ECONOMICS.md   Generated
 docs/
   task-types.md            The audited catalogue Layer 0 forces, and its cost

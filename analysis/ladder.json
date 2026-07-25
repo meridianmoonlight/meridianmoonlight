@@ -1,0 +1,370 @@
+{
+  "desktop_mean_availability": 0.196124000853174,
+  "tokens_per_session": 15.0,
+  "interactive_floor_toks": 6.0,
+  "ladder": [
+    {
+      "name": "3B",
+      "params_b": 3.0,
+      "weight_gb": 1.8,
+      "needs_gb": 3.5,
+      "tier": "phone",
+      "hosts": 920000000.0,
+      "hosts_share_of_desktop_fleet": 1.0,
+      "interactive_hosts": 920000000.0,
+      "batch_only_hosts": 0.0,
+      "mean_tokens_per_sec": 55.84803623188405,
+      "mean_tokens_per_sec_interactive": 55.84803623188405,
+      "by_family": {
+        "Discrete GPU": 250000000.0,
+        "Apple Silicon": 70000000.0,
+        "CPU only": 600000000.0
+      },
+      "interactive_by_family": {
+        "Discrete GPU": 250000000.0,
+        "Apple Silicon": 70000000.0,
+        "CPU only": 600000000.0
+      },
+      "full_tokens_per_sec": 10076889081.14291,
+      "full_concurrent_sessions": 671792605.4095273
+    },
+    {
+      "name": "8B",
+      "params_b": 8.0,
+      "weight_gb": 4.7,
+      "needs_gb": 6.5,
+      "tier": "baseline",
+      "hosts": 833500000.0,
+      "hosts_share_of_desktop_fleet": 0.9059782608695652,
+      "interactive_hosts": 461500000.0,
+      "batch_only_hosts": 372000000.0,
+      "mean_tokens_per_sec": 20.93861772326386,
+      "mean_tokens_per_sec_interactive": 33.28885364560522,
+      "by_family": {
+        "Discrete GPU": 195000000.0,
+        "Apple Silicon": 38500000.0,
+        "CPU only": 600000000.0
+      },
+      "interactive_by_family": {
+        "Discrete GPU": 195000000.0,
+        "Apple Silicon": 38500000.0,
+        "CPU only": 228000000.00000003
+      },
+      "full_tokens_per_sec": 3013014968.705445,
+      "full_concurrent_sessions": 200867664.58036298
+    },
+    {
+      "name": "14B",
+      "params_b": 14.0,
+      "weight_gb": 8.5,
+      "needs_gb": 10.5,
+      "tier": "strong",
+      "hosts": 743500000.0,
+      "hosts_share_of_desktop_fleet": 0.8081521739130435,
+      "interactive_hosts": 143500000.0,
+      "batch_only_hosts": 600000000.0,
+      "mean_tokens_per_sec": 9.877604019146325,
+      "mean_tokens_per_sec_interactive": 37.56808198401311,
+      "by_family": {
+        "Discrete GPU": 105000000.0,
+        "Apple Silicon": 38500000.0,
+        "CPU only": 600000000.0
+      },
+      "interactive_by_family": {
+        "Discrete GPU": 105000000.0,
+        "Apple Silicon": 38500000.0
+      },
+      "full_tokens_per_sec": 1057308364.9326543,
+      "full_concurrent_sessions": 70487224.32884362
+    },
+    {
+      "name": "32B",
+      "params_b": 32.0,
+      "weight_gb": 19.0,
+      "needs_gb": 22.0,
+      "tier": "flagship",
+      "hosts": 258400000.00000003,
+      "hosts_share_of_desktop_fleet": 0.2808695652173913,
+      "interactive_hosts": 30400000.0,
+      "batch_only_hosts": 228000000.00000003,
+      "mean_tokens_per_sec": 4.097898810493726,
+      "mean_tokens_per_sec_interactive": 23.094743767313016,
+      "by_family": {
+        "Discrete GPU": 15000000.0,
+        "Apple Silicon": 15400000.0,
+        "CPU only": 228000000.00000003
+      },
+      "interactive_by_family": {
+        "Discrete GPU": 15000000.0,
+        "Apple Silicon": 15400000.0
+      },
+      "full_tokens_per_sec": 137694779.80825973,
+      "full_concurrent_sessions": 9179651.987217315
+    },
+    {
+      "name": "70B",
+      "params_b": 70.0,
+      "weight_gb": 40.0,
+      "needs_gb": 44.0,
+      "tier": "frontier-ish",
+      "hosts": 64200000.0,
+      "hosts_share_of_desktop_fleet": 0.06978260869565217,
+      "interactive_hosts": 4200000.0,
+      "batch_only_hosts": 60000000.0,
+      "mean_tokens_per_sec": 1.1935514018691589,
+      "mean_tokens_per_sec_interactive": 6.93,
+      "by_family": {
+        "Apple Silicon": 4200000.0,
+        "CPU only": 60000000.0
+      },
+      "interactive_by_family": {
+        "Apple Silicon": 4200000.0
+      },
+      "full_tokens_per_sec": 5708385.168832483,
+      "full_concurrent_sessions": 380559.01125549886
+    }
+  ],
+  "reach": [
+    {
+      "name": "3B",
+      "sessions_per_enrolled_machine": 0.730209353706008,
+      "mean_tokens_per_sec_interactive": 55.84803623188405,
+      "machines_needed": {
+        "1000": 1369.4702689368908,
+        "10000": 13694.702689368907,
+        "100000": 136947.02689368906,
+        "1000000": 1369470.2689368906
+      },
+      "capable_pool": 920000000.0,
+      "pool_share_needed": {
+        "1000": 1.4885546401487943e-06,
+        "10000": 1.4885546401487943e-05,
+        "100000": 0.00014885546401487943,
+        "1000000": 0.0014885546401487942
+      }
+    },
+    {
+      "name": "8B",
+      "sessions_per_enrolled_machine": 0.43524954405279087,
+      "mean_tokens_per_sec_interactive": 33.28885364560522,
+      "machines_needed": {
+        "1000": 2297.5325618691772,
+        "10000": 22975.325618691775,
+        "100000": 229753.25618691774,
+        "1000000": 2297532.5618691775
+      },
+      "capable_pool": 461500000.0,
+      "pool_share_needed": {
+        "1000": 4.978402084223569e-06,
+        "10000": 4.9784020842235696e-05,
+        "100000": 0.000497840208422357,
+        "1000000": 0.00497840208422357
+      }
+    },
+    {
+      "name": "14B",
+      "sessions_per_enrolled_machine": 0.4912001695389799,
+      "mean_tokens_per_sec_interactive": 37.56808198401311,
+      "machines_needed": {
+        "1000": 2035.829916220425,
+        "10000": 20358.29916220425,
+        "100000": 203582.9916220425,
+        "1000000": 2035829.9162204252
+      },
+      "capable_pool": 143500000.0,
+      "pool_share_needed": {
+        "1000": 1.4186968057285191e-05,
+        "10000": 0.0001418696805728519,
+        "100000": 0.0014186968057285192,
+        "1000000": 0.014186968057285193
+      }
+    },
+    {
+      "name": "32B",
+      "sessions_per_enrolled_machine": 0.3019622364216222,
+      "mean_tokens_per_sec_interactive": 23.094743767313016,
+      "machines_needed": {
+        "1000": 3311.6723860917677,
+        "10000": 33116.72386091768,
+        "100000": 331167.23860917677,
+        "1000000": 3311672.386091768
+      },
+      "capable_pool": 30400000.0,
+      "pool_share_needed": {
+        "1000": 0.00010893659164775552,
+        "10000": 0.0010893659164775552,
+        "100000": 0.01089365916477555,
+        "1000000": 0.10893659164775552
+      }
+    },
+    {
+      "name": "70B",
+      "sessions_per_enrolled_machine": 0.09060928839416639,
+      "mean_tokens_per_sec_interactive": 6.93,
+      "machines_needed": {
+        "1000": 11036.396132478423,
+        "10000": 110363.96132478424,
+        "100000": 1103639.6132478423,
+        "1000000": 11036396.132478423
+      },
+      "capable_pool": 4200000.0,
+      "pool_share_needed": {
+        "1000": 0.002627713364875815,
+        "10000": 0.026277133648758152,
+        "100000": 0.2627713364875815,
+        "1000000": 2.6277133648758153
+      }
+    }
+  ],
+  "contention": {
+    "big_vram_dgpu_count": 15000000.0,
+    "share_of_dgpu_fleet": 0.06,
+    "flagship_sessions_if_all_inference": 4529433.546324332,
+    "note": "The machines that can host the flagship model are the same ones that carry the science tier. Every device-hour spent on 32B inference is a device-hour not spent on FP32 batch work."
+  },
+  "cost_of_capability": [
+    {
+      "name": "3B",
+      "tokens_per_sec_on_24gb": 348.3333333333333,
+      "fits_in_24gb": true
+    },
+    {
+      "name": "8B",
+      "tokens_per_sec_on_24gb": 133.40425531914892,
+      "fits_in_24gb": true
+    },
+    {
+      "name": "14B",
+      "tokens_per_sec_on_24gb": 73.76470588235294,
+      "fits_in_24gb": true
+    },
+    {
+      "name": "32B",
+      "tokens_per_sec_on_24gb": 33.0,
+      "fits_in_24gb": true
+    },
+    {
+      "name": "70B",
+      "tokens_per_sec_on_24gb": null,
+      "fits_in_24gb": false
+    }
+  ],
+  "sensitivity": [
+    {
+      "scenario": "half as many big cards",
+      "flagship_capable_machines": 15200000.0,
+      "machines_for_100k_sessions": 331167.2386091767
+    },
+    {
+      "scenario": "twice as many big cards",
+      "flagship_capable_machines": 60800000.0,
+      "machines_for_100k_sessions": 331167.2386091767
+    }
+  ],
+  "population": [
+    {
+      "family": "Discrete GPU",
+      "label": "4-6GB",
+      "count": 55000000.0,
+      "vram_gb": 5.0,
+      "bandwidth": 240.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Discrete GPU",
+      "label": "8GB",
+      "count": 90000000.0,
+      "vram_gb": 8.0,
+      "bandwidth": 330.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Discrete GPU",
+      "label": "10-12GB",
+      "count": 60000000.0,
+      "vram_gb": 12.0,
+      "bandwidth": 460.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Discrete GPU",
+      "label": "16GB",
+      "count": 30000000.0,
+      "vram_gb": 16.0,
+      "bandwidth": 620.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Discrete GPU",
+      "label": "24GB",
+      "count": 12500000.0,
+      "vram_gb": 24.0,
+      "bandwidth": 950.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Discrete GPU",
+      "label": "32GB+",
+      "count": 2500000.0,
+      "vram_gb": 32.0,
+      "bandwidth": 1500.0,
+      "usable": 0.75
+    },
+    {
+      "family": "Apple Silicon",
+      "label": "8GB",
+      "count": 31500000.0,
+      "vram_gb": 6.0,
+      "bandwidth": 90.0,
+      "usable": 0.7
+    },
+    {
+      "family": "Apple Silicon",
+      "label": "16GB",
+      "count": 23100000.0,
+      "vram_gb": 12.0,
+      "bandwidth": 140.0,
+      "usable": 0.7
+    },
+    {
+      "family": "Apple Silicon",
+      "label": "24-36GB",
+      "count": 11200000.0,
+      "vram_gb": 26.0,
+      "bandwidth": 270.0,
+      "usable": 0.7
+    },
+    {
+      "family": "Apple Silicon",
+      "label": "48GB+",
+      "count": 4200000.0,
+      "vram_gb": 56.0,
+      "bandwidth": 450.0,
+      "usable": 0.7
+    },
+    {
+      "family": "CPU only",
+      "label": "16GB RAM",
+      "count": 372000000.0,
+      "vram_gb": 12.0,
+      "bandwidth": 50.0,
+      "usable": 0.6
+    },
+    {
+      "family": "CPU only",
+      "label": "32GB RAM",
+      "count": 168000000.00000003,
+      "vram_gb": 26.0,
+      "bandwidth": 55.0,
+      "usable": 0.6
+    },
+    {
+      "family": "CPU only",
+      "label": "64GB+ RAM",
+      "count": 60000000.0,
+      "vram_gb": 56.0,
+      "bandwidth": 60.0,
+      "usable": 0.6
+    }
+  ]
+}

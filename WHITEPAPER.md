@@ -38,6 +38,8 @@ Every number above is produced by [`analysis/compute_model.py`](analysis/compute
 - [2. What physics forbids](#2-what-physics-forbids)
 - [3. Architecture](#3-architecture)
 - [4. The fleet](#4-the-fleet)
+  - [4.1 The desktop tier](#41-the-desktop-tier)
+  - [4.2 The model ladder](#42-the-model-ladder--bigger-models-not-just-science)
 - [5. The bandwidth wall](#5-the-bandwidth-wall)
 - [6. Follow the moon](#6-follow-the-moon)
 - [7. Sensitivity: what if we are wrong](#7-sensitivity-what-if-we-are-wrong)
@@ -296,6 +298,39 @@ Two corrections applied to earlier desktop estimates:
 | **Both fleets at full enrolment** | **630 exaFLOPS — 85% of it from desktops** |
 
 One detail worth keeping, because it cuts against the tier: **a CPU-only desktop (0.20 TFLOPS) is worse for science than a phone (0.30).** The desktop advantage is entirely the discrete GPU. A campaign to recruit office PCs would add machines and very little science.
+
+### 4.2 The model ladder — bigger models, not just science
+
+The desktop tier was introduced as the research instrument. It has a second use that may matter more to the mission: **hosting larger models, so the network's AI is better rather than merely more plentiful.**
+
+Full workings in [`analysis/LADDER.md`](analysis/LADDER.md).
+
+Two constraints govern it. **VRAM is a cliff, not a gradient** — a model that does not fit does not run at any speed. And **the bandwidth wall gets worse with size**, since tokens/sec is usable bandwidth divided by weight footprint. But those partly cancel, because on consumer hardware more VRAM also means more bandwidth: a 24GB card is roughly three times faster at streaming weights than an 8GB one.
+
+| Model | Needs | Can hold it | **Fast enough to chat** | Speed | Machines for 100k concurrent conversations |
+|---|---|---|---|---|---|
+| 3B | 3.5 GB | 920M | 920M | 56 tok/s | 137K |
+| 8B | 6.5 GB | 834M | 462M | 33 tok/s | 230K |
+| 14B | 10.5 GB | 744M | 144M | 38 tok/s | **204K** |
+| **32B** | 22 GB | 258M | **30M** | 23 tok/s | **331K** |
+| 70B | 44 GB | 64M | 4.2M | 7 tok/s | 1.1M — 26% of the eligible pool |
+
+![The model ladder](docs/figures/fig9_model_ladder.png)
+
+"Can hold it" and "fast enough to chat" are very different numbers, and conflating them is the easiest way to overstate this tier. A 64GB CPU-only desktop fits a 32B model and streams it at under 2 tok/s — real capacity for overnight batch work, useless for conversation.
+
+**The strategic point is the last column.** Everywhere else in this project capability requires scale; here it requires *a small number of the right machines*. Roughly **331,000 enthusiast desktops** — 1.1% of those able to run it — would put a genuinely capable free assistant in front of a hundred thousand people at once. Those owners are also the community most likely to join first: people who already run local models.
+
+It also answers a competitive question the rest of this document dodges. A 3B-class assistant competes with the free tiers of frontier labs and loses on quality. A **32B-class assistant with no account, no rate limit, no retention, and no price is differentiated.** This is the difference between free AI that is *adequate* and free AI that is *good*, and it is reachable without planetary adoption.
+
+The costs are real and are recorded in full in [LADDER.md](analysis/LADDER.md):
+
+- **Verification gets harder exactly where it matters most.** Fewer capable hosts means smaller comparison pools, so [diversity constraints](docs/desktop-security.md#diversity-constraints-on-node-selection) are harder to satisfy and the flagship tier is the *most* exposed to an eclipse attack — the smallest node pool carrying the most valuable answers.
+- **It competes with the science tier for the same silicon.** About 15M discrete GPUs have 24GB or more. Those are the only cards that can host the flagship model, and they are also the top of the science fleet. Every device-hour of 32B inference is a device-hour not spent on FP32 batch work.
+- **It concentrates the network's best capability** on ~6% of dGPU nodes — a centralisation of a different kind from the coordinator problem, sitting awkwardly beside *owned by no one*.
+- **It sits badly with credits-for-hours-not-horsepower.** Someone contributing a 24GB card earns exactly what a four-year-old phone earns. That is right for the mission and possibly wrong for recruiting the machines the flagship tier needs. **We do not have a good answer to this yet.**
+
+Recommended: ship 8B as the desktop baseline, treat 32B as a deliberately recruited **flagship tier** with heavier canary rates, and keep 70B batch-only until the pool is deeper. Access to the flagship is precisely the *headroom* that [credits are meant to buy](#104-the-contributor-ledger-credits-not-currency).
 
 This is the argument for building the desktop client in parallel with mobile rather than after it. Reaching parity with the largest volunteer computing effort in history needs roughly 1.3 million gaming PCs against 31 million phones — and desktops have no app-store gate, no thermal ceiling, and no background-execution limit standing between the code and a working demo.
 
