@@ -70,28 +70,7 @@ A discrete GPU does the scientific work of about **32 phones**, and it is the on
 
 ---
 
-## We retract our own headline claim
-
-An earlier draft of this project — and the current live site — claimed that **1.4% adoption (~30M phones) would surpass the largest AI data center on Earth.** That was wrong by roughly 400×, and we are not going to quietly delete it.
-
-**The error:** running an AI model is limited by **memory bandwidth, not processing power.** Generating one token requires reading every model weight out of RAM. A flagship advertising 45 INT8 TOPS sustains about **0.098** on a 3B model — a **457× gap** between the number on the box and the number that answers a question.
-
-![The bandwidth wall](docs/figures/fig1_bandwidth_wall.png)
-
-So the network will not out-compute a hyperscale data center in raw operations. Not at 30 million devices, not at any number. Data centers read each weight once and serve hundreds of users with it; a phone serves one. Per unit of hardware they win decisively.
-
-| Claim | Previous | Corrected |
-|---|---|---|
-| Phones that can run a small model, today | 2.2 billion | **1.2 billion** (2.2B is a ~2030 figure) |
-| Adoption to pass the largest data center | 1.4% — 30M | **Not reachable at any adoption level** |
-| One night of the full fleet | > a year of Folding@home | **~10 days ≈ one Folding@home-year** |
-| Devices available overnight | 95% | **60%** — charging *and* Wi-Fi *and* undisturbed |
-| Availability floor | ~33% | **14.1%** |
-| Inference verified by exact match | Deterministic at temp 0 | **False across mixed hardware** — [see below](#and-one-more-correction) |
-
-[Full retraction table](WHITEPAPER.md#appendix-b-what-we-retract) · [why we publish it](#why-any-of-this-is-trustworthy)
-
-### What survives is a better thesis
+## It serves the people in it, from the first thousand machines
 
 **The network doesn't need to beat a data center. It needs to serve the people in it — and it does that from the first thousand devices.**
 
@@ -100,14 +79,6 @@ Capacity and membership grow together, so each participant's share is about **27
 ![Supply and demand grow together](docs/figures/fig2_self_sufficiency.png)
 
 The ~89% surplus is the research instrument.
-
-### And one more correction
-
-Our own security documents claimed that *"inference at temperature 0 is deterministic, so honest nodes agree exactly."* **True on identical hardware, false across a mixed fleet** — different GPUs, kernels, thread counts, and quantisation paths flip argmax when logits are close, so two *honest* nodes diverge.
-
-Verification therefore rests on [canary tasks and coordinator re-derivation](docs/threat-model.md#2-verification-how-we-know-the-work-is-real), with exact matching scoped to hardware cohorts. Both diagrams have been corrected.
-
----
 
 ## Security: the network never runs arbitrary code
 
@@ -158,6 +129,12 @@ That writes [`analysis/NUMBERS.md`](analysis/NUMBERS.md), [`analysis/numbers.jso
 | Device-density longitude weights | 21 clusters | **Our own construction. No dataset backs them.** |
 
 The [sensitivity analysis](WHITEPAPER.md#7-sensitivity-what-if-we-are-wrong) shows the full range across every assumption is 16M–63M devices for Folding@home parity. A 4× band, published up front.
+
+### We've been wrong twice, and both are on the record
+
+An earlier draft claimed 1.4% adoption would surpass the largest AI data center — wrong by ~400×, because LLM inference is bound by memory bandwidth rather than processing power. A later draft claimed inference is deterministic so honest machines agree exactly — true only on identical hardware, and it would have accused honest volunteers of cheating.
+
+Both are retracted in full, with the arithmetic, in [Appendix B](WHITEPAPER.md#appendix-b-what-we-retract). That table is the reason to trust the rest.
 
 ---
 

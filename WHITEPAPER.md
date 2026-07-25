@@ -17,13 +17,11 @@ Meridian Moonlight proposes to use them, **desktops first.** Each participating 
 
 **The network never executes arbitrary code on a volunteer's machine.** A job is a prompt plus a task-type ID drawn from an audited, published catalogue — never a script, a binary, or a container. That single constraint eliminates mining, cracking, malware, and proxy abuse structurally rather than by policy, on every tier. Its cost — the network can only compute things already implemented in the client — is stated in [§3.5](#35-layer-0-and-the-task-type-catalogue).
 
-This document is unusual in one respect: **two of its central claims are downward revisions of earlier drafts of this same project.**
+One thing this network will not do, stated before the claims that follow: **it will not out-compute a hyperscale data centre in raw operations, at any level of adoption.** Data centres serve hundreds of concurrent users from a single read of the model weights; a volunteer machine serves one. Per unit of hardware they win decisively, and no amount of scale changes it.
 
-The first draft asserted that ~30 million devices (1.4% of the capable fleet) would surpass the largest AI data centre on Earth. That was built on peak NPU throughput figures and does not survive a bandwidth-bound analysis. The honest figure is roughly 12 billion devices — more smartphones than exist. **The network will not out-compute a hyperscale data centre in raw operations, and no amount of adoption changes that.**
+*(Two earlier drafts of this project claimed otherwise, and claimed that verification could rely on inference being deterministic. Both are retracted with the arithmetic in [Appendix B](#appendix-b-what-we-retract).)*
 
-The second asserted that inference at temperature 0 is deterministic, so honest nodes agree exactly and any result can be re-derived and checked. **That is true on identical hardware and false across a heterogeneous fleet**, and it was load-bearing in three security documents. Verification is rebuilt on canary tasks and coordinator re-derivation in [§3.3](#33-verification).
-
-What survives is stronger, because none of it depends on winning a compute race:
+What the network does deliver does not depend on winning that race:
 
 1. **The network is self-sufficient at every scale.** Capacity and membership grow together, so each participant's share is roughly 274,000 output tokens per day — about **9× heavy personal use**, and 5× even at the daily supply trough. Identical at one thousand devices and at one billion. There is no threshold to cross before the network is useful to the people in it.
 2. **The surplus is a research instrument, and it lives on the desktop tier.** A discrete GPU does the scientific work of about **32 phones**. Folding@home parity needs ~31 million phones — or **~1.3 million gaming PCs.** At full enrolment both fleets together deliver about **630 exaFLOPS sustained, ~262× Folding@home's peak**, with 85% of it coming from desktops.

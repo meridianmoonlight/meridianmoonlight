@@ -319,8 +319,8 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
   <div class="wrap">
     <a class="brand" href="#top">MERIDIAN <span>MOONLIGHT</span></a>
     <div class="navlinks">
-      <a href="#wrong" class="hide-sm">What we got wrong</a>
       <a href="#building" class="hide-sm">What we're building</a>
+      <a href="#cando" class="hide-sm">What it can do</a>
       <a href="#security" class="hide-sm">Security</a>
       <a href="#economy" class="hide-sm">Economy</a>
       <a href="#limits" class="hide-sm">Limits</a>
@@ -346,7 +346,7 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
       reach. The PCs do the work.</p>
     <div class="actions">
       <a class="btn btn-primary" href="whitepaper.html">Read the whitepaper</a>
-      <a class="btn btn-ghost" href="#wrong">See what we got wrong</a>
+      <a class="btn btn-ghost" href="#cando">See what it can do</a>
     </div>
   </div>
 
@@ -373,92 +373,44 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
   </div>
 </header>
 
-<section class="retraction" id="wrong">
+<section id="building">
   <div class="wrap">
-    <span class="badge">Start here</span>
-    <h2>We retract two of our own claims.</h2>
-    <p class="lede" style="margin-top:18px">This site used to say
-      <span class="strike">1.4% adoption — about 30 million phones — would surpass the largest
-      AI data center on Earth.</span> That was wrong by roughly 400&times;, and we are not
-      going to quietly delete it.</p>
+    <p class="eyebrow">What we're building</p>
+    <h2>Three pieces. The first one is a desktop app.</h2>
+    <p class="lede" style="margin-top:16px">None of it exists yet. This is the build order and the
+      reason for it — and the only thing that matters right now is the bottom row.</p>
 
-    <p class="lede"><strong style="color:var(--moon);font-weight:500">The error:</strong> running an
-      AI model is limited by <strong style="color:var(--moon);font-weight:500">memory bandwidth, not
-      processing power.</strong> Generating a single word requires reading the entire model out of
-      memory. A flagship phone advertising 45 trillion operations per second actually sustains about
-      0.098 — a <strong style="color:var(--amber);font-weight:500">457&times; gap</strong> between the
-      number on the box and the number that answers a question.</p>
-
-    <p class="lede">So <strong style="color:var(--moon);font-weight:500">this network will never
-      out-compute a hyperscale data center.</strong> Not at 30 million devices, not at any number.
-      Data centers read the model once and serve hundreds of people from that read; a phone serves
-      one. Per piece of hardware, they win decisively.</p>
-
-    <p class="lede">The second retraction is subtler and mattered more. Our own security documents
-      said <span class="strike">inference is deterministic, so honest machines produce identical
-      answers and cheating is caught by comparing them.</span> That's true on identical hardware and
-      false across a mixed fleet — so it would have accused <em>honest</em> volunteers of cheating.
-      Verification now rests on hidden known-answer tasks and spot re-checks instead.</p>
-
-    <table class="tbl">
-      <thead>
-        <tr><th style="width:40%">Claim</th><th style="width:27%">Previously</th><th style="width:33%">Corrected</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="now" data-l="Claim">Phones that can run a small model, today</td>
-          <td class="was" data-l="Previously">2.2 billion</td>
-          <td class="now" data-l="Corrected">1.2 billion <span class="small">(2.2B is a ~2030 figure)</span></td>
-        </tr>
-        <tr>
-          <td class="now" data-l="Claim">Adoption needed to pass the largest data center</td>
-          <td class="was" data-l="Previously">1.4% — 30 million</td>
-          <td class="now" data-l="Corrected">Not reachable at any adoption level</td>
-        </tr>
-        <tr>
-          <td class="now" data-l="Claim">One night of the full fleet</td>
-          <td class="was" data-l="Previously">More than a year of Folding@home</td>
-          <td class="now" data-l="Corrected">~10 days ≈ one Folding@home-year</td>
-        </tr>
-        <tr>
-          <td class="now" data-l="Claim">Devices available overnight</td>
-          <td class="was" data-l="Previously">95%</td>
-          <td class="now" data-l="Corrected">60% <span class="small">— charging <em>and</em> Wi-Fi <em>and</em> undisturbed</span></td>
-        </tr>
-        <tr>
-          <td class="now" data-l="Claim">Availability floor</td>
-          <td class="was" data-l="Previously">~33% of the fleet</td>
-          <td class="now" data-l="Corrected">14.1%</td>
-        </tr>
-        <tr>
-          <td class="now" data-l="Claim">Cheating caught by comparing machines</td>
-          <td class="was" data-l="Previously">Deterministic, so exact match works</td>
-          <td class="now" data-l="Corrected">Only within identical hardware — canaries and re-checks instead</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p class="lede" style="margin-top:34px">Why publish this instead of quietly shipping better
-      numbers? Because the only asset a project like this has is that its numbers can be trusted.
-      <strong style="color:var(--moon);font-weight:500">Every figure on this site is generated by one
-      script you can run yourself.</strong> Find another error and we'll publish that too.</p>
-
-    <div class="actions">
-      <a class="btn btn-ghost" href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener">Read the model &rarr;</a>
-      <a class="btn btn-ghost" href="whitepaper.html#appendix-b-what-we-retract">Full retraction table &rarr;</a>
-    </div>
+    <figure class="diagram">
+      <img src="diagrams/what-were-building.svg" alt="Three pieces. Piece one, the primary node: a desktop client running a whole model on the graphics card you already own, chosen first because it has no app store review, no background limits, and no thermal ceiling, and because it unlocks models up to 32B and 85 percent of research capacity. Piece two: a coordinator and dashboard that routes by capability, hides canary tasks in real work, and re-checks answers at random, but cannot send you code, override your idle rules, or read what you process. Piece three, the extension: a phone client adding reach and time-zone coverage. Participants see one switch, one indicator, and one log. The first milestone is one PC answering one question, measured speed and watts and heat published even if bad, and a sixty-second video of it working.">
+      <figcaption>The build order, and why the desktop client comes first</figcaption>
+    </figure>
   </div>
 </section>
+
+<hr class="rule">
+
+<section id="cando">
+  <div class="wrap">
+    <p class="eyebrow">What it can do</p>
+    <h2>Two products from the same idle machine.</h2>
+
+    <figure class="diagram">
+      <img src="diagrams/what-it-can-do.svg" alt="Two products. For people: free AI that is actually good, with no account, rate limit, retention, or price. The model ladder runs from a 3B model on a phone, to 8B on most PCs, 14B on a 12GB card, and 32B on a 24GB card which is the tier people pay for. 331,000 enthusiast PCs would serve 100,000 people at once on the 32B tier, which is 1.1 percent of the machines already able to run it. For research: a research instrument owned by nobody. Folding@home at its peak delivered 2.4 exaFLOPS; 1.3 million gaming PCs match it; every capable PC delivers 538 exaFLOPS, or 224 times. Phones reach the same parity at 31 million devices. What it cannot do, stated up front: never out-compute a data centre in raw operations, never train a frontier model.">
+      <figcaption>What the network is for — and what it will never do</figcaption>
+    </figure>
+  </div>
+</section>
+
+<hr class="rule">
 
 <section>
   <div class="wrap stat">
     <div class="big">9&times;<small>More AI than<br>its members<br>can use</small></div>
     <div>
-      <h2>The network doesn't need to beat a data center. It needs to serve the people in it.</h2>
-      <p class="lede" style="margin-top:18px">And it does that from the <em>first thousand
-        machines</em>. Capacity and membership grow together, so every participant's share is about
-        274,000 words of AI output per day — roughly nine times what even a heavy user consumes, and
-        five times that at the quietest hour of the global day.</p>
+      <h2>It serves the people in it — from the first thousand machines.</h2>
+      <p class="lede" style="margin-top:18px">Capacity and membership grow together, so every
+        participant's share is about 274,000 words of AI output per day — roughly nine times what
+        even a heavy user consumes, and five times that at the quietest hour of the global day.</p>
       <p class="lede">That ratio is identical at a thousand devices and at a billion. There is no
         critical mass to reach, no chicken-and-egg problem that needs a token to solve, and no point
         at which this becomes useful — it starts useful.</p>
@@ -569,36 +521,6 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
         active conversation. Every constant is named in
         <a href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener" style="color:var(--dawn)">compute_model.py</a>.</p>
     </div>
-  </div>
-</section>
-
-<hr class="rule">
-
-<section id="building">
-  <div class="wrap">
-    <p class="eyebrow">What we're building</p>
-    <h2>Three pieces. The first one is a desktop app.</h2>
-    <p class="lede" style="margin-top:16px">None of it exists yet. This is the build order and the
-      reason for it — and the only thing that matters right now is the bottom row.</p>
-
-    <figure class="diagram">
-      <img src="diagrams/what-were-building.svg" alt="Three pieces. Piece one, the primary node: a desktop client running a whole model on the graphics card you already own, chosen first because it has no app store review, no background limits, and no thermal ceiling, and because it unlocks models up to 32B and 85 percent of research capacity. Piece two: a coordinator and dashboard that routes by capability, hides canary tasks in real work, and re-checks answers at random, but cannot send you code, override your idle rules, or read what you process. Piece three, the extension: a phone client adding reach and time-zone coverage. Participants see one switch, one indicator, and one log. The first milestone is one PC answering one question, measured speed and watts and heat published even if bad, and a sixty-second video of it working.">
-      <figcaption>The build order, and why the desktop client comes first</figcaption>
-    </figure>
-  </div>
-</section>
-
-<hr class="rule">
-
-<section id="cando">
-  <div class="wrap">
-    <p class="eyebrow">What it can do</p>
-    <h2>Two products from the same idle machine.</h2>
-
-    <figure class="diagram">
-      <img src="diagrams/what-it-can-do.svg" alt="Two products. For people: free AI that is actually good, with no account, rate limit, retention, or price. The model ladder runs from a 3B model on a phone, to 8B on most PCs, 14B on a 12GB card, and 32B on a 24GB card which is the tier people pay for. 331,000 enthusiast PCs would serve 100,000 people at once on the 32B tier, which is 1.1 percent of the machines already able to run it. For research: a research instrument owned by nobody. Folding@home at its peak delivered 2.4 exaFLOPS; 1.3 million gaming PCs match it; every capable PC delivers 538 exaFLOPS, or 224 times. Phones reach the same parity at 31 million devices. What it cannot do, stated up front: never out-compute a data centre in raw operations, never train a frontier model.">
-      <figcaption>What the network is for — and what it will never do</figcaption>
-    </figure>
   </div>
 </section>
 
@@ -789,6 +711,64 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
           one person. Per piece of hardware they're far more efficient at this. Our advantage is
           that the hardware is already bought and the next answer costs nothing.</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="retraction" id="corrections">
+  <div class="wrap">
+    <span class="badge">Corrections</span>
+    <h2>Where we've been wrong so far.</h2>
+    <p class="lede" style="margin-top:18px">Two of this project's own claims have been retracted,
+      and they're listed here rather than quietly deleted. If the numbers above are worth anything,
+      it's because of how the ones below were handled.</p>
+
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:40%">Claim</th><th style="width:27%">Previously</th><th style="width:33%">Corrected</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="now" data-l="Claim">Adoption needed to pass the largest data center</td>
+          <td class="was" data-l="Previously">1.4% — 30M phones</td>
+          <td class="now" data-l="Corrected">Not reachable at any adoption level</td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Cheating caught by comparing machines</td>
+          <td class="was" data-l="Previously">Deterministic, so exact match works</td>
+          <td class="now" data-l="Corrected">Only within identical hardware — canaries and re-checks instead</td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Phones that can run a small model, today</td>
+          <td class="was" data-l="Previously">2.2 billion</td>
+          <td class="now" data-l="Corrected">1.2 billion <span class="small">(2.2B is a ~2030 figure)</span></td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Devices available overnight</td>
+          <td class="was" data-l="Previously">95%</td>
+          <td class="now" data-l="Corrected">60% <span class="small">— charging <em>and</em> Wi-Fi <em>and</em> undisturbed</span></td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Availability floor</td>
+          <td class="was" data-l="Previously">~33% of the fleet</td>
+          <td class="now" data-l="Corrected">14.1%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="lede" style="margin-top:32px">The first was a bad number: running an AI model is
+      limited by <strong style="color:var(--moon);font-weight:500">memory bandwidth, not processing
+      power</strong>, so a chip advertising 45 trillion operations per second sustains about 0.098.
+      The second was worse — a wrong <em>mechanism</em>, which would have accused honest volunteers
+      of cheating.</p>
+    <p class="lede">Every figure on this site is generated by one script you can run yourself.
+      Find another error and we'll publish that too.</p>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener">Read the model &rarr;</a>
+      <a class="btn btn-ghost" href="whitepaper.html#appendix-b-what-we-retract">Full retraction table &rarr;</a>
     </div>
   </div>
 </section>
