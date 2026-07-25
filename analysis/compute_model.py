@@ -927,42 +927,66 @@ def fig_follow_the_moon(R):
 
 
 def fig_science_capacity(R):
-    fig, ax = plt.subplots(figsize=(10.5, 5.8))
-    n = np.logspace(4, np.log10(CAPABLE_FLEET_TODAY), 200)
-    mean_avail = R["availability"]["mean_over_24h"]
-    wf = R["per_device"]["weighted_sustained_tflops_fp32"]
-    ef = n * mean_avail * wf * 1e12 / 1e18
-    ax.plot(n, ef, color=TEAL, lw=3.2, zorder=4, label="MERIDIAN sustained FP32")
-    ax.axhline(FOLDING_AT_HOME_PEAK_EXAFLOPS, color=AMBER, lw=2.4, ls="--", zorder=3,
+    """Science capacity, with BOTH tiers. PCs are the primary curve."""
+    fig, ax = plt.subplots(figsize=(11, 5.8))
+    d = R["desktop"]
+    mean_m = R["availability"]["mean_over_24h"]
+    wf_m = R["per_device"]["weighted_sustained_tflops_fp32"]
+    mean_d = d["availability"]["mean_over_24h"]
+    wf_d = d["weighted_sustained_tflops_fp32"]
+
+    n = np.logspace(4, np.log10(CAPABLE_FLEET_TODAY), 240)
+
+    # PCs — the primary curve.
+    nd = np.logspace(4, np.log10(d["fleet"]), 240)
+    ef_d = nd * mean_d * wf_d * 1e12 / 1e18
+    ax.plot(nd, ef_d, color=TEAL, lw=3.4, zorder=5, label="PCs and Macs")
+
+    # Phones — the secondary curve.
+    ef_m = n * mean_m * wf_m * 1e12 / 1e18
+    ax.plot(n, ef_m, color=AMBER, lw=2.4, ls=(0, (6, 3)), zorder=4, label="Phones")
+
+    ax.axhline(FOLDING_AT_HOME_PEAK_EXAFLOPS, color=DEEP, lw=2.0, ls=":", zorder=3,
                label=f"Folding@home at its peak (~{FOLDING_AT_HOME_PEAK_EXAFLOPS} exaFLOPS)")
-    x0 = R["crossovers"]["enrolled_to_match_folding_at_home_peak"]
-    ax.plot([x0], [FOLDING_AT_HOME_PEAK_EXAFLOPS], "o", ms=11, color=DEEP, zorder=6)
+
+    # Parity markers on each curve.
+    x_d = d["folding_parity_mixed_fleet"]
+    ax.plot([x_d], [FOLDING_AT_HOME_PEAK_EXAFLOPS], "o", ms=11, color=TEAL, zorder=7)
     ax.annotate(
-        f"Parity with the largest volunteer\ncomputing effort in history:\n{_si(x0)} enrolled devices",
-        xy=(x0, FOLDING_AT_HOME_PEAK_EXAFLOPS), xytext=(0.20, 0.56),
+        f"{_si(x_d)} PCs",
+        xy=(x_d, FOLDING_AT_HOME_PEAK_EXAFLOPS), xytext=(0.17, 0.60),
         textcoords="axes fraction", ha="center", fontsize=11, color=DEEP,
-        arrowprops=dict(arrowstyle="-|>", color=DEEP, lw=1.3,
-                        connectionstyle="arc3,rad=-0.15"),
-        bbox=dict(boxstyle="round,pad=0.5", fc="white", ec=DEEP, lw=1.2),
+        arrowprops=dict(arrowstyle="-|>", color=TEAL, lw=1.4, connectionstyle="arc3,rad=-0.2"),
+        bbox=dict(boxstyle="round,pad=0.45", fc="white", ec=TEAL, lw=1.3),
     )
-    full = R["full_fleet"]
-    ax.plot([full["enrolled"]], [full["exaflops_fp32_sustained"]], "o", ms=11, color=MAGENTA, zorder=6)
+
+    x_m = R["crossovers"]["enrolled_to_match_folding_at_home_peak"]
+    ax.plot([x_m], [FOLDING_AT_HOME_PEAK_EXAFLOPS], "o", ms=10, color=AMBER, zorder=7)
     ax.annotate(
-        f"Every capable phone today ({_si(full['enrolled'])}):\n"
-        f"{full['exaflops_fp32_sustained']:,.0f} exaFLOPS sustained\n"
-        f"~{full['folding_at_home_years_per_year']:,.0f}x Folding@home, continuously",
-        xy=(full["enrolled"], full["exaflops_fp32_sustained"]), xytext=(0.66, 0.28),
-        textcoords="axes fraction", ha="center", fontsize=11, color=DEEP,
-        arrowprops=dict(arrowstyle="-|>", color=MAGENTA, lw=1.3,
-                        connectionstyle="arc3,rad=0.2"),
-        bbox=dict(boxstyle="round,pad=0.5", fc="white", ec=MAGENTA, lw=1.2),
+        f"or {_si(x_m)} phones —\n24x more machines\nfor the same science",
+        xy=(x_m, FOLDING_AT_HOME_PEAK_EXAFLOPS), xytext=(0.63, 0.24),
+        textcoords="axes fraction", ha="center", fontsize=10.5, color=DEEP,
+        arrowprops=dict(arrowstyle="-|>", color=AMBER, lw=1.3, connectionstyle="arc3,rad=0.2"),
+        bbox=dict(boxstyle="round,pad=0.45", fc="white", ec=AMBER, lw=1.2),
     )
-    ax.set_ylim(3e-4, 4e2)
+
+    # Full-fleet endpoints.
+    ax.plot([d["fleet"]], [d["full_fleet_exaflops"]], "o", ms=11, color=MAGENTA, zorder=7)
+    ax.annotate(
+        f"Every capable PC:\n{d['full_fleet_exaflops']:,.0f} exaFLOPS\n"
+        f"~{d['full_fleet_folding_multiple']:,.0f}x Folding@home",
+        xy=(d["fleet"], d["full_fleet_exaflops"]), xytext=(0.80, 0.80),
+        textcoords="axes fraction", ha="center", fontsize=10.5, color=DEEP,
+        arrowprops=dict(arrowstyle="-|>", color=MAGENTA, lw=1.3, connectionstyle="arc3,rad=0.2"),
+        bbox=dict(boxstyle="round,pad=0.45", fc="white", ec=MAGENTA, lw=1.2),
+    )
+
     ax.set_xscale("log")
     ax.set_yscale("log")
-    ax.set_xlabel("Participating devices")
+    ax.set_ylim(3e-4, 4e3)
+    ax.set_xlabel("Machines enrolled")
     ax.set_ylabel("Sustained FP32 throughput (exaFLOPS)")
-    ax.set_title("Scientific batch capacity, in the units science actually uses")
+    ax.set_title("The surplus, in the units science actually uses")
     ax.xaxis.set_major_formatter(FuncFormatter(_si))
     ax.legend(loc="upper left", frameon=False)
     fig.savefig(FIGDIR / "fig4_science_capacity.png", dpi=155)

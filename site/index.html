@@ -472,12 +472,12 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
     <div class="sim">
       <div class="sim-head">
         <div>
-          <h3 style="margin-bottom:4px">Move the sliders. Watch it become a research instrument.</h3>
-          <p class="tiny" style="margin:0">Plotted against Folding@home's COVID-era peak — the largest volunteer computing effort in history, and the comparison that survived our own audit.</p>
+          <h3 style="margin-bottom:4px">Move the PC slider. Watch free AI arrive.</h3>
+          <p class="tiny" style="margin:0">How many people could be talking to a capable model at once — and at what quality. The science comes out of what's left over.</p>
         </div>
       </div>
 
-      <canvas id="simcanvas" aria-label="Chart of sustained scientific throughput against number of participating machines, with Folding@home's peak marked"></canvas>
+      <canvas id="simcanvas" aria-label="Chart of concurrent free AI conversations against the number of PCs enrolled, with the subset served by the flagship 32B model shown separately"></canvas>
 
       <div class="sliders">
         <div class="slider desk">
@@ -494,32 +494,42 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
 
       <div class="outs">
         <div class="out">
-          <span class="k">Science throughput</span>
-          <span class="v" id="o-flops" style="color:var(--teal)">—</span>
-          <span class="u">exaFLOPS sustained, FP32</span>
-        </div>
-        <div class="out">
-          <span class="k">vs Folding@home peak</span>
-          <span class="v" id="o-fah" style="color:var(--amber)">—</span>
-          <span class="u">at its COVID-era maximum</span>
-        </div>
-        <div class="out">
-          <span class="k">Free AI conversations</span>
-          <span class="v" id="o-sessions" style="color:var(--moon)">—</span>
+          <span class="k">Free conversations at once</span>
+          <span class="v" id="o-sessions" style="color:var(--violet)">—</span>
           <span class="u">concurrent, at reading speed</span>
         </div>
         <div class="out">
-          <span class="k">Science from desktops</span>
-          <span class="v" id="o-share" style="color:var(--violet)">—</span>
-          <span class="u">share of FP32 capacity</span>
+          <span class="k">Of those, at 32B quality</span>
+          <span class="v" id="o-flagship" style="color:var(--amber)">—</span>
+          <span class="u">the tier people pay for</span>
+        </div>
+        <div class="out">
+          <span class="k">People served per day</span>
+          <span class="v" id="o-people" style="color:var(--moon)">—</span>
+          <span class="u">at heavy daily use each</span>
+        </div>
+        <div class="out">
+          <span class="k">Science, from the surplus</span>
+          <span class="v" id="o-fah" style="color:var(--teal)">—</span>
+          <span class="u">&times; Folding@home at its peak</span>
         </div>
       </div>
 
       <p class="verdict" id="o-verdict">—</p>
-      <p class="tiny" style="margin-top:14px;opacity:.75">Assumes 0.30 TFLOPS sustained per phone and
-        2.98 per desktop (fleet-weighted), 25.7% and 19.6% mean availability, and 15 words/sec per
-        active conversation. Every constant is named in
-        <a href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener" style="color:var(--dawn)">compute_model.py</a>.</p>
+      <p class="small" style="margin-top:18px;padding:14px 16px;background:rgba(255,180,84,.07);border-left:2px solid var(--amber)">
+        <strong style="color:var(--moon);font-weight:500">Who you recruit matters more than how many.</strong>
+        The slider enrols <em>typical</em> PCs, and only about 3.3% of those have a card big enough for the
+        32B model. Recruiting enthusiasts directly is roughly <strong style="color:var(--amber);font-weight:500">30&times;
+        more efficient</strong> for the flagship tier: <strong style="color:var(--moon);font-weight:500">331,000
+        machines with 24GB cards</strong> would serve 100,000 conversations at 32B — the same as enrolling
+        about 10 million PCs at random.</p>
+
+      <p class="tiny" style="margin-top:14px;opacity:.75">Assumes 26 words/sec sustained per PC and
+        12.3 per phone, 19.6% and 25.7% mean availability, 15 words/sec per active conversation, and
+        30,000 words a day for a heavy user. 3.3% of PCs can host a 32B model fast enough to hold a
+        conversation. Every constant is named in
+        <a href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener" style="color:var(--dawn)">compute_model.py</a>
+        and <a href="https://github.com/meridianmoonlight/meridianmoonlight/blob/main/analysis/model_ladder.py" target="_blank" rel="noopener" style="color:var(--dawn)">model_ladder.py</a>.</p>
     </div>
   </div>
 </section>
@@ -1174,7 +1184,7 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
   if(reduced) stopAnim(); else startAnim();
 
   /* ================================================================
-     2. SCALE SIMULATOR
+     2. CAPABILITY SIMULATOR — PCs are the swept axis
      ================================================================ */
   var cvs = document.getElementById('simcanvas');
   if(cvs){
@@ -1183,14 +1193,22 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
     var sDesk = document.getElementById('s-desktop');
     var vMob = document.getElementById('v-mobile');
     var vDesk = document.getElementById('v-desktop');
-    var oFlops = document.getElementById('o-flops');
-    var oFah = document.getElementById('o-fah');
     var oSess = document.getElementById('o-sessions');
-    var oShare = document.getElementById('o-share');
+    var oFlag = document.getElementById('o-flagship');
+    var oPeople = document.getElementById('o-people');
+    var oFah = document.getElementById('o-fah');
     var oVerdict = document.getElementById('o-verdict');
 
-    var MMIN = 1e3, MMAX = MOBILE.fleet;
+    // Share of PCs that can host a 32B model fast enough to chat, and how
+    // quickly they do it. From analysis/model_ladder.py.
+    var FLAGSHIP_SHARE = 0.0326;
+    var FLAGSHIP_TOK   = 23.0;
+    var HEAVY_TOK_DAY  = 30000;
+    var WORLD_POP      = 8.1e9;
+
     var DMIN = 1e3, DMAX = DESKTOP.fleet;
+    var MMIN = 1e3, MMAX = MOBILE.fleet;
+
     function logScale(t, lo, hi){
       return Math.pow(10, Math.log10(lo) + t*(Math.log10(hi)-Math.log10(lo)));
     }
@@ -1198,21 +1216,24 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
       return (Math.log10(v)-Math.log10(lo))/(Math.log10(hi)-Math.log10(lo));
     }
 
-    // Sustained FP32 in exaFLOPS.
-    function exaflops(nMob, nDesk){
-      return (nMob*MOBILE.meanAvail*MOBILE.tflops + nDesk*DESKTOP.meanAvail*DESKTOP.tflops)*1e12/1e18;
+    function tokensPerSec(nD, nM){
+      return nD*DESKTOP.meanAvail*DESKTOP.tokPerSec + nM*MOBILE.meanAvail*MOBILE.tokPerSec;
     }
-    function tokensPerSec(nMob, nDesk){
-      return nMob*MOBILE.meanAvail*MOBILE.tokPerSec + nDesk*DESKTOP.meanAvail*DESKTOP.tokPerSec;
+    function sessions(nD, nM){ return tokensPerSec(nD, nM) / TOK_PER_SESSION; }
+    function flagshipSessions(nD){
+      return nD*FLAGSHIP_SHARE*DESKTOP.meanAvail*FLAGSHIP_TOK / TOK_PER_SESSION;
+    }
+    function exaflops(nD, nM){
+      return (nD*DESKTOP.meanAvail*DESKTOP.tflops + nM*MOBILE.meanAvail*MOBILE.tflops)*1e12/1e18;
     }
 
     var SW=0, SH=0, sdpr=1;
-    var PAD = { l: 58, r: 14, t: 16, b: 30 };
-    var YMIN = -4, YMAX = 3;   // log10 exaFLOPS
+    var PAD = { l: 62, r: 14, t: 16, b: 32 };
+    var YMIN = 0, YMAX = 9;   // log10 concurrent conversations
 
     function sx(t){ return PAD.l + t*(SW-PAD.l-PAD.r); }
     function sy(v){
-      var l = Math.log10(Math.max(v, 1e-12));
+      var l = Math.log10(Math.max(v, 1));
       var cc = Math.min(Math.max((l-YMIN)/(YMAX-YMIN), 0), 1);
       return SH-PAD.b - cc*(SH-PAD.t-PAD.b);
     }
@@ -1226,18 +1247,18 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
     }
 
     function drawSim(){
-      var tm = sMob.value/1000, td = sDesk.value/1000;
-      var nMob = logScale(tm, MMIN, MMAX);
-      var nDesk = logScale(td, DMIN, DMAX);
+      var td = sDesk.value/1000, tm = sMob.value/1000;
+      var nD = logScale(td, DMIN, DMAX);
+      var nM = logScale(tm, MMIN, MMAX);
 
-      var ef = exaflops(nMob, nDesk);
-      var efMobOnly = exaflops(nMob, 0);
-      var efDeskOnly = exaflops(0, nDesk);
-      var tps = tokensPerSec(nMob, nDesk);
+      var sess = sessions(nD, nM);
+      var flag = flagshipSessions(nD);
+      var people = tokensPerSec(nD, nM)*86400 / HEAVY_TOK_DAY;
+      var fah = exaflops(nD, nM) / FAH_EXAFLOPS;
 
       cx.clearRect(0,0,SW,SH);
 
-      // grid + y labels
+      // grid
       cx.font = '9px "JetBrains Mono", monospace';
       cx.strokeStyle = 'rgba(178,190,235,.08)';
       cx.fillStyle = '#5F6893';
@@ -1246,81 +1267,85 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
       for(var e = YMIN; e <= YMAX; e++){
         var y = sy(Math.pow(10,e));
         cx.beginPath(); cx.moveTo(PAD.l, y); cx.lineTo(SW-PAD.r, y); cx.stroke();
-        var lbl = e < 0 ? '1e'+e : (e < 3 ? Math.pow(10,e).toString() : '1e'+e);
-        cx.fillText(lbl, PAD.l-7, y+3);
+        cx.fillText(si(Math.pow(10,e)), PAD.l-7, y+3);
       }
       cx.save();
-      cx.translate(13, SH/2); cx.rotate(-Math.PI/2);
+      cx.translate(14, SH/2); cx.rotate(-Math.PI/2);
       cx.textAlign = 'center'; cx.fillStyle = '#5F6893';
-      cx.fillText('exaFLOPS sustained', 0, 0);
+      cx.fillText('conversations at once', 0, 0);
       cx.restore();
 
-      // Folding@home reference — dawn/cyan, never red.
-      var fy = sy(FAH_EXAFLOPS);
-      cx.strokeStyle = 'rgba(111,195,232,.9)';
-      cx.setLineDash([5,4]);
-      cx.beginPath(); cx.moveTo(PAD.l, fy); cx.lineTo(SW-PAD.r, fy); cx.stroke();
+      // a tangible milestone
+      var refY = sy(100000);
+      cx.strokeStyle = 'rgba(111,195,232,.55)';
+      cx.setLineDash([4,4]);
+      cx.beginPath(); cx.moveTo(PAD.l, refY); cx.lineTo(SW-PAD.r, refY); cx.stroke();
       cx.setLineDash([]);
-      cx.fillStyle = 'rgba(111,195,232,.95)';
+      cx.fillStyle = 'rgba(111,195,232,.9)';
       cx.textAlign = 'left';
-      cx.fillText("Folding@home at its peak", PAD.l+6, fy-6);
+      cx.fillText('100,000 people talking at once', PAD.l+6, refY-6);
 
-      // curves: sweep the mobile slider's axis, holding desktops fixed
-      function sweep(colour, width, fn){
+      function sweep(colour, width, fn, dash){
         cx.strokeStyle = colour; cx.lineWidth = width;
+        if(dash) cx.setLineDash(dash); else cx.setLineDash([]);
         cx.beginPath();
-        for(var i3 = 0; i3 <= 200; i3++){
-          var tt = i3/200;
-          var xx = sx(tt), yy = sy(fn(tt));
-          i3 ? cx.lineTo(xx,yy) : cx.moveTo(xx,yy);
+        for(var i = 0; i <= 220; i++){
+          var t = i/220;
+          var x = sx(t), y = sy(fn(logScale(t, DMIN, DMAX)));
+          i ? cx.lineTo(x,y) : cx.moveTo(x,y);
         }
         cx.stroke();
+        cx.setLineDash([]);
       }
-      // desktop-only contribution at the current desktop setting (flat)
-      sweep('rgba(63,208,201,.55)', 1.6, function(){ return efDeskOnly; });
-      // mobile-only, swept
-      sweep('rgba(255,180,84,.45)', 1.6, function(tt){ return exaflops(logScale(tt,MMIN,MMAX), 0); });
-      // combined, swept — the headline curve
-      sweep('#B388F0', 2.6, function(tt){ return exaflops(logScale(tt,MMIN,MMAX), nDesk); });
+
+      // phones alone — flat, because the PC slider is the swept axis
+      sweep('rgba(255,180,84,.45)', 1.6, function(){ return sessions(0, nM); }, [5,4]);
+      // flagship 32B subset
+      sweep('#FFB454', 2.2, function(d){ return flagshipSessions(d); });
+      // everything
+      sweep('#B388F0', 2.8, function(d){ return sessions(d, nM); });
 
       // current point
-      var cxp = sx(tm), cyp = sy(ef);
+      var cxp = sx(td), cyp = sy(sess);
       cx.beginPath(); cx.arc(cxp, cyp, 5.5, 0, Math.PI*2);
       cx.fillStyle = '#EAEDFA'; cx.fill();
       cx.strokeStyle = '#B388F0'; cx.lineWidth = 2; cx.stroke();
 
       // x ticks
       cx.textAlign = 'center'; cx.fillStyle = '#5F6893';
-      [1e3,1e5,1e7,1e8,MMAX].forEach(function(dv){
-        var xx = sx(logT(dv, MMIN, MMAX));
-        cx.fillText(si(dv), Math.min(Math.max(xx, PAD.l+14), SW-PAD.r-14), SH-10);
+      [1e3,1e5,1e6,1e7,1e8,DMAX].forEach(function(dv){
+        var xx = sx(logT(dv, DMIN, DMAX));
+        cx.fillText(si(dv), Math.min(Math.max(xx, PAD.l+16), SW-PAD.r-16), SH-10);
       });
       cx.textAlign = 'left';
-      cx.fillText('phones enrolled →', PAD.l+2, SH-20);
+      cx.fillText('PCs enrolled \u2192', PAD.l+2, SH-21);
 
-      // ---- readouts ----
-      vMob.textContent = si(nMob);
-      vDesk.textContent = si(nDesk);
-      oFlops.textContent = num(ef);
-      oFah.textContent = (ef/FAH_EXAFLOPS >= 100 ? Math.round(ef/FAH_EXAFLOPS) : (ef/FAH_EXAFLOPS).toFixed(ef/FAH_EXAFLOPS < 10 ? 2 : 1)) + '×';
-      oSess.textContent = si(tps/TOK_PER_SESSION);
-      oShare.textContent = Math.round(100*efDeskOnly/Math.max(ef,1e-12)) + '%';
+      // readouts
+      vDesk.textContent = si(nD);
+      vMob.textContent = si(nM);
+      oSess.textContent = si(sess);
+      oFlag.textContent = si(flag);
+      oPeople.textContent = people >= WORLD_POP ? 'everyone' : si(people);
+      oFah.textContent = (fah >= 100 ? Math.round(fah) : fah.toFixed(fah < 10 ? 2 : 1)) + '\u00D7';
 
-      // ---- verdict ----
-      var ratio = ef/FAH_EXAFLOPS, v;
-      if(ratio < 0.01){
-        v = 'A working network serving its own members — and a rounding error next to Folding@home. That is fine: the members are the point, and they are served from device one.';
-      } else if(ratio < 1){
-        v = 'Real scientific capacity now, at ' + (ratio*100).toFixed(0) + '% of Folding@home’s peak. Enough to run genuine batch work overnight.';
-      } else if(ratio < 10){
-        v = 'Past Folding@home’s peak — the largest volunteer computing effort in history — and sustained rather than a one-off surge.';
-      } else if(ratio < 100){
-        v = Math.round(ratio) + '× Folding@home, continuously. At this scale exhaustive drug screening against neglected diseases stops being budget-limited.';
+      // verdict — AI first, science as the tail
+      var v;
+      if(flag < 1000){
+        v = si(sess) + ' people could be talking to a free assistant at once. Not many can reach the '
+          + 'big model yet — that needs enthusiast PCs with 24GB cards, and there are few of them here.';
+      } else if(flag < 100000){
+        v = si(flag) + ' of those conversations run on a 32B model — the tier people currently pay a '
+          + 'subscription for, answered by someone\u2019s idle graphics card for nothing.';
+      } else if(flag < 5e6){
+        v = 'Over ' + si(flag) + ' simultaneous conversations at 32B quality. At this point the free '
+          + 'tier stops being a consolation prize and starts being a genuine alternative.';
       } else {
-        v = Math.round(ratio) + '× Folding@home, sustained indefinitely. A research instrument larger than any single institution’s, owned by nobody.';
+        v = si(flag) + ' concurrent conversations at 32B quality, free, with no account and no rate '
+          + 'limit. This is the scale where "free AI for everyone" stops being a slogan.';
       }
-      if(efDeskOnly > efMobOnly*3 && nDesk > 1e4){
-        v += ' Note how much of that is the desktop slider.';
+      if(fah >= 1){
+        v += ' The leftover capacity does ' + (fah >= 10 ? Math.round(fah) + '\u00D7' : fah.toFixed(1) + '\u00D7')
+          + ' the science Folding@home managed at its peak.';
       }
       oVerdict.textContent = v;
     }
