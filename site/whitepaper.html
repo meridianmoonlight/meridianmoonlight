@@ -202,13 +202,13 @@ footer .fine{font-size:.76rem;opacity:.7;margin-top:14px}
 </div>
 
 <h1 id="meridian-moonlight">Meridian Moonlight<a class="headerlink" href="#meridian-moonlight" title="Permanent link">#</a></h1>
-<h2 id="a-free-ai-network-built-from-machines-that-are-already-idle-overnight">A free AI network built from machines that are already idle overnight<a class="headerlink" href="#a-free-ai-network-built-from-machines-that-are-already-idle-overnight" title="Permanent link">#</a></h2>
+<h2 id="a-free-ai-network-built-from-the-graphics-cards-people-already-own">A free AI network built from the graphics cards people already own<a class="headerlink" href="#a-free-ai-network-built-from-the-graphics-cards-people-already-own" title="Permanent link">#</a></h2>
 <p><strong>Version 0.2 — July 2026</strong>
 <strong>Status: proposal. Nothing in this document has been built yet.</strong></p>
 <hr />
 <nav class="toc"><p class="toc-title">Contents</p><div class="toc">
 <ul>
-<li><a href="#a-free-ai-network-built-from-machines-that-are-already-idle-overnight">A free AI network built from machines that are already idle overnight</a></li>
+<li><a href="#a-free-ai-network-built-from-the-graphics-cards-people-already-own">A free AI network built from the graphics cards people already own</a></li>
 <li><a href="#abstract">Abstract</a></li>
 <li><a href="#1-the-problem">1. The problem</a><ul>
 <li><a href="#11-an-honest-tension-in-the-mission">1.1 An honest tension in the mission</a></li>
@@ -296,8 +296,9 @@ footer .fine{font-size:.76rem;opacity:.7;margin-top:14px}
 </div>
 </nav>
 <h2 id="abstract">Abstract<a class="headerlink" href="#abstract" title="Permanent link">#</a></h2>
-<p>Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 1.2 billion smartphones with enough memory to host a modern small language model sit on chargers every night, and roughly 920 million desktops sit idle beside them, doing nothing.</p>
-<p>Meridian Moonlight proposes to use both. Each participating machine runs a <em>complete</em> small model locally — never a fragment — and contributes spare capacity only while charging or powered, on an unmetered network, and idle. Because night circles the planet continuously, the supply of contributed compute migrates westward around the clock and never falls to zero.</p>
+<p>Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 920 million desktop computers — 250 million of them with a discrete graphics card — sit idle every night, alongside 1.2 billion smartphones with enough memory to host a small language model.</p>
+<p>Meridian Moonlight proposes to use them, <strong>desktops first.</strong> Each participating machine runs a <em>complete</em> model locally — never a fragment — and contributes spare capacity only while powered, idle, and on an unmetered connection. Because night circles the planet continuously, the supply migrates westward around the clock and never falls to zero.</p>
+<p><strong>The desktop tier is the primary path and the phone tier extends it</strong>, which is the reverse of how this project was originally framed. The reason is in the numbers: one discrete GPU does the scientific work of about 32 phones, only a desktop can host a model large enough to matter, and the desktop client faces no app-store review, no background-execution limit, and no thermal ceiling. Phones remain the mission — a billion devices already plugged in nightly, reaching people who own no PC — but they extend reach rather than supply capability.</p>
 <p><strong>The network never executes arbitrary code on a volunteer's machine.</strong> A job is a prompt plus a task-type ID drawn from an audited, published catalogue — never a script, a binary, or a container. That single constraint eliminates mining, cracking, malware, and proxy abuse structurally rather than by policy, on every tier. Its cost — the network can only compute things already implemented in the client — is stated in <a href="#35-layer-0-and-the-task-type-catalogue">§3.5</a>.</p>
 <p>This document is unusual in one respect: <strong>two of its central claims are downward revisions of earlier drafts of this same project.</strong></p>
 <p>The first draft asserted that ~30 million devices (1.4% of the capable fleet) would surpass the largest AI data centre on Earth. That was built on peak NPU throughput figures and does not survive a bandwidth-bound analysis. The honest figure is roughly 12 billion devices — more smartphones than exist. <strong>The network will not out-compute a hyperscale data centre in raw operations, and no amount of adoption changes that.</strong></p>

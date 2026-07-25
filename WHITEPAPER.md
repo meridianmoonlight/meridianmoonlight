@@ -1,6 +1,6 @@
 # Meridian Moonlight
 
-## A free AI network built from machines that are already idle overnight
+## A free AI network built from the graphics cards people already own
 
 **Version 0.2 — July 2026**
 **Status: proposal. Nothing in this document has been built yet.**
@@ -9,9 +9,11 @@
 
 ## Abstract
 
-Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 1.2 billion smartphones with enough memory to host a modern small language model sit on chargers every night, and roughly 920 million desktops sit idle beside them, doing nothing.
+Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 920 million desktop computers — 250 million of them with a discrete graphics card — sit idle every night, alongside 1.2 billion smartphones with enough memory to host a small language model.
 
-Meridian Moonlight proposes to use both. Each participating machine runs a *complete* small model locally — never a fragment — and contributes spare capacity only while charging or powered, on an unmetered network, and idle. Because night circles the planet continuously, the supply of contributed compute migrates westward around the clock and never falls to zero.
+Meridian Moonlight proposes to use them, **desktops first.** Each participating machine runs a *complete* model locally — never a fragment — and contributes spare capacity only while powered, idle, and on an unmetered connection. Because night circles the planet continuously, the supply migrates westward around the clock and never falls to zero.
+
+**The desktop tier is the primary path and the phone tier extends it**, which is the reverse of how this project was originally framed. The reason is in the numbers: one discrete GPU does the scientific work of about 32 phones, only a desktop can host a model large enough to matter, and the desktop client faces no app-store review, no background-execution limit, and no thermal ceiling. Phones remain the mission — a billion devices already plugged in nightly, reaching people who own no PC — but they extend reach rather than supply capability.
 
 **The network never executes arbitrary code on a volunteer's machine.** A job is a prompt plus a task-type ID drawn from an audited, published catalogue — never a script, a binary, or a container. That single constraint eliminates mining, cracking, malware, and proxy abuse structurally rather than by policy, on every tier. Its cost — the network can only compute things already implemented in the client — is stated in [§3.5](#35-layer-0-and-the-task-type-catalogue).
 

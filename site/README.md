@@ -1,33 +1,26 @@
 # site/ — meridianmoonlight.com
 
-Static HTML plus one PHP endpoint. No framework, no bundler, no build step on the host.
+Static HTML. No PHP, no database, no framework, no bundler, no build step on the host — and nothing that stores a visitor's data, because there is nothing to store.
 
 **Hosting is Namecheap cPanel, not GitHub Pages.** The repo is the source of truth; the host serves a copy. Edit here, commit, *then* upload — that way there is always a version history and a way to roll back.
 
 ## What goes where
 
-Four files into `public_html`:
+Everything goes into `public_html`:
 
 | File | Notes |
 |---|---|
 | `index.html` | Hand-written. Self-contained apart from Google Fonts. |
 | `whitepaper.html` | **Generated** from `../WHITEPAPER.md` by `build.py`. Do not edit. |
-| `subscribe.php` | Pledge handler — validates, honeypot, rate limits, stores, emails via SMTP |
 | `.htaccess` | HTTPS redirect, www→apex, security headers, blocks data files |
 
-Plus `figures/`, `diagrams/`, `og.png`, `robots.txt`, `sitemap.xml`.
+Plus `figures/`, `diagrams/`, `og.png`, `robots.txt`, `sitemap.xml`, and the whitepaper PDF.
 
-And **one level above** `public_html`, in the home directory:
+### There is no backend any more
 
-| File | Notes |
-|---|---|
-| `moonlight-config.php` | Renamed from `moonlight-config.example.php`. Mailbox password. **chmod 0600.** |
+The pledge form and its PHP handler were removed. The join button builds a `mailto:` link in the browser and opens the visitor's own email app with a short template. Nothing is submitted, nothing is stored, and there is no credentials file above the web root to protect.
 
-### Why the config sits outside the web root
-
-It holds the mailbox password. Above `public_html` nobody can reach it over HTTP even if PHP breaks. Inside `public_html`, one misconfiguration serves the password as plain text.
-
-`subscribe.php` also writes `moonlight-pledges.csv` and `moonlight-errors.log` **above** the web root for the same reason, and `.htaccess` denies `.csv`/`.log` as a second line of defence.
+That also means the site cannot leak a mailing list, cannot be rate-limited into failing, and needs no SMTP configuration to work.
 
 ## Rebuilding
 
@@ -67,10 +60,9 @@ Leave the HTTPS redirect block in `.htaccess` **commented out** until AutoSSL ha
 
 ## Email
 
-Mail is on Namecheap Private Email, not the cPanel server. Two settings make outbound work:
+Mail is on Namecheap Private Email, not the cPanel server. The site itself sends nothing — but people will email `hello@` from the join link, so inbound has to work and replies must not land in spam.
 
-1. **cPanel → Email Routing** → set the domain to **Remote Mail Exchanger.** Otherwise cPanel tries to deliver locally, finds no mailbox, and drops the message.
-2. `subscribe.php` sends via authenticated **SMTP**, not PHP `mail()` — which sends from a server your SPF record doesn't authorise.
+**cPanel → Email Routing** → set the domain to **Remote Mail Exchanger.** Otherwise cPanel tries to deliver locally, finds no mailbox, and silently drops incoming mail.
 
 DNS records to add at Namecheap → Advanced DNS (**never delete the MX records**):
 
@@ -86,7 +78,7 @@ DNS records to add at Namecheap → Advanced DNS (**never delete the MX records*
 - The hero animation respects `prefers-reduced-motion`: it holds at the current real UTC hour and offers an explicit **Play animation** button, so it never reads as broken. This is why the animation appears static on Windows with "Show animations" turned off.
 - Tables scroll inside their own containers; the page body never scrolls horizontally, verified to 375px.
 - The canvases carry `aria-label` descriptions.
-- The pledge form degrades to a normal POST if `fetch` is unavailable, and validates before submitting.
+- The join button is a plain link with a `mailto:` href — it works with JavaScript disabled, and the template is a progressive enhancement.
 
 ## Troubleshooting
 
@@ -95,5 +87,4 @@ DNS records to add at Namecheap → Advanced DNS (**never delete the MX records*
 | Site times out for you but works on mobile data | Your IP got auto-banned by the host firewall after rapid requests. Ask support for a permanent whitelist. |
 | 500 error after upload | `.htaccess` — usually the HTTPS redirect firing before the certificate exists. Rename to `.htaccess.off` to confirm. |
 | SSL stays inactive | DNS must resolve first, and `.well-known/` must not be redirected. This `.htaccess` already exempts it. |
-| Form confirms but no email | Check `moonlight-errors.log` above `public_html` — it records the exact SMTP failure. If the connection fails, change the config port from 465 to 587. |
 | Parking page instead of the site | A leftover Namecheap CNAME for `@` or a URL Redirect record. Delete both. |

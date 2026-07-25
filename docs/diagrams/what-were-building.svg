@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 640" width="1020" height="640" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="b-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#FFB454"/>
+    </marker>
+    <marker id="b-arwc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6FC3E8"/>
+    </marker>
+  </defs>
+
+  <rect width="1020" height="640" fill="#0A0E20"/>
+
+  <text x="40" y="44" fill="#FFB454" font-size="11.5" letter-spacing="3">MERIDIAN MOONLIGHT — WHAT WE ARE BUILDING</text>
+  <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">Three pieces. The first one is a desktop app.</text>
+  <text x="40" y="96" fill="#8D97C2" font-size="12.5">Nothing below exists yet. This is the build order, and the reason for it.</text>
+
+  <!-- ============ PRIMARY: DESKTOP NODE ============ -->
+  <rect x="40" y="124" width="450" height="212" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.65" stroke-width="1.5"/>
+  <text x="64" y="152" fill="#FFB454" font-size="10" letter-spacing="2">PIECE 1 — THE PRIMARY NODE</text>
+  <text x="64" y="180" fill="#EAEDFA" font-size="17" font-weight="700">The desktop client</text>
+  <text x="64" y="204" fill="#8D97C2" font-size="11.5">Runs a whole model on the graphics card you already</text>
+  <text x="64" y="220" fill="#8D97C2" font-size="11.5">own, while the machine is idle and powered.</text>
+
+  <rect x="64" y="236" width="196" height="80" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="80" y="258" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">WHY IT IS FIRST</text>
+  <text x="80" y="278" fill="#EAEDFA" font-size="11">No app store review</text>
+  <text x="80" y="294" fill="#EAEDFA" font-size="11">No background limits</text>
+  <text x="80" y="310" fill="#EAEDFA" font-size="11">No thermal ceiling</text>
+
+  <rect x="272" y="236" width="196" height="80" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="288" y="258" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">WHAT IT UNLOCKS</text>
+  <text x="288" y="278" fill="#EAEDFA" font-size="11">Models up to 32B</text>
+  <text x="288" y="294" fill="#EAEDFA" font-size="11">Real FP32 science</text>
+  <text x="288" y="310" fill="#EAEDFA" font-size="11">85% of research capacity</text>
+
+  <!-- ============ COORDINATOR ============ -->
+  <rect x="530" y="124" width="450" height="212" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="554" y="152" fill="#6FC3E8" font-size="10" letter-spacing="2">PIECE 2 — THE CONNECTIVE TISSUE</text>
+  <text x="554" y="180" fill="#EAEDFA" font-size="17" font-weight="700">The coordinator and dashboard</text>
+  <text x="554" y="204" fill="#8D97C2" font-size="11.5">Matches work to machines, verifies the results, and</text>
+  <text x="554" y="220" fill="#8D97C2" font-size="11.5">shows the network on a live map. Never sees content.</text>
+
+  <rect x="554" y="236" width="196" height="80" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="570" y="258" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">IT DOES</text>
+  <text x="570" y="278" fill="#EAEDFA" font-size="11">Route by capability</text>
+  <text x="570" y="294" fill="#EAEDFA" font-size="11">Hide canary tasks in work</text>
+  <text x="570" y="310" fill="#EAEDFA" font-size="11">Re-check answers at random</text>
+
+  <rect x="762" y="236" width="196" height="80" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="778" y="258" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">IT CANNOT</text>
+  <text x="778" y="278" fill="#EAEDFA" font-size="11">Send you code to run</text>
+  <text x="778" y="294" fill="#EAEDFA" font-size="11">Override your idle rules</text>
+  <text x="778" y="310" fill="#EAEDFA" font-size="11">Read what you process</text>
+
+  <!-- ============ SECONDARY: PHONE ============ -->
+  <rect x="40" y="360" width="450" height="150" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="64" y="388" fill="#6FC3E8" font-size="10" letter-spacing="2">PIECE 3 — THE EXTENSION</text>
+  <text x="64" y="416" fill="#EAEDFA" font-size="17" font-weight="700">The phone client</text>
+  <text x="64" y="440" fill="#8D97C2" font-size="11.5">Smaller models on hardware that is already plugged in</text>
+  <text x="64" y="456" fill="#8D97C2" font-size="11.5">every night. Adds reach and time-zone coverage, not</text>
+  <text x="64" y="472" fill="#8D97C2" font-size="11.5">raw capability — one GPU does the science of 32 phones.</text>
+  <text x="64" y="494" fill="#FFB454" font-size="11">It follows the desktop client, and it is where the mission scales.</text>
+
+  <!-- ============ WHAT A PERSON SEES ============ -->
+  <rect x="530" y="360" width="450" height="150" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="554" y="388" fill="#6FC3E8" font-size="10" letter-spacing="2">WHAT A PARTICIPANT ACTUALLY SEES</text>
+  <text x="554" y="414" fill="#EAEDFA" font-size="13.5" font-weight="600">One switch, one indicator, one log</text>
+  <text x="554" y="438" fill="#8D97C2" font-size="11.5">A toggle that turns contribution off with no dialog that</text>
+  <text x="554" y="454" fill="#8D97C2" font-size="11.5">argues. A visible marker whenever the machine is working.</text>
+  <text x="554" y="470" fill="#8D97C2" font-size="11.5">A record of what it did. And a free assistant, on the same</text>
+  <text x="554" y="486" fill="#8D97C2" font-size="11.5">machine, that answers locally before the network is asked.</text>
+
+  <!-- arrows: desktop + phone -> coordinator -->
+  <path d="M490 230 L524 230" stroke="#FFB454" stroke-width="1.6" fill="none" marker-end="url(#b-arw)"/>
+  <path d="M490 430 L512 430 L512 250 L524 250" stroke="#6FC3E8" stroke-width="1.4" fill="none" marker-end="url(#b-arwc)" stroke-opacity="0.8"/>
+
+  <!-- ============ MILESTONE STRIP ============ -->
+  <line x1="40" y1="542" x2="980" y2="542" stroke="#2A3468" stroke-dasharray="3 4"/>
+  <text x="40" y="568" fill="#6FC3E8" font-size="10" letter-spacing="2">THE FIRST MILESTONE — AND THE ONLY THING THAT MATTERS RIGHT NOW</text>
+
+  <rect x="40" y="580" width="298" height="42" rx="2" fill="#0A0E20" stroke="#FFB454" stroke-opacity="0.5"/>
+  <text x="56" y="600" fill="#EAEDFA" font-size="12" font-weight="600">One PC answers one question</text>
+  <text x="56" y="615" fill="#8D97C2" font-size="10.5">on a machine across the room</text>
+
+  <rect x="354" y="580" width="298" height="42" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="370" y="600" fill="#EAEDFA" font-size="12" font-weight="600">Measured speed, watts, and heat</text>
+  <text x="370" y="615" fill="#8D97C2" font-size="10.5">published even if the numbers are bad</text>
+
+  <rect x="668" y="580" width="312" height="42" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="684" y="600" fill="#EAEDFA" font-size="12" font-weight="600">A sixty-second video of it working</text>
+  <text x="684" y="615" fill="#8D97C2" font-size="10.5">which is worth more than this whole document</text>
+</svg>

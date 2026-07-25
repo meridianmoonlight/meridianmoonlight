@@ -6,23 +6,17 @@ The repo is the source of truth; `deploy/` is exactly what goes on the host.
 
 ---
 
-## 1. Upload the site (15 minutes)
+## 1. Upload the site (10 minutes)
 
 Everything in **`deploy/public_html/`** goes into `public_html`:
 
 ```
-index.html          whitepaper.html     subscribe.php       .htaccess
-og.png              robots.txt          sitemap.xml         figures/
-diagrams/           meridian-moonlight-whitepaper.pdf
+index.html          whitepaper.html     .htaccess           og.png
+robots.txt          sitemap.xml         figures/            diagrams/
+meridian-moonlight-whitepaper.pdf
 ```
 
-And the one file in **`deploy/above_public_html/`** goes **one level above** `public_html`, in your home directory:
-
-```
-moonlight-config.example.php   →  rename to  moonlight-config.php
-```
-
-Then, in that file: fill in the mailbox password, and **chmod 0600** (File Manager → right-click → Change Permissions → tick only Read and Write for User).
+That is the whole site. **There is no PHP, no database, and nothing above the web root any more** — the pledge form is gone, replaced by a link that opens the visitor's email app. Nothing is stored and nothing can leak.
 
 **In cPanel File Manager, turn on Settings → Show Hidden Files** or `.htaccess` is invisible.
 
@@ -40,11 +34,11 @@ The HTTPS redirect block in `.htaccess` is **already commented out**. Leave it t
 
 ---
 
-## 2. Make the pledge form actually deliver
+## 2. Make sure email actually works
 
-Two settings, both required, both easy to miss:
+The site no longer sends anything, but people will now email `hello@` directly — so the mailbox has to receive reliably, and your replies have to not land in spam.
 
-- [ ] **cPanel → Email Routing → set the domain to Remote Mail Exchanger.** Otherwise cPanel tries to deliver locally, finds no mailbox, and silently drops the message.
+- [ ] **cPanel → Email Routing → set the domain to Remote Mail Exchanger.** Otherwise cPanel tries to deliver locally, finds no mailbox, and silently drops incoming mail.
 - [ ] **Add DNS records** at Namecheap → Advanced DNS. **Never delete the MX records** — you are adding, not replacing:
 
 | Type | Host | Value |
@@ -53,7 +47,7 @@ Two settings, both required, both easy to miss:
 | TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:hello@meridianmoonlight.com` |
 | TXT | `privateemail._domainkey` | *(copy from the Private Email dashboard)* |
 
-- [ ] **Test it.** Submit the form, then check `moonlight-errors.log` above `public_html`. If the connection failed, change the config port from 465 to 587 — the script switches to STARTTLS automatically.
+- [ ] **Test it.** Send yourself a message from an outside address, and reply to it. Both directions need to work.
 
 ---
 
@@ -119,6 +113,7 @@ Flagging these because they're judgement calls, not mechanical ones. All are rev
 | Ship the diagrams as **SVG, not PNG** | The PNGs in your zip still contain the wrong determinism text. SVG renders on GitHub, is sharper, and can't drift from the corrected source. | `docs/diagrams/` |
 | Simulator now plots against **Folding@home**, not the data-center line | The data-center comparison is the retracted claim. Plotting it would have made the interactive centrepiece display the error we're retracting. | `site/index.html` |
 | Reference line changed from **red to cyan** | Your simulator used `rgba(196,78,82)` for the data-center line — red, which you can't reliably distinguish. | `site/index.html` |
+| **Deleted `subscribe.php` and its config** rather than leaving them unused | The pledge is gone, so the backend is dead weight — and an unused PHP endpoint with a credentials file is a liability, not a spare part. Git history keeps them. | `deploy/` |
 | Kept your **ROADMAP.md content** but superseded it with `docs/MILESTONES.md` | Yours was the original outline; MILESTONES is issue-ready and covers both tiers. | `docs/MILESTONES.md` |
 | Desktop availability modelled **lower than mobile** (19.6% vs 25.7%) | People plug phones in and switch PCs off. This is the one axis where desktops lose, and omitting it would have overstated the tier. | `analysis/compute_model.py` |
 

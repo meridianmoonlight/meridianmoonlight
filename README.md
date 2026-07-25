@@ -1,8 +1,8 @@
 <h1 align="center">Meridian Moonlight</h1>
 
 <p align="center">
-  <strong>A free AI network built from machines that are already idle overnight.</strong><br>
-  Your phone works for the world while you sleep. Your PC does the science.<br>
+  <strong>A free AI network built from the graphics cards people already own.</strong><br>
+  The most powerful computer in your house does nothing all night.<br>
   No data center. No token. No cost to you.
 </p>
 
@@ -23,9 +23,19 @@
 
 ## Status: this is a proposal. No code has been written yet.
 
-What exists is a design, an auditable compute model, and a whitepaper. What does not exist is an app, a coordinator, or a network. Milestone 0 is one machine answering one question — and it hasn't happened.
+What exists is a design, an auditable compute model, and a whitepaper. What does not exist is an app, a coordinator, or a network. Milestone 0 is one PC answering one question — and it hasn't happened.
 
 We publish at this stage on purpose. The numbers most likely to be wrong are cheaper to correct now than after a year of building on them.
+
+---
+
+## What we're building
+
+![What we're building](docs/diagrams/what-were-building.svg)
+
+## What it can do
+
+![What it can do](docs/diagrams/what-it-can-do.svg)
 
 ---
 
@@ -33,29 +43,30 @@ We publish at this stage on purpose. The numbers most likely to be wrong are che
 
 ![How a request flows through the network](docs/diagrams/architecture.svg)
 
-1. **Each machine runs a whole small model.** Nothing is split across the internet — splitting a model means a network round trip per layer per token, which is five to six orders of magnitude too slow. [Why](WHITEPAPER.md#21-this-is-not-one-giant-brain).
+1. **Each machine runs a whole model.** Up to 32B on a 24GB graphics card. Nothing is split across the internet — splitting a model means a network round trip per layer per token, which is five to six orders of magnitude too slow. [Why](WHITEPAPER.md#21-this-is-not-one-giant-brain).
 2. **Contribution is gated to conditions you'd never notice.** Charging, on Wi-Fi, screen off, battery above 80%, device cool. One switch turns it off, with no dialog that argues.
 3. **Compute follows the moon.** Night circles the planet continuously, so supply migrates westward around the clock and never drops below ~14% of the enrolled fleet.
 4. **Requests are answered locally first.** The network is the fallback, not the default.
 
 ---
 
-## Two tiers, two jobs
+## PCs do the work. Phones extend the reach.
 
 ![Scientific throughput is a desktop story](docs/figures/fig7_tiers.png)
 
-| | Phones | Desktops |
+| | **PCs and Macs** *(primary)* | Phones *(extension)* |
 |---|---|---|
-| **Carries** | The mission and the scale story | The research instrument |
-| **Strength** | 1.2B capable devices, plugged in nightly | Real GPUs, mains power, no app store |
-| **Weakness** | Thermally limited, bandwidth-starved | People switch them off (20% vs 26% mean availability) |
-| **Folding@home parity** | ~31M devices | **~1.3M discrete-GPU machines** |
+| **Carries** | The capability and the science | Reach, time-zone coverage, the mission at scale |
+| **Biggest model** | **32B on a 24GB card** — the tier people pay for | 3B — useful, not impressive |
+| **Strength** | Real GPUs, mains power, no app store, no thermal ceiling | 1.2B devices, plugged in nightly |
+| **Weakness** | People switch them off (19.6% vs 25.7% availability) | Bandwidth-starved and thermally limited |
+| **Folding@home parity** | **~1.3M gaming PCs** | ~31M devices — 24× more machines |
 
-A discrete GPU does the scientific work of about **32 phones**. Desktops are only 920M machines against 4.6B handsets, and they're switched off more often — and they still supply **85% of the network's scientific capacity.**
+A discrete GPU does the scientific work of about **32 phones**, and it is the only hardware that can host a model big enough to compete with what people currently pay for. There are only 920M desktops against 4.6B handsets, and they are switched off more often — and they still supply **85% of the network's scientific capacity.**
 
-Which is why M0 targets both tiers in parallel: the desktop client is the faster path to a working demo, and the mobile client is the mission.
+**So the desktop client is what gets built first**, and it is what the numbers here are about. The phone client follows, and it is where the mission scales: a billion devices already plugged in every night, reaching people who do not own a PC at all.
 
-**Desktops also raise the ceiling on the AI itself.** A 32B-class model needs 22GB, which only ~30M desktops can run fast enough to hold a conversation — but that means **~331,000 enthusiast machines would serve 100,000 concurrent conversations** against a model in the tier people currently pay for. Everywhere else here capability needs scale; this needs a small number of the right machines. The costs — harder verification, contention with the science tier, and concentration on ~6% of nodes — are in [analysis/LADDER.md](analysis/LADDER.md).
+**PCs also raise the ceiling on the AI itself.** A 32B-class model needs 22GB, which only ~30M desktops can run fast enough to hold a conversation — but that means **~331,000 enthusiast machines would serve 100,000 concurrent conversations** against a model in the tier people currently pay for. Everywhere else here capability needs scale; this needs a small number of the right machines. The costs — harder verification, contention with the science tier, and concentration on ~6% of nodes — are in [analysis/LADDER.md](analysis/LADDER.md).
 
 ---
 
@@ -181,7 +192,7 @@ Three are physics and will not be engineered away.
 
 | | Milestone | Scale | The deliverable that matters |
 |---|---|---|---|
-| **M0** | One node lives | 1 device, both tiers | **Measured** tok/s, watts, thermals — and where bit-exactness actually holds |
+| **M0** | One node lives | 1 PC, then 1 phone | **Measured** tok/s, watts, thermals — and where bit-exactness actually holds |
 | **M1** | The network answers | ~100 | Routing, redundant verification, reputation, live node map |
 | **M2** | Follow the moon | ~10K | **Measured** 24-hour availability curve; first real science batch job |
 | **M3** | Open protocol | ~100K | Spec v1.0, third-party nodes, governance in force, first research partner |
@@ -225,8 +236,8 @@ PROJECT_LOG.md             Session history and decisions
 In rough order of usefulness:
 
 - **Find an error in the math.** [`analysis/compute_model.py`](analysis/compute_model.py). Genuinely the most valuable thing right now.
-- **Benchmark a machine.** M0 needs measured tok/s, watts, and thermals across many devices — a table one person cannot build.
-- **Desktop or Android client work.** llama.cpp plus a contribution gate. See [MILESTONES](docs/MILESTONES.md).
+- **Benchmark a machine.** M0 needs measured tok/s, watts, and thermals across many machines — especially graphics cards. A table one person cannot build.
+- **Desktop client work.** llama.cpp plus a contribution gate, no app store in the way. This is the critical path — see [MILESTONES](docs/MILESTONES.md).
 - **Attack the threat model.** [Sybil resistance is bounded, not solved](docs/threat-model.md#sybil-resistance), and the [content-routing design](docs/threat-model.md#1-protecting-volunteers) deserves argument.
 - **Bring a workload** if you're a researcher with a parallel problem and no budget.
 
