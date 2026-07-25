@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Whitepaper — Meridian Moonlight</title>
+<meta name="description" content="Meridian Moonlight whitepaper: a free AI network built from the world's sleeping phones. Includes the retraction of our own headline claim, full derivations, and a sensitivity analysis.">
+<link rel="canonical" href="https://meridianmoonlight.com/whitepaper.html">
+<meta property="og:title" content="Meridian Moonlight — Whitepaper">
+<meta property="og:description" content="A free AI network built from the world's sleeping phones. Every number auditable, and one of them is a retraction of our own headline claim.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://meridianmoonlight.com/whitepaper.html">
+<meta property="og:image" content="https://meridianmoonlight.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Public+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --abyss:#0A0E20; --night:#111735; --raised:#1A2149;
+  --line:rgba(178,190,235,.14); --moon:#EAEDFA; --dim:#8D97C2;
+  --amber:#FFB454; --amber-soft:rgba(255,180,84,.10); --dawn:#6FC3E8;
+  --display:'Archivo',system-ui,sans-serif;
+  --body:'Public Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --wrap:820px; --pad:clamp(20px,5vw,44px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--abyss);color:var(--moon);
+  font-family:var(--body);font-weight:300;font-size:17.5px;line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 120% 60% at 50% -8%,rgba(60,80,180,.18),transparent 60%);
+  background-repeat:no-repeat}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:rgba(10,14,32,.80);border-bottom:1px solid var(--line)}
+.nav .inner{max-width:var(--wrap);margin:0 auto;padding:14px var(--pad);
+  display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 116;
+  font-size:.9rem;letter-spacing:.11em;text-decoration:none;white-space:nowrap;color:var(--moon)}
+.brand span{color:var(--amber)}
+.nav .links{display:flex;gap:20px;font-size:.85rem;color:var(--dim)}
+.nav .links a{color:var(--dim);text-decoration:none;transition:color .2s}
+.nav .links a:hover{color:var(--moon)}
+@media(max-width:640px){.nav .links a.hide-sm{display:none}}
+
+/* page */
+main{max-width:var(--wrap);margin:0 auto;padding:clamp(40px,7vw,72px) var(--pad) 120px}
+
+h1,h2,h3,h4{font-family:var(--display);font-weight:700;
+  font-variation-settings:'wdth' 110;line-height:1.12;letter-spacing:-.02em;
+  scroll-margin-top:80px}
+h1{font-size:clamp(2.3rem,5.6vw,3.5rem);font-variation-settings:'wdth' 118;
+  margin:0 0 .3em;letter-spacing:-.03em}
+h2{font-size:clamp(1.5rem,3.2vw,2.05rem);margin:2.9em 0 .7em;
+  padding-top:1.1em;border-top:1px solid var(--line)}
+h3{font-size:1.22rem;margin:2.1em 0 .5em;font-variation-settings:'wdth' 106}
+h4{font-size:1.02rem;margin:1.8em 0 .4em;color:var(--dawn)}
+h1+h2{border-top:0;padding-top:0;margin-top:1.6em}
+
+p{margin:0 0 1.25em}
+strong{color:var(--moon);font-weight:500}
+em{font-style:italic}
+a{color:var(--dawn);text-decoration:none;border-bottom:1px solid rgba(111,195,232,.32);
+  transition:border-color .2s,color .2s}
+a:hover{color:var(--amber);border-bottom-color:var(--amber)}
+h2 a,h3 a{border:0}
+
+/* lead paragraph after h1 */
+h1+p{font-size:1.2rem;color:var(--dim)}
+
+ul,ol{margin:0 0 1.5em;padding-left:1.5em;color:var(--dim)}
+li{margin-bottom:.6em}
+li>strong{color:var(--moon)}
+li::marker{color:var(--amber)}
+
+hr{border:0;border-top:1px solid var(--line);margin:3em 0}
+
+blockquote{margin:1.6em 0;padding:.2em 0 .2em 1.3em;
+  border-left:2px solid var(--dawn);color:var(--dim)}
+blockquote p:last-child{margin-bottom:0}
+
+code{font-family:var(--mono);font-size:.86em;background:var(--night);
+  border:1px solid var(--line);padding:.12em .42em;border-radius:2px;color:var(--amber)}
+pre{background:var(--night);border:1px solid var(--line);border-left:2px solid var(--amber);
+  padding:18px 20px;overflow-x:auto;margin:1.6em 0;font-size:.86rem;line-height:1.6}
+pre code{background:0;border:0;padding:0;color:var(--moon);font-size:1em}
+
+/* tables — the whitepaper leans on these heavily */
+.tablewrap{overflow-x:auto;margin:1.8em 0;
+  border:1px solid var(--line);background:var(--night)}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:min(100%,520px)}
+th{text-align:left;font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);font-weight:400;
+  padding:14px 16px;border-bottom:1px solid var(--line);white-space:nowrap;
+  background:rgba(10,14,32,.45)}
+td{padding:13px 16px;border-bottom:1px solid var(--line);color:var(--dim);
+  vertical-align:top}
+tr:last-child td{border-bottom:0}
+td strong{color:var(--amber);font-weight:500}
+
+img{max-width:100%;height:auto;display:block;margin:2.2em 0;
+  border:1px solid var(--line);background:#F6F7FB}
+
+/* the status banner up top */
+.status{background:var(--night);border:1px solid var(--line);
+  border-left:2px solid var(--dawn);padding:18px 22px;margin:0 0 2.4em;
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;color:var(--dim);line-height:1.7}
+.status b{color:var(--dawn);font-weight:500}
+
+/* table of contents */
+.toc{background:var(--night);border:1px solid var(--line);padding:24px 28px;margin:2.6em 0}
+.toc>ul{margin:0;padding-left:1.1em;columns:2;column-gap:34px}
+@media(max-width:640px){.toc>ul{columns:1}}
+.toc li{margin-bottom:.42em;font-size:.92rem}
+.toc a{color:var(--dim);border:0}
+.toc a:hover{color:var(--amber)}
+.toc-title{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber);margin:0 0 14px}
+
+/* heading anchors */
+.headerlink{opacity:0;margin-left:.4em;font-weight:400;color:var(--dim);
+  border:0;font-size:.8em;transition:opacity .15s}
+h2:hover .headerlink,h3:hover .headerlink,h4:hover .headerlink{opacity:.55}
+
+footer{border-top:1px solid var(--line);margin-top:60px;padding:36px var(--pad) 70px;
+  color:var(--dim);font-size:.85rem;max-width:var(--wrap);margin-left:auto;margin-right:auto}
+footer a{color:var(--dim)}
+footer .fine{font-size:.76rem;opacity:.7;margin-top:14px}
+
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Print / PDF. The screen theme is light-on-dark, so every colour that relies
+   on a dark background has to be re-specified here — otherwise near-white
+   `strong` text renders invisible on paper. */
+@media print{
+  body{background:#fff;color:#141414;background-image:none;font-size:11.5pt;line-height:1.6}
+  .nav,footer .fine,.headerlink{display:none}
+  main{max-width:none;padding:0}
+
+  h1,h2,h3,h4{color:#000}
+  h2{border-top:1px solid #bbb;page-break-after:avoid}
+  h3,h4{page-break-after:avoid}
+  h1+p{color:#333}
+
+  p,li,td,th,blockquote{color:#222}
+  strong,li>strong,td strong{color:#000;font-weight:600}
+  em{color:#222}
+  li::marker{color:#777}
+
+  a{color:#0b3d63;border:0;text-decoration:underline}
+
+  code{background:#f0f1f5;border:1px solid #ccc;color:#8a4500}
+  pre{background:#f6f7fb;border:1px solid #ccc;border-left:2px solid #8a4500;
+      page-break-inside:avoid}
+  pre code{color:#141414}
+
+  .status{background:#f6f7fb;border:1px solid #ccc;border-left:2px solid #666;color:#333}
+  .status b{color:#000}
+
+  .toc{background:#f6f7fb;border:1px solid #ccc;page-break-inside:avoid}
+  .toc-title{color:#555}
+  .toc a{color:#222;text-decoration:none}
+
+  .tablewrap{background:#fff;border:1px solid #bbb;overflow:visible;
+             page-break-inside:avoid}
+  table{min-width:0}
+  th{background:#f0f1f5;color:#444}
+  td,th{border-bottom:1px solid #ddd}
+
+  blockquote{border-left:2px solid #666}
+  img{border:1px solid #ccc;page-break-inside:avoid;max-height:78vh;
+      margin:1.4em auto}
+  hr{border-top:1px solid #ddd}
+  footer{border-top:1px solid #ccc;color:#444}
+  footer a{color:#0b3d63}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="inner">
+    <a class="brand" href="index.html">MERIDIAN <span>MOONLIGHT</span></a>
+    <div class="links">
+      <a href="index.html">Home</a>
+      <a href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/compute_model.py" class="hide-sm" target="_blank" rel="noopener">The model</a>
+      <a href="meridian-moonlight-whitepaper.pdf" class="hide-sm">PDF</a>
+      <a href="https://github.com/OWNER/meridian-moonlight" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<div class="status">
+  <b>STATUS: PROPOSAL.</b> Nothing in this document has been built yet. It is published at this
+  stage on purpose &mdash; the numbers most likely to be wrong are cheaper to correct now than
+  after a year of building on them.
+</div>
+
+<h1 id="meridian-moonlight">Meridian Moonlight<a class="headerlink" href="#meridian-moonlight" title="Permanent link">#</a></h1>
+<h2 id="a-free-ai-network-built-from-the-worlds-sleeping-phones">A free AI network built from the world's sleeping phones<a class="headerlink" href="#a-free-ai-network-built-from-the-worlds-sleeping-phones" title="Permanent link">#</a></h2>
+<p><strong>Version 0.1 — July 2026</strong>
+<strong>Status: proposal. Nothing in this document has been built yet.</strong></p>
+<hr />
+<nav class="toc"><p class="toc-title">Contents</p><div class="toc">
+<ul>
+<li><a href="#a-free-ai-network-built-from-the-worlds-sleeping-phones">A free AI network built from the world's sleeping phones</a></li>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#1-the-problem">1. The problem</a><ul>
+<li><a href="#11-an-honest-tension-in-the-mission">1.1 An honest tension in the mission</a></li>
+</ul>
+</li>
+<li><a href="#2-what-physics-forbids">2. What physics forbids</a><ul>
+<li><a href="#21-this-is-not-one-giant-brain">2.1 This is not one giant brain</a></li>
+<li><a href="#22-this-will-not-train-frontier-models">2.2 This will not train frontier models</a></li>
+<li><a href="#23-the-compute-is-throughput-not-a-pooled-engine">2.3 The compute is throughput, not a pooled engine</a></li>
+<li><a href="#24-and-one-limit-that-is-not-physics-but-is-real">2.4 And one limit that is not physics, but is real</a></li>
+</ul>
+</li>
+<li><a href="#3-architecture">3. Architecture</a><ul>
+<li><a href="#31-local-first-network-second">3.1 Local-first, network-second</a></li>
+<li><a href="#32-the-contribution-gate">3.2 The contribution gate</a></li>
+<li><a href="#33-routing-and-verification">3.3 Routing and verification</a></li>
+<li><a href="#34-centralised-scaffolding-decentralised-building">3.4 Centralised scaffolding, decentralised building</a></li>
+<li><a href="#35-model-selection-and-licensing">3.5 Model selection and licensing</a></li>
+</ul>
+</li>
+<li><a href="#4-the-fleet">4. The fleet</a></li>
+<li><a href="#5-the-bandwidth-wall">5. The bandwidth wall</a><ul>
+<li><a href="#51-why-peak-tops-is-the-wrong-number">5.1 Why peak TOPS is the wrong number</a></li>
+<li><a href="#52-cross-checking-against-reality">5.2 Cross-checking against reality</a></li>
+<li><a href="#53-the-claim-we-retract">5.3 The claim we retract</a></li>
+<li><a href="#54-what-replaces-it-self-sufficiency">5.4 What replaces it: self-sufficiency</a></li>
+</ul>
+</li>
+<li><a href="#6-follow-the-moon">6. Follow the moon</a><ul>
+<li><a href="#61-modelling-availability-honestly">6.1 Modelling availability honestly</a></li>
+<li><a href="#62-the-result">6.2 The result</a></li>
+</ul>
+</li>
+<li><a href="#7-sensitivity-what-if-we-are-wrong">7. Sensitivity: what if we are wrong</a></li>
+<li><a href="#8-what-the-network-is-for">8. What the network is for</a><ul>
+<li><a href="#81-at-any-scale-a-private-assistant-that-costs-nothing">8.1 At any scale: a private assistant that costs nothing</a></li>
+<li><a href="#82-at-31m-devices-and-beyond-a-research-instrument">8.2 At ~31M devices and beyond: a research instrument</a></li>
+<li><a href="#83-and-the-boundary">8.3 And the boundary</a></li>
+</ul>
+</li>
+<li><a href="#9-threat-model">9. Threat model</a><ul>
+<li><a href="#91-malicious-and-faulty-nodes">9.1 Malicious and faulty nodes</a></li>
+<li><a href="#92-the-hard-problem-whose-content-runs-on-whose-phone">9.2 The hard problem: whose content runs on whose phone</a></li>
+<li><a href="#93-privacy">9.3 Privacy</a></li>
+<li><a href="#94-platform-and-policy-risk">9.4 Platform and policy risk</a></li>
+</ul>
+</li>
+<li><a href="#10-economics-who-pays">10. Economics: who pays</a><ul>
+<li><a href="#101-the-cost-structure">10.1 The cost structure</a></li>
+<li><a href="#102-where-money-comes-from">10.2 Where money comes from</a></li>
+<li><a href="#103-the-honest-gap">10.3 The honest gap</a></li>
+</ul>
+</li>
+<li><a href="#11-governance">11. Governance</a></li>
+<li><a href="#12-prior-art-and-positioning">12. Prior art and positioning</a></li>
+<li><a href="#13-roadmap">13. Roadmap</a><ul>
+<li><a href="#m0-one-node-lives-month-01-1-device">M0 — One node lives (month 0–1, 1 device)</a></li>
+<li><a href="#m1-the-network-answers-month-13-100-devices">M1 — The network answers (month 1–3, ~100 devices)</a></li>
+<li><a href="#m2-follow-the-moon-month-39-10k-devices">M2 — Follow the moon (month 3–9, ~10K devices)</a></li>
+<li><a href="#m3-open-protocol-month-918-100k-devices">M3 — Open protocol (month 9–18, ~100K devices)</a></li>
+<li><a href="#m4-public-utility-month-18-1m-devices">M4 — Public utility (month 18+, 1M+ devices)</a></li>
+</ul>
+</li>
+<li><a href="#14-how-to-falsify-this">14. How to falsify this</a></li>
+<li><a href="#appendix-a-derivations">Appendix A: derivations</a><ul>
+<li><a href="#a1-capable-fleet">A.1 Capable fleet</a></li>
+<li><a href="#a2-per-device-decode-throughput">A.2 Per-device decode throughput</a></li>
+<li><a href="#a3-availability">A.3 Availability</a></li>
+<li><a href="#a4-self-sufficiency">A.4 Self-sufficiency</a></li>
+<li><a href="#a5-scientific-capacity">A.5 Scientific capacity</a></li>
+<li><a href="#a6-stated-assumptions-all-in-one-place">A.6 Stated assumptions, all in one place</a></li>
+</ul>
+</li>
+<li><a href="#appendix-b-what-we-retract">Appendix B: what we retract</a></li>
+<li><a href="#colophon">Colophon</a></li>
+</ul>
+</div>
+</nav>
+<h2 id="abstract">Abstract<a class="headerlink" href="#abstract" title="Permanent link">#</a></h2>
+<p>Capable AI runs almost entirely inside data centres owned by a handful of companies. Meanwhile roughly 1.2 billion smartphones with enough memory to host a modern small language model sit on chargers every night, doing nothing.</p>
+<p>Meridian Moonlight proposes to use them. Each participating phone runs a <em>complete</em> small model locally — never a fragment — and contributes spare capacity only while charging, on Wi-Fi, and idle. Because night circles the planet continuously, the supply of contributed compute migrates westward around the clock and never falls to zero.</p>
+<p>This document is unusual in one respect: <strong>its central quantitative claim is a downward revision of an earlier draft of this same project.</strong> That draft asserted that ~30 million devices (1.4% of the capable fleet) would surpass the largest AI data centre on Earth. That claim was built on peak NPU throughput figures and does not survive a bandwidth-bound analysis. The honest figure is roughly 12 billion devices — more smartphones than exist. <strong>The network will not out-compute a hyperscale data centre in raw operations, and no amount of adoption changes that.</strong></p>
+<p>What survives is stronger, because it does not depend on winning a compute race:</p>
+<ol>
+<li><strong>The network is self-sufficient at every scale.</strong> Capacity and membership grow together, so each participant's share of capacity is roughly 274,000 output tokens per day — about <strong>9× more than heavy personal use</strong>, and 5× even at the daily supply trough. This ratio is identical at one thousand devices and at one billion. There is no threshold to cross before the network is useful to the people in it.</li>
+<li><strong>The surplus is a research instrument.</strong> At roughly <strong>31 million enrolled devices</strong> the network continuously matches the peak throughput of Folding@home, the largest volunteer computing effort in history. At full enrolment of today's capable fleet it delivers about <strong>92 exaFLOPS sustained, ~38× Folding@home's peak</strong>, indefinitely.</li>
+<li><strong>Its structural advantages are ones data centres cannot copy</strong> — marginal cost near zero, hardware already paid for, no single point of control, and privacy-preserving federated analysis over data that legally cannot be centralised.</li>
+</ol>
+<p>Every number above is produced by <a href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener"><code>analysis/compute_model.py</code></a>, which is a few hundred lines of commented Python that anyone can run, audit, and disagree with. The assumptions are named constants. The sensitivity of every conclusion to every assumption is published in <a href="#7-sensitivity-what-if-we-are-wrong">§7</a>. We would rather be corrected than believed.</p>
+<hr />
+<hr />
+<h2 id="1-the-problem">1. The problem<a class="headerlink" href="#1-the-problem" title="Permanent link">#</a></h2>
+<p>Three problems compound as AI becomes more consequential.</p>
+<p><strong>Access is gated.</strong> Capable AI costs money, requires a reliable connection to a distant server, and can be priced out, rate-limited, geo-blocked, or switched off. The people least able to pay are the people for whom a competent tutor, translator, or medical-information assistant would matter most.</p>
+<p><strong>Capability follows capital.</strong> Whoever owns the compute owns the capability. Individuals and communities are consumers of intelligence and never owners of it. Independent researchers and universities increasingly cannot afford to run the experiments they can design.</p>
+<p><strong>The infrastructure is concentrated.</strong> Data centres are enormous, expensive, energy-hungry, and few. That makes them efficient, and it also makes them chokepoints — commercially, politically, and during disasters.</p>
+<p>There is an asymmetry worth sitting with. The most widely distributed computing hardware ever manufactured is already in people's pockets, already paid for, already plugged in every night. Its idle capacity is currently worth exactly nothing to anyone.</p>
+<h3 id="11-an-honest-tension-in-the-mission">1.1 An honest tension in the mission<a class="headerlink" href="#11-an-honest-tension-in-the-mission" title="Permanent link">#</a></h3>
+<p>The framing "free AI for the three billion people excluded from paid AI" contains a problem we should name rather than paper over: <strong>the people most excluded from paid AI largely do not own the phones that can run these models.</strong> An 8GB-RAM handset is not a poverty device.</p>
+<p>So the mission has to be stated in two parts:</p>
+<ul>
+<li><strong>Contributors</strong> are disproportionately in wealthier markets, because that is where capable hardware is.</li>
+<li><strong>Beneficiaries</strong> need not be. A network node serves whoever asks, and a 2GB phone that cannot host a model can still hold a conversation with one.</li>
+</ul>
+<p>That asymmetry is not a flaw. It is the entire point: it is a transfer of capability from people who have spare silicon to people who do not. But describing it as "giving three billion people a phone that runs AI" would be false, and we do not say it.</p>
+<hr />
+<h2 id="2-what-physics-forbids">2. What physics forbids<a class="headerlink" href="#2-what-physics-forbids" title="Permanent link">#</a></h2>
+<p>Credibility in this space is established by what you rule out. Three limits are not engineering challenges to be overcome — they are properties of the problem.</p>
+<h3 id="21-this-is-not-one-giant-brain">2.1 This is not one giant brain<a class="headerlink" href="#21-this-is-not-one-giant-brain" title="Permanent link">#</a></h3>
+<p>Splitting a single large model across phones connected by the internet does not work, and the reason is worth being precise about.</p>
+<p>Generating one token requires activations to pass sequentially through every layer of the model. If layers live on different devices, each token costs a network round trip per layer boundary. Inside a data centre, chip-to-chip interconnects deliver hundreds of gigabytes per second at sub-microsecond latency. Between two phones on consumer internet, you have tens of milliseconds and single-digit megabytes per second. That is a gap of five to six orders of magnitude, in the one dimension the workload is most sensitive to.</p>
+<p>A 28-layer model split across 28 phones with 40 ms hops spends over a second of pure network latency per token. This is not a matter of better software.</p>
+<p><strong>Meridian does not fight this. Every node runs a complete model.</strong> The network layer routes, verifies, and aggregates; it never carries activations mid-forward-pass.</p>
+<h3 id="22-this-will-not-train-frontier-models">2.2 This will not train frontier models<a class="headerlink" href="#22-this-will-not-train-frontier-models" title="Permanent link">#</a></h3>
+<p>Training synchronises gradients across the entire parameter set every step. That requires memory bandwidth between processors measured in terabytes per second, which requires the processors to be physically adjacent. Wide-area networks are not a substitute, and no protocol design changes this.</p>
+<p>Federated <em>fine-tuning</em> of an already-trained small model is a different and genuinely tractable problem, because updates are sparse, compressible, and tolerant of staleness. That is in scope. Pre-training is not.</p>
+<h3 id="23-the-compute-is-throughput-not-a-pooled-engine">2.3 The compute is throughput, not a pooled engine<a class="headerlink" href="#23-the-compute-is-throughput-not-a-pooled-engine" title="Permanent link">#</a></h3>
+<p>A million phones can run a million independent tasks. They cannot make one task a million times faster.</p>
+<p>The right mental image is a million couriers, not one cargo jet. Couriers are superb at delivering a million parcels to a million addresses and useless for moving a single shipping container. Every workload described in <a href="#8-what-the-network-is-for">§8</a> decomposes into independent pieces. Workloads that do not decompose are out of scope, permanently.</p>
+<h3 id="24-and-one-limit-that-is-not-physics-but-is-real">2.4 And one limit that is not physics, but is real<a class="headerlink" href="#24-and-one-limit-that-is-not-physics-but-is-real" title="Permanent link">#</a></h3>
+<p><strong>Data centres batch. Phones cannot.</strong></p>
+<p>This is the single most important asymmetry in the document, and it is why <a href="#5-the-bandwidth-wall">§5</a> reaches the conclusion it does. When a data centre serves a language model, it processes hundreds of user requests concurrently against one copy of the weights. Each weight is read from memory once and used hundreds of times. The expensive resource — memory bandwidth — is amortised across every concurrent user.</p>
+<p>A phone serving one user has a batch size of one. Every weight is read from memory, used once, and discarded. The phone pays the full bandwidth cost per token that the data centre spreads across hundreds of tokens.</p>
+<p>Per unit of hardware, a data centre is therefore <em>dramatically</em> more efficient at inference than a phone — by roughly the batch factor. Any honest proposal in this space has to concede that up front. Meridian's advantages lie elsewhere: the hardware is already bought, the electricity is already being spent, and the marginal cost of the next token is zero.</p>
+<hr />
+<h2 id="3-architecture">3. Architecture<a class="headerlink" href="#3-architecture" title="Permanent link">#</a></h2>
+<h3 id="31-local-first-network-second">3.1 Local-first, network-second<a class="headerlink" href="#31-local-first-network-second" title="Permanent link">#</a></h3>
+<p>The default path for a user's request is the user's own device. No network, no coordinator, no third party, no latency beyond the phone in their hand.</p>
+<p>The network exists for three cases:</p>
+<ol>
+<li>The requesting device cannot host a model at all (under 6GB RAM).</li>
+<li>The requesting device is busy, hot, or on battery.</li>
+<li>The request is a batch job rather than a conversation.</li>
+</ol>
+<p>This ordering is not an optimisation. It is the privacy architecture, the cost architecture, and — as <a href="#92-the-hard-problem-whose-content-runs-on-whose-phone">§9.2</a> argues — most of the safety architecture. Every request served locally is a request that generates no bandwidth bill, no log, and no liability.</p>
+<h3 id="32-the-contribution-gate">3.2 The contribution gate<a class="headerlink" href="#32-the-contribution-gate" title="Permanent link">#</a></h3>
+<p>A device contributes only when <strong>all</strong> of the following hold:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plugged into power</td>
+<td>Battery life is the thing users notice first and forgive last</td>
+</tr>
+<tr>
+<td>On Wi-Fi</td>
+<td>Never spend a participant's cellular data</td>
+</tr>
+<tr>
+<td>Screen off and idle</td>
+<td>Never compete with the user for their own device</td>
+</tr>
+<tr>
+<td>Battery above 80%</td>
+<td>Do not slow the charge the user actually wanted</td>
+</tr>
+<tr>
+<td>Device temperature nominal</td>
+<td>Stop before the user ever feels warmth</td>
+</tr>
+</tbody>
+</table></div>
+<p>The gate is enforced in the client, checked continuously, and fails closed. Withdrawal is immediate and needs no explanation: one switch, always visible, and uninstalling is a complete exit.</p>
+<p>We publish our own thermal and battery measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal device does not get to be selective about its data.</p>
+<h3 id="33-routing-and-verification">3.3 Routing and verification<a class="headerlink" href="#33-routing-and-verification" title="Permanent link">#</a></h3>
+<p>A coordinator matches requests to nodes by capability, current load, geography, and reputation.</p>
+<p>Verification is by <strong>redundant execution</strong>: a sampled fraction of requests goes to two or three independent nodes and the results are compared. Language model output is not bit-deterministic across devices, so comparison is semantic rather than exact — agreement is scored on distributional similarity above a threshold, with disagreements escalated to a trusted reference node.</p>
+<p>This is deliberately unsophisticated. It requires no cryptographic novelty, works from day one, and produces the reputation signal that makes everything else tractable. Nodes accrue reputation from uptime, latency, and agreement rate; low-reputation nodes get verified more often and are eventually excluded.</p>
+<p>Verified compute is expensive — redundant execution at a 3× rate costs 3× the compute. We spend it on a sampled fraction, not on everything, and we publish the sampling rate.</p>
+<h3 id="34-centralised-scaffolding-decentralised-building">3.4 Centralised scaffolding, decentralised building<a class="headerlink" href="#34-centralised-scaffolding-decentralised-building" title="Permanent link">#</a></h3>
+<p>Phases M0–M1 use a single central coordinator. This is a deliberate choice, and we would rather be criticised for it honestly than pretend otherwise.</p>
+<p>Every functioning decentralised system bootstrapped through a centralised phase, because peer discovery is a hard problem that adds nothing to the proof that the core idea works. The coordinator is replaced by libp2p-based peer discovery starting in M2, and the protocol is specified so that a third party can run their own coordinator by M3.</p>
+<p>The commitment is testable: <strong>if the protocol spec has not shipped by the end of M3, this criticism is correct and we have failed.</strong></p>
+<h3 id="35-model-selection-and-licensing">3.5 Model selection and licensing<a class="headerlink" href="#35-model-selection-and-licensing" title="Permanent link">#</a></h3>
+<p>Model weights must be openly licensed, and the licence must survive planetary scale. This is a real constraint, not a formality: several widely used "open" model licences carry monthly-active-user thresholds above which separate permission is required, plus acceptable-use terms that bind downstream distributors. A network that intends to reach hundreds of millions of users cannot adopt weights whose licence quietly caps it.</p>
+<p>Our position: <strong>prefer Apache-2.0 or MIT weights.</strong> Where a Llama-family or other community-licensed model is technically preferable, its terms must be reviewed against the network's projected scale <em>before</em> adoption, and the review published. Verifying the licence status of every candidate model is tracked work, not an assumption.</p>
+<hr />
+<h2 id="4-the-fleet">4. The fleet<a class="headerlink" href="#4-the-fleet" title="Permanent link">#</a></h2>
+<p>The binding constraint on whether a phone can be a node is RAM. Model weights, KV cache, and the operating system must coexist without the app being evicted — Android will kill a background process long before it swaps.</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Active smartphones worldwide</td>
+<td>~4.6 billion</td>
+</tr>
+<tr>
+<td>Share with ≥8GB RAM</td>
+<td>~26%</td>
+</tr>
+<tr>
+<td><strong>Capable fleet, today</strong></td>
+<td><strong>~1.2 billion devices</strong></td>
+</tr>
+<tr>
+<td>Capable fleet, 2030 projection</td>
+<td>~2.4 billion devices</td>
+</tr>
+</tbody>
+</table></div>
+<p>An earlier draft of this project used 2.2 billion as the <em>present-day</em> capable fleet. That is a plausible figure for around 2030 and roughly double the truth today: 8GB became common in the mid-tier only recently, and the installed base lags shipments by a three-to-four-year replacement cycle. All "today" claims in this document use 1.2 billion.</p>
+<p>Devices are modelled in three classes, because a fleet average that ignores the mid-tier flatters itself:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Share</th>
+<th>Usable bandwidth</th>
+<th>Model hosted</th>
+<th>Sustained tok/s</th>
+<th>Sustained FP32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Flagship (LPDDR5X)</td>
+<td>30%</td>
+<td>42.2 GB/s</td>
+<td>3B Q4</td>
+<td>16.4</td>
+<td>450 GFLOPS</td>
+</tr>
+<tr>
+<td>Upper-mid (LPDDR5)</td>
+<td>45%</td>
+<td>25.5 GB/s</td>
+<td>3B Q4</td>
+<td>9.9</td>
+<td>280 GFLOPS</td>
+</tr>
+<tr>
+<td>Mid (LPDDR4X)</td>
+<td>25%</td>
+<td>16.0 GB/s</td>
+<td>1.5B Q4</td>
+<td>11.8</td>
+<td>150 GFLOPS</td>
+</tr>
+<tr>
+<td><strong>Fleet-weighted</strong></td>
+<td>100%</td>
+<td>—</td>
+<td>—</td>
+<td><strong>12.3</strong></td>
+<td><strong>299 GFLOPS</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>The mid tier posts a <em>higher</em> token rate than the upper-mid tier because it hosts a smaller model. Those tokens are not equivalent in quality — this is a capability/throughput trade, and the router must treat the two tiers as serving different purposes rather than as interchangeable capacity.</p>
+<hr />
+<h2 id="5-the-bandwidth-wall">5. The bandwidth wall<a class="headerlink" href="#5-the-bandwidth-wall" title="Permanent link">#</a></h2>
+<p>This section contains the project's most important technical claim, and it is a negative one.</p>
+<h3 id="51-why-peak-tops-is-the-wrong-number">5.1 Why peak TOPS is the wrong number<a class="headerlink" href="#51-why-peak-tops-is-the-wrong-number" title="Permanent link">#</a></h3>
+<p>A current flagship phone advertises roughly 45 INT8 TOPS of neural accelerator throughput. It is tempting to multiply that by a billion devices and announce a very large number. Doing so is wrong by more than two orders of magnitude, and it is the error the previous draft of this project made.</p>
+<p>Autoregressive decoding at batch size 1 is bound by memory bandwidth, not arithmetic. To generate one token, every weight in the model must be read from DRAM into the accelerator. The ceiling is therefore:</p>
+<pre><code>tokens/second  =  usable memory bandwidth (GB/s)  ÷  weight footprint (GB)
+</code></pre>
+<p>For a 3B-parameter model at Q4 quantisation — about 1.80 GB including scales and the higher-precision tensors quantisation schemes retain — on a flagship with roughly 42 GB/s of <em>achievable</em> bandwidth:</p>
+<pre><code>42.2 GB/s ÷ 1.80 GB  =  23.4 tokens/second
+</code></pre>
+<p>At two operations per parameter per token, that is 141 GOPS — <strong>0.141 TOPS against an advertised 45.</strong> Applying a sustained-operation derate of 0.70 for an eight-hour overnight run on a charging, warming device gives <strong>0.098 TOPS</strong>.</p>
+<p><strong>The gap between the marketing figure and the figure that actually serves a user is roughly 457×.</strong></p>
+<p><img alt="The bandwidth wall" src="figures/fig1_bandwidth_wall.png" /></p>
+<p>The chip is not slow. It is starved. Its arithmetic units spend most of their cycles waiting for weights to arrive.</p>
+<h3 id="52-cross-checking-against-reality">5.2 Cross-checking against reality<a class="headerlink" href="#52-cross-checking-against-reality" title="Permanent link">#</a></h3>
+<p>A model that disagrees with measurements is worthless, so: published llama.cpp results for 3B-class models at 4-bit quantisation on recent Snapdragon and Dimensity flagships generally land in the mid-teens to mid-twenties of tokens per second for burst decode. Our modelled 23.4 tok/s burst sits inside that band, toward the optimistic end.</p>
+<p>This is the weakest link in the model, and it is deliberately the <em>first</em> thing the roadmap fixes. Milestone 0 exists to replace these modelled figures with measurements from real devices under real thermal conditions, published as a table with the device names attached.</p>
+<h3 id="53-the-claim-we-retract">5.3 The claim we retract<a class="headerlink" href="#53-the-claim-we-retract" title="Permanent link">#</a></h3>
+<p>Running the corrected figures through to the comparison the earlier draft made:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th>Enrolled devices needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Match Folding@home's peak, sustained</td>
+<td><strong>31 million</strong></td>
+</tr>
+<tr>
+<td>Match a 100k-GPU cluster's <em>serving throughput</em></td>
+<td>~95 million</td>
+</tr>
+<tr>
+<td>Match a 100k-GPU cluster's <em>peak INT8 operations</em></td>
+<td><strong>~12 billion — not reachable</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Twelve billion devices exceeds every smartphone in existence by a factor of two and a half. The "1.4% adoption beats the largest data centre" claim is dead, and no reformulation rescues it.</p>
+<p>We could have quietly dropped it. Publishing the retraction instead is the point: a project whose headline number was revised downward by its own authors, with the arithmetic shown, is one whose remaining numbers are worth reading.</p>
+<h3 id="54-what-replaces-it-self-sufficiency">5.4 What replaces it: self-sufficiency<a class="headerlink" href="#54-what-replaces-it-self-sufficiency" title="Permanent link">#</a></h3>
+<p>Here is the reframing, and it is a better thesis than the one it replaces.</p>
+<p>The network does not need to beat a data centre. It needs to serve the people in it. And it does that <strong>from the first thousand devices</strong>, because capacity and membership grow together:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Capacity per participant, 24-hour mean</td>
+<td><strong>274,000 output tokens/day</strong></td>
+</tr>
+<tr>
+<td>Capacity per participant, at the daily trough</td>
+<td>151,000 output tokens/day</td>
+</tr>
+<tr>
+<td>Heavy individual use</td>
+<td>~30,000 output tokens/day</td>
+</tr>
+<tr>
+<td><strong>Headroom</strong></td>
+<td><strong>9.1× mean, 5.0× worst case</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><img alt="Supply and demand grow together" src="figures/fig2_self_sufficiency.png" /></p>
+<p>The three lines on that chart are parallel. That is the whole argument. There is no adoption threshold to cross, no critical mass to reach, no chicken-and-egg problem to solve with token incentives. A thousand-device network is useful to its thousand members in exactly the proportion that a billion-device network is useful to its billion.</p>
+<p>Note how conservative the demand line is: it assumes <em>every</em> participant is a heavy daily user. Real usage distributions are long-tailed, so actual headroom will be considerably larger.</p>
+<p><strong>The surplus above member use is what goes to science.</strong> At 9× headroom, roughly 89% of network capacity is available for research work without any participant noticing a degraded experience.</p>
+<hr />
+<h2 id="6-follow-the-moon">6. Follow the moon<a class="headerlink" href="#6-follow-the-moon" title="Permanent link">#</a></h2>
+<p>Demand for an assistant peaks during waking hours. Supply of idle charging phones peaks overnight. Naively that looks like a fatal mismatch, and on a single continent it would be.</p>
+<p>The planet solves it. Night is not a global state; it is a band that circles the Earth continuously. When it is 2 p.m. in New York it is 2 a.m. in Shanghai, where the largest concentration of capable handsets on Earth is sitting on chargers.</p>
+<h3 id="61-modelling-availability-honestly">6.1 Modelling availability honestly<a class="headerlink" href="#61-modelling-availability-honestly" title="Permanent link">#</a></h3>
+<p>The previous draft assumed 95% overnight availability. That implicitly assumes every enrolled user charges every night, on Wi-Fi, undisturbed. People do not behave that way. We model the conjunction:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Charges overnight on a given night</td>
+<td>72%</td>
+</tr>
+<tr>
+<td>On home Wi-Fi rather than cellular-only</td>
+<td>86%</td>
+</tr>
+<tr>
+<td>Undisturbed through the window</td>
+<td>97%</td>
+</tr>
+<tr>
+<td><strong>Overnight peak (joint)</strong></td>
+<td><strong>60.1%</strong></td>
+</tr>
+<tr>
+<td>Daytime baseline (desk/car charging that meets the gate)</td>
+<td>5%</td>
+</tr>
+</tbody>
+</table></div>
+<p>We also drop the step-function bedtime. People go to bed at different times, and a phone plugged in at 21:00 is contributing well before midnight, so the overnight window is modelled as a smooth curve over the local clock centred on 02:00.</p>
+<p>Geography is modelled as a continuous density across inhabited longitudes rather than as a handful of point clusters. This matters: four point clusters produce a moment when all four happen to be in daylight, creating an artificial global trough that is a modelling artefact rather than a fact about Earth.</p>
+<h3 id="62-the-result">6.2 The result<a class="headerlink" href="#62-the-result" title="Permanent link">#</a></h3>
+<p><img alt="Follow the moon" src="figures/fig3_follow_the_moon.png" /></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Global mean availability</td>
+<td>25.7%</td>
+</tr>
+<tr>
+<td>Global maximum (Asian night)</td>
+<td>40.8%</td>
+</tr>
+<tr>
+<td><strong>Global minimum (the floor)</strong></td>
+<td><strong>14.1%</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>The floor is the important number. Availability oscillates by a factor of about three across the day, but <strong>it never falls below roughly 14% of the enrolled fleet.</strong> Somewhere on Earth it is always 3 a.m., and the network is always being fed.</p>
+<p>Two consequences for the design:</p>
+<ul>
+<li><strong>Region-aware routing is worth building.</strong> Requests should prefer the night-side region, both because that is where capacity is and because those nodes are least likely to be interrupted mid-request.</li>
+<li><strong>Batch work should be scheduled against the curve.</strong> Science jobs are latency-insensitive by construction, so they belong in the peak and can be throttled at the trough, leaving the floor free for interactive requests.</li>
+</ul>
+<p>The curve above is modelled. Publishing the <em>measured</em> 24-hour curve from real nodes is Milestone 2's headline deliverable, and it will differ from this one.</p>
+<hr />
+<h2 id="7-sensitivity-what-if-we-are-wrong">7. Sensitivity: what if we are wrong<a class="headerlink" href="#7-sensitivity-what-if-we-are-wrong" title="Permanent link">#</a></h2>
+<p>Publishing a model without publishing its fragility is a marketing exercise. Below: each key assumption varied across a plausible range, and its effect on the load-bearing scientific claim — the enrolment needed to match Folding@home's peak.</p>
+<p><img alt="Sensitivity" src="figures/fig6_sensitivity.png" /></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Assumption varied</th>
+<th>Low</th>
+<th>High</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sustained FP32 fraction (0.5× / 2×)</td>
+<td>16M</td>
+<td>63M</td>
+</tr>
+<tr>
+<td>Folding@home's peak, exaFLOPS (1.2 / 4.8)</td>
+<td>16M</td>
+<td>63M</td>
+</tr>
+<tr>
+<td>Share who charge overnight (0.50 / 0.90)</td>
+<td>26M</td>
+<td>43M</td>
+</tr>
+<tr>
+<td>Device mix (low-end skew / flagship skew)</td>
+<td>26M</td>
+<td>41M</td>
+</tr>
+<tr>
+<td><strong>Baseline</strong></td>
+<td><strong>31M</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<p>The full range across every assumption is roughly 16 million to 63 million devices — a factor of four. For a claim about hardware that has not been benchmarked yet, spanning a global fleet, a 4× band is a defensible degree of confidence, and it is small enough that the conclusion does not change character anywhere inside it.</p>
+<p>The two widest sensitivities are both worth naming:</p>
+<ul>
+<li><strong>Sustained FP32 fraction</strong> is our least certain input. Mobile GPU sustained floating-point throughput over multi-hour runs is barely documented, because nobody runs mobile GPUs that way. M0 measures it.</li>
+<li><strong>Folding@home's peak</strong> is a reported figure, not an audited one, and mixes precisions. We use 2.4 exaFLOPS and show what happens at half and double.</li>
+</ul>
+<hr />
+<h2 id="8-what-the-network-is-for">8. What the network is for<a class="headerlink" href="#8-what-the-network-is-for" title="Permanent link">#</a></h2>
+<h3 id="81-at-any-scale-a-private-assistant-that-costs-nothing">8.1 At any scale: a private assistant that costs nothing<a class="headerlink" href="#81-at-any-scale-a-private-assistant-that-costs-nothing" title="Permanent link">#</a></h3>
+<p>From the first device: chat, translation, summarisation, and question-answering running locally on hardware the participant already owns, with no account, no subscription, no request leaving the device, and no rate limit but the phone's own speed.</p>
+<p>For the substantial population whose device cannot host a model, the network answers instead. This is the transfer described in <a href="#11-an-honest-tension-in-the-mission">§1.1</a>.</p>
+<p>Let us be clear about quality: a 3B model is not a frontier model. It is genuinely useful for translation, summarisation, drafting, explanation, and tutoring, and it is genuinely worse than a paid frontier model at hard reasoning. The offer is "capable, private, and free," not "as good as the best."</p>
+<h3 id="82-at-31m-devices-and-beyond-a-research-instrument">8.2 At ~31M devices and beyond: a research instrument<a class="headerlink" href="#82-at-31m-devices-and-beyond-a-research-instrument" title="Permanent link">#</a></h3>
+<p><img alt="Scientific batch capacity" src="figures/fig4_science_capacity.png" /></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Enrolled devices</th>
+<th>Sustained FP32</th>
+<th>vs Folding@home peak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 million</td>
+<td>0.08 exaFLOPS</td>
+<td>0.03×</td>
+</tr>
+<tr>
+<td>10 million</td>
+<td>0.77 exaFLOPS</td>
+<td>0.32×</td>
+</tr>
+<tr>
+<td><strong>31 million</strong></td>
+<td><strong>2.4 exaFLOPS</strong></td>
+<td><strong>1.0×</strong></td>
+</tr>
+<tr>
+<td>100 million</td>
+<td>7.7 exaFLOPS</td>
+<td>3.2×</td>
+</tr>
+<tr>
+<td>1.2 billion (full capable fleet)</td>
+<td><strong>92 exaFLOPS</strong></td>
+<td><strong>38×</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>At full enrolment, roughly <strong>ten days</strong> of the network delivers what Folding@home delivered in a year at its COVID-era peak — the largest volunteer computing effort in history, which produced real published results on viral protein dynamics.</p>
+<p>That is a genuine claim, and it is roughly 30× smaller than the previous draft's version of it. Both figures are large. Only one is defensible.</p>
+<p>What that instrument suits, in rough order of confidence:</p>
+<p><strong>Virtual screening for drug discovery.</strong> Embarrassingly parallel by construction — each compound-target pair is independent. Screening campaigns are currently sized to budgets rather than to chemistry. The strongest version of this argument concerns rare and neglected diseases, which go uninvestigated precisely because screening cost cannot be justified against a small patient population. Near-zero marginal compute changes that calculation.</p>
+<p><strong>Materials and catalyst search.</strong> Battery chemistries, carbon-capture catalysts, photovoltaic compounds. Systematic search across candidate space, again independent per candidate.</p>
+<p><strong>Molecular dynamics.</strong> Structure prediction is largely solved; <em>dynamics</em> — how proteins move, misfold, and interact over time — is not, and it is compute-hungry. Long-timescale misfolding simulations relevant to Alzheimer's, Parkinson's, and ALS are currently rationed. Note the caveat: MD needs long trajectories, which suits ensembles of independent replicas better than single long runs, and phones are interrupted often. This requires careful checkpointing to be useful at all.</p>
+<p><strong>Climate ensembles.</strong> Projections carry wide uncertainty bands partly because large ensembles are expensive. Researchers run tens of variations where thousands would be scientifically preferable.</p>
+<p><strong>Astronomy and signal search.</strong> Radio survey analysis, transient and fast-radio-burst searches, gravitational-wave candidate sifting. This is volunteer computing's original home, and it fits the shape exactly.</p>
+<p><strong>Federated analysis over data that cannot be centralised.</strong> This is the one no data centre can offer at any price. Models can learn across millions of consenting individuals' health or behavioural data without any record leaving any device. The blocker here is privacy law and data-sharing agreements, not compute scarcity — which means the architecture, not the scale, is the unlock.</p>
+<h3 id="83-and-the-boundary">8.3 And the boundary<a class="headerlink" href="#83-and-the-boundary" title="Permanent link">#</a></h3>
+<p>Everything above decomposes into independent tasks. That is not a coincidence; it is a filter. Workloads requiring terabytes per second of inter-processor bandwidth — frontier pre-training above all — are permanently out of scope. Saying so is what makes the rest credible.</p>
+<hr />
+<h2 id="9-threat-model">9. Threat model<a class="headerlink" href="#9-threat-model" title="Permanent link">#</a></h2>
+<h3 id="91-malicious-and-faulty-nodes">9.1 Malicious and faulty nodes<a class="headerlink" href="#91-malicious-and-faulty-nodes" title="Permanent link">#</a></h3>
+<p><strong>Garbage results.</strong> Redundant execution with semantic comparison, plus reputation scoring, from the first version. A node that disagrees with consensus loses reputation and gets sampled more heavily.</p>
+<p><strong>Sybil attacks.</strong> Cheap identity creation lets an attacker manufacture reputation or dominate a verification quorum. Mitigations: device attestation where the platform provides it, reputation that accrues slowly with sustained real work, quorum selection weighted to reputation and diversified across network origin, and rate limits per attestation. We do not solve Sybil resistance completely — nobody has without either a trusted registry or a costly stake, and we have ruled out the latter. We bound the damage instead.</p>
+<p><strong>Model poisoning via federated updates.</strong> Any participant contributing gradients can attempt to steer the model. Mitigations: robust aggregation that discards outliers, update clipping, holdout evaluation gates before any aggregated update is promoted, and staged rollout with automatic rollback. Federated fine-tuning does not ship before M3 for this reason — it is the highest-risk component in the design.</p>
+<p><strong>Extraction of model weights.</strong> Weights are on the user's device, so they are extractable. We treat this as a non-issue by construction: only openly licensed weights are distributed, so there is nothing to steal.</p>
+<h3 id="92-the-hard-problem-whose-content-runs-on-whose-phone">9.2 The hard problem: whose content runs on whose phone<a class="headerlink" href="#92-the-hard-problem-whose-content-runs-on-whose-phone" title="Permanent link">#</a></h3>
+<p>Routing a stranger's prompt to a volunteer's phone means <strong>a stranger's content is processed on a private individual's hardware, in their home, under their jurisdiction.</strong> Some fraction of arbitrary prompts will be illegal to process somewhere. This is the risk most likely to end the project, and any proposal that omits it should not be taken seriously.</p>
+<p>We see three options.</p>
+<p><strong>Option A — route third-party inference, with content filtering.</strong> Maximum utility, and it puts an unbounded legal and moral liability on volunteers. A local classifier reduces incidence but cannot be relied upon, and the participant is still the one whose device did the processing.</p>
+<p><strong>Option B — inference stays strictly local; the network carries only vetted batch work.</strong> A participant's device runs a model <em>for its owner only</em>. The network's shared capacity is spent exclusively on batch jobs from identified, accountable institutions with reviewed workloads. Nobody's phone ever processes an anonymous stranger's prompt.</p>
+<p><strong>Option C — Option B, plus an explicit opt-in tier</strong> for participants who choose to serve third-party inference, with filtering, informed consent, and jurisdiction awareness.</p>
+<p><strong>Our recommendation is Option B for M0 through M2, moving to Option C only with an explicit, published safety design.</strong></p>
+<p>This is a real cost. It means the "free AI for people whose device can't run a model" promise is deferred — arguably the most emotionally compelling part of the pitch. We think that is the right trade: the project cannot ask volunteers to accept legal exposure they do not understand, and one bad incident in year one ends everything.</p>
+<p><strong>This is the most consequential open decision in the design, and it is flagged as such rather than settled by default.</strong></p>
+<h3 id="93-privacy">9.3 Privacy<a class="headerlink" href="#93-privacy" title="Permanent link">#</a></h3>
+<p>Personal data never leaves the device. What crosses the network is: node capability reports, routing metadata, batch job inputs and outputs, verification comparisons, and — from M3 — aggregated model updates.</p>
+<p>Metadata is not nothing. Request timing and volume leak information about a participant, and the coordinator sees which node served what. We minimise retention, publish what is logged and for how long, and treat the coordinator's log schema as a public interface subject to review.</p>
+<h3 id="94-platform-and-policy-risk">9.4 Platform and policy risk<a class="headerlink" href="#94-platform-and-policy-risk" title="Permanent link">#</a></h3>
+<p><strong>App store rejection.</strong> Background compute contribution has been grounds for removal when it was <em>concealed</em> or bundled into an app that appeared to do something else. Our position: compute sharing is the app's entire stated purpose, disclosed in the store listing, opt-in at first run, and visible in a persistent notification while active. On Android this is a legitimate foreground service. This is a real risk and we may be wrong about it.</p>
+<p><strong>iOS.</strong> Background execution limits on iOS effectively forbid this model. An iOS node will be app-open-and-charging only, which makes it a far weaker participant. We plan for Android first and treat iOS as a partial capability rather than pretending parity.</p>
+<p><strong>Energy honesty.</strong> The network is not free of energy cost. Running a phone's SoC at load draws real watts, paid for by the participant, and "the phone was plugged in anyway" does not mean the electricity is free. We commit to measuring and publishing marginal watt-hours per participant per night, and marginal cost at typical residential rates, from M0 onward. If that number is embarrassing, publishing it is still the deal.</p>
+<hr />
+<h2 id="10-economics-who-pays">10. Economics: who pays<a class="headerlink" href="#10-economics-who-pays" title="Permanent link">#</a></h2>
+<p>The promise is: free to join, free to use, no token, no ads, no sale of user data or user access. That promise requires knowing what actually costs money.</p>
+<h3 id="101-the-cost-structure">10.1 The cost structure<a class="headerlink" href="#101-the-cost-structure" title="Permanent link">#</a></h3>
+<p>Notably, <strong>compute is not a cost.</strong> The hardware belongs to participants and the electricity is theirs. What costs money:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Cost</th>
+<th>Scales with</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coordinator hosting</td>
+<td>Requests, sub-linearly</td>
+<td>Small until millions of nodes</td>
+</tr>
+<tr>
+<td><strong>Bandwidth / egress</strong></td>
+<td>Requests routed through the coordinator</td>
+<td><strong>The dominant cost, and the reason for local-first</strong></td>
+</tr>
+<tr>
+<td>Model weight distribution</td>
+<td>New installs × weight size</td>
+<td>Mitigate with CDN, peer distribution, delta updates</td>
+</tr>
+<tr>
+<td>Development and security</td>
+<td>Fixed-ish</td>
+<td>The real long-run cost</td>
+</tr>
+</tbody>
+</table></div>
+<p>Bandwidth deserves the arithmetic. Relayed tokens are roughly 4 bytes each. At 1 million enrolled devices with all traffic relayed, aggregate capacity of ~3.2M tok/s implies ~13 MB/s — trivial. At 100 million devices, ~317M tok/s implies ~1.3 GB/s sustained, or about 10 Gbps. That is a genuine infrastructure bill, and it is the cost that grows with <em>success</em>.</p>
+<p>Two structural mitigations, both already in the architecture rather than bolted on:</p>
+<ol>
+<li><strong>Local-first</strong> means the overwhelming majority of interactive requests never touch the coordinator at all.</li>
+<li><strong>Peer-to-peer transfer</strong> from M2 removes the coordinator from the data path entirely; it brokers connections rather than relaying content.</li>
+</ol>
+<p>Under Option B in <a href="#92-the-hard-problem-whose-content-runs-on-whose-phone">§9.2</a>, relayed inference traffic approaches zero by design, and the coordinator carries batch job payloads on a schedule we control.</p>
+<h3 id="102-where-money-comes-from">10.2 Where money comes from<a class="headerlink" href="#102-where-money-comes-from" title="Permanent link">#</a></h3>
+<p><strong>Institutional batch compute partnerships.</strong> Research bodies, universities, foundations, and nonprofits pay for access to overnight batch capacity — at rates far below cloud, because our marginal compute cost is zero. This is the intended primary funding line.</p>
+<p><strong>Grants and philanthropy.</strong> Open-science infrastructure and digital-inclusion funders are a natural fit for exactly this.</p>
+<p><strong>Never:</strong> selling participant access, participant data, participant attention, or a token.</p>
+<h3 id="103-the-honest-gap">10.3 The honest gap<a class="headerlink" href="#103-the-honest-gap" title="Permanent link">#</a></h3>
+<p><strong>We do not yet have a validated funding model, and we should not pretend otherwise.</strong> No institution has agreed to pay for anything. The first partnership is an M3 deliverable, which means M0–M2 must be affordable to run essentially unfunded — which is achievable precisely because at those scales the bandwidth bill is small.</p>
+<p>A structural risk deserves naming: if institutional batch work becomes the revenue source, there will be pressure to prioritise paying workloads over participant experience. The governance model has to make that trade-off explicit and public rather than leaving it to whoever is running the coordinator.</p>
+<hr />
+<h2 id="11-governance">11. Governance<a class="headerlink" href="#11-governance" title="Permanent link">#</a></h2>
+<p>A network asking for space on a million personal devices owes them a say in it, and a project claiming to be "owned by no one" has to mean it structurally.</p>
+<p><strong>Now (pre-M3):</strong> benevolent-dictator, openly acknowledged. One author, public decisions, all discussion in public issues. Pretending otherwise at this size would be theatre.</p>
+<p><strong>By M3, published and in force:</strong></p>
+<ul>
+<li><strong>Open protocol specification</strong> so a third party can run a compatible node and a competing coordinator without permission.</li>
+<li><strong>Contributor governance</strong> with an explicit path from contributor to maintainer to decision-maker.</li>
+<li><strong>A non-profit or foundation structure</strong> holding the trademark and domain, so the project cannot be quietly sold.</li>
+<li><strong>A published constitution</strong> covering: free-forever for individuals, no token, no advertising, no sale of user data, no dark-pattern consent, and a defined process for changing those commitments that is deliberately hard to invoke.</li>
+<li><strong>A right to fork that is real</strong> — permissive licence, portable data, documented protocol. If the stewards go bad, the network should be able to leave them behind.</li>
+</ul>
+<p>The success condition for M3 is stated in <a href="#13-roadmap">§13</a> as "proof it outlives its founder." That is the actual test.</p>
+<hr />
+<h2 id="12-prior-art-and-positioning">12. Prior art and positioning<a class="headerlink" href="#12-prior-art-and-positioning" title="Permanent link">#</a></h2>
+<p>Volunteer distributed computing is a solved and proven idea. SETI@home and Folding@home became household names and produced real science; BOINC still runs dozens of projects. What none of them did was serve interactive AI, and what none of them had was a device already in every pocket.</p>
+<p>The recent decentralised-compute cohort — Acurast, Pocket Network, Destra, Exo Labs and others — is technically serious and has established that phone-based compute is not absurd. Nearly all of them pay contributors in cryptocurrency and resell the compute. That solves the cold-start problem with financial incentive, and it also caps the audience at people who want a crypto wallet. None has crossed into mainstream adoption.</p>
+<p>Exo Labs deserves specific credit for demonstrating model-splitting across local devices over fast local links. That is a genuinely different problem from splitting across the internet, and <a href="#21-this-is-not-one-giant-brain">§2.1</a> is not a criticism of it.</p>
+<p><strong>The unclaimed position is the one SETI@home occupied:</strong> ordinary people contributing to something worthwhile, for free, because it feels good and costs them nothing they notice. No wallet, no yield, no speculation. Just a checkbox and a mission.</p>
+<p>The moat is not the protocol — the protocol is meant to be copied. The moat is trust, radical simplicity, and a mission normal people want to be part of. Which is also why the honesty in this document is not a stylistic choice: <strong>trust is the entire competitive strategy,</strong> and a project that inflates its numbers has spent the only asset it has.</p>
+<hr />
+<h2 id="13-roadmap">13. Roadmap<a class="headerlink" href="#13-roadmap" title="Permanent link">#</a></h2>
+<p><img alt="Roadmap" src="figures/fig5_roadmap.png" /></p>
+<p>Every milestone ships something that runs.</p>
+<h3 id="m0-one-node-lives-month-01-1-device">M0 — One node lives (month 0–1, 1 device)<a class="headerlink" href="#m0-one-node-lives-month-01-1-device" title="Permanent link">#</a></h3>
+<p>Prove the atomic unit. An Android app runs a 3B GGUF model via llama.cpp, streams tokens locally, enforces the contribution gate, reports capability to a coordinator, and survives an eight-hour overnight run.</p>
+<p><strong>Deliverable that matters most: measured tok/s, sustained watts, and thermals from real devices, published as a table — replacing the modelled figures in <a href="#5-the-bandwidth-wall">§5</a>.</strong> If the measurements contradict the model, the model changes and this document is revised.</p>
+<h3 id="m1-the-network-answers-month-13-100-devices">M1 — The network answers (month 1–3, ~100 devices)<a class="headerlink" href="#m1-the-network-answers-month-13-100-devices" title="Permanent link">#</a></h3>
+<p>Routing between real volunteers' devices, streaming relay, redundant verification with semantic comparison, reputation scoring, and a live node map. Recruit 10–50 alpha testers.</p>
+<p><em>Demo: a question asked in Arizona, answered by a batch job on a volunteer's phone in another time zone.</em></p>
+<h3 id="m2-follow-the-moon-month-39-10k-devices">M2 — Follow the moon (month 3–9, ~10K devices)<a class="headerlink" href="#m2-follow-the-moon-month-39-10k-devices" title="Permanent link">#</a></h3>
+<p>Region-aware routing, the <strong>measured</strong> 24-hour availability curve published against the model in <a href="#6-follow-the-moon">§6</a>, a batch job framework with checkpointing for interrupted work, the first real science batch job, initial libp2p peer discovery, and an iOS node within its constraints.</p>
+<h3 id="m3-open-protocol-month-918-100k-devices">M3 — Open protocol (month 9–18, ~100K devices)<a class="headerlink" href="#m3-open-protocol-month-918-100k-devices" title="Permanent link">#</a></h3>
+<p>Protocol specification v1.0 so third parties can build compatible nodes. Federated fine-tuning pilot behind the safeguards in <a href="#91-malicious-and-faulty-nodes">§9.1</a>. Governance structure in force per <a href="#11-governance">§11</a>. First institutional research partnership. Resolution of the <a href="#92-the-hard-problem-whose-content-runs-on-whose-phone">§9.2</a> question with a published safety design.</p>
+<p><em>Success condition: proof it outlives its founder.</em></p>
+<h3 id="m4-public-utility-month-18-1m-devices">M4 — Public utility (month 18+, 1M+ devices)<a class="headerlink" href="#m4-public-utility-month-18-1m-devices" title="Permanent link">#</a></h3>
+<p>Full peer-to-peer discovery, a standing institutional research programme, and a network that no single party can switch off.</p>
+<hr />
+<h2 id="14-how-to-falsify-this">14. How to falsify this<a class="headerlink" href="#14-how-to-falsify-this" title="Permanent link">#</a></h2>
+<p>The claims in this document that could be shown wrong, and what would show it:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>How to falsify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phones sustain ~12 tok/s fleet-weighted on a 3B Q4 model</td>
+<td>Measure it. M0. If real devices manage 3 tok/s, the inference case weakens sharply</td>
+</tr>
+<tr>
+<td>Mobile GPUs sustain ~300 GFLOPS FP32 over hours</td>
+<td>Measure it. This is our least certain input and the science case rests on it</td>
+</tr>
+<tr>
+<td>~60% of enrolled devices are available overnight</td>
+<td>Instrument it. M1–M2. Telemetry from real enrolled devices</td>
+</tr>
+<tr>
+<td>Availability never falls below ~14%</td>
+<td>Publish the measured 24-hour curve. M2</td>
+</tr>
+<tr>
+<td>Thermals and battery are unnoticeable</td>
+<td>Publish overnight measurements including the bad ones. M0</td>
+</tr>
+<tr>
+<td>An 8-hour run does not degrade battery health</td>
+<td>This needs longitudinal data we will not have for a year. Currently an assumption</td>
+</tr>
+<tr>
+<td>App stores will permit this</td>
+<td>Submit and find out. M1</td>
+</tr>
+<tr>
+<td>Institutions will pay for batch compute</td>
+<td>Sign one. M3</td>
+</tr>
+<tr>
+<td>Volunteers will join without payment</td>
+<td>Ship M1 and count</td>
+</tr>
+</tbody>
+</table></div>
+<p>If the M0 measurements come back badly enough, the right response is to say so publicly and revise the document — the same thing we did to the previous draft's central claim, which is how this version came to exist.</p>
+<hr />
+<h2 id="appendix-a-derivations">Appendix A: derivations<a class="headerlink" href="#appendix-a-derivations" title="Permanent link">#</a></h2>
+<p>Everything here is implemented in <a href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener"><code>analysis/compute_model.py</code></a> and regenerated by running it. Full derived output: <a href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/NUMBERS.md" target="_blank" rel="noopener"><code>analysis/NUMBERS.md</code></a>. Machine-readable: <a href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/numbers.json" target="_blank" rel="noopener"><code>analysis/numbers.json</code></a>.</p>
+<h3 id="a1-capable-fleet">A.1 Capable fleet<a class="headerlink" href="#a1-capable-fleet" title="Permanent link">#</a></h3>
+<pre><code>capable_fleet = install_base × share_ram_8gb_plus
+              = 4.60e9 × 0.26
+              = 1.20e9 devices
+</code></pre>
+<h3 id="a2-per-device-decode-throughput">A.2 Per-device decode throughput<a class="headerlink" href="#a2-per-device-decode-throughput" title="Permanent link">#</a></h3>
+<p>For each device class:</p>
+<pre><code>usable_bandwidth  = peak_bandwidth × usable_fraction
+tokens_per_sec    = usable_bandwidth ÷ weight_footprint      # batch size 1
+sustained         = tokens_per_sec × thermal_derate          # 0.70, 8h run
+ops_per_token     = 2 × parameters                           # one multiply, one add
+sustained_ops     = sustained × ops_per_token
+</code></pre>
+<p>Flagship worked example:</p>
+<pre><code>42.2 GB/s ÷ 1.80 GB              = 23.4 tok/s burst
+23.4 × 0.70                      = 16.4 tok/s sustained
+16.4 × 2 × 3e9                   = 98.4 GOPS = 0.098 TOPS
+45 TOPS ÷ 0.098 TOPS             = 457× gap vs the marketed figure
+</code></pre>
+<p>Fleet-weighted by class share: <strong>12.3 tok/s, 65 GOPS INT8, 299 GFLOPS FP32</strong> per available device.</p>
+<h3 id="a3-availability">A.3 Availability<a class="headerlink" href="#a3-availability" title="Permanent link">#</a></h3>
+<pre><code>night_peak = P(charges overnight) × P(Wi-Fi) × P(undisturbed)
+           = 0.72 × 0.86 × 0.97
+           = 0.601
+</code></pre>
+<p>Per-device availability over the local clock is a smooth window centred on 02:00, reaching half-height near 21:30 and 06:30, decaying to a 5% daytime baseline:</p>
+<pre><code>night_weight(h) = 1 / (1 + exp((circular_distance(h, 02:00) − 4.5) / 1.0))
+availability(h) = 0.05 + (0.601 − 0.05) × night_weight(h)
+</code></pre>
+<p>Global availability at UTC hour <em>t</em> integrates that over a continuous device-density function across longitude (21 weighted Gaussian clusters on a 2° grid):</p>
+<pre><code>global_availability(t) = Σ_lon density(lon) × availability(local_hour(lon, t))
+</code></pre>
+<p>Yielding: mean <strong>25.7%</strong>, minimum <strong>14.1%</strong>, maximum <strong>40.8%</strong>.</p>
+<h3 id="a4-self-sufficiency">A.4 Self-sufficiency<a class="headerlink" href="#a4-self-sufficiency" title="Permanent link">#</a></h3>
+<pre><code>capacity_per_participant_per_day = mean_availability × tok/s × 86,400
+                                 = 0.257 × 12.3 × 86,400
+                                 = 273,700 tokens/day
+
+headroom = 273,700 ÷ 30,000 = 9.1×
+</code></pre>
+<p>At the trough, substituting 0.141 for 0.257 gives 150,600 tokens/day, or 5.0×. Both are independent of enrolment, since capacity and membership are both linear in it.</p>
+<h3 id="a5-scientific-capacity">A.5 Scientific capacity<a class="headerlink" href="#a5-scientific-capacity" title="Permanent link">#</a></h3>
+<pre><code>exaflops(N) = N × mean_availability × 299 GFLOPS
+            = N × 0.257 × 2.99e11 ÷ 1e18
+
+folding_parity_N = 2.4e18 ÷ (0.257 × 2.99e11) = 3.1e7 devices
+full_fleet       = 1.20e9 × 0.257 × 2.99e11   = 92 exaFLOPS
+fah_years_per_yr = 92 ÷ 2.4                   = 38
+days_per_fah_yr  = 365 ÷ 38                   = 9.5 days
+</code></pre>
+<h3 id="a6-stated-assumptions-all-in-one-place">A.6 Stated assumptions, all in one place<a class="headerlink" href="#a6-stated-assumptions-all-in-one-place" title="Permanent link">#</a></h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Constant</th>
+<th>Value</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Smartphone install base</td>
+<td>4.60e9</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Share ≥8GB RAM</td>
+<td>26%</td>
+<td>Low-medium — hard to source precisely</td>
+</tr>
+<tr>
+<td>Q4 weight footprint, 3B model</td>
+<td>1.80 GB</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Usable bandwidth fraction</td>
+<td>0.55–0.62</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Thermal derate, 8h sustained</td>
+<td>0.70</td>
+<td><strong>Low — M0 measures this</strong></td>
+</tr>
+<tr>
+<td>Ops per parameter per token</td>
+<td>2</td>
+<td>High</td>
+</tr>
+<tr>
+<td>FP32 sustained fraction</td>
+<td>0.30–0.33</td>
+<td><strong>Low — M0 measures this</strong></td>
+</tr>
+<tr>
+<td>Charges overnight</td>
+<td>72%</td>
+<td>Low-medium</td>
+</tr>
+<tr>
+<td>On Wi-Fi</td>
+<td>86%</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Daytime availability</td>
+<td>5%</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Heavy user token consumption</td>
+<td>30,000/day</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Folding@home peak</td>
+<td>2.4 exaFLOPS</td>
+<td>Medium — reported, not audited</td>
+</tr>
+<tr>
+<td>Large cluster peak INT8</td>
+<td>200 exaOPS</td>
+<td>Medium — 100k × ~1,979 TOPS</td>
+</tr>
+<tr>
+<td>Cluster serving throughput</td>
+<td>3,000 tok/s/GPU</td>
+<td><strong>Low — wide real-world range</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p>Anything marked low confidence is either measured in M0 or presented with its sensitivity in <a href="#7-sensitivity-what-if-we-are-wrong">§7</a>.</p>
+<hr />
+<h2 id="appendix-b-what-we-retract">Appendix B: what we retract<a class="headerlink" href="#appendix-b-what-we-retract" title="Permanent link">#</a></h2>
+<p>For the record, the claims from the earlier draft of this project that this document withdraws:</p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Previous claim</th>
+<th>Corrected</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.2B phones can run a modern small model <em>today</em></td>
+<td>~1.2B today; ~2.4B by 2030</td>
+<td>8GB+ RAM is a minority of the installed base; the original figure is a projection</td>
+</tr>
+<tr>
+<td>~5,800 exaOPS available at any moment</td>
+<td>~20 exaOPS INT8-equivalent at full enrolment</td>
+<td>Peak NPU TOPS is not achievable for batch-1 decode</td>
+</tr>
+<tr>
+<td>1.4% adoption (~30M) passes the largest AI data centre</td>
+<td>Not reachable at any adoption level (~12B devices required)</td>
+<td>Same bandwidth-bound error</td>
+</tr>
+<tr>
+<td>At full adoption, ~70× the largest data centre</td>
+<td>Below it, in raw operations, permanently</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>One night of the full fleet &gt; one year of Folding@home at peak</td>
+<td>~10 days of the full fleet ≈ one Folding@home-year</td>
+<td>INT8 NPU figures were compared against FP throughput</td>
+</tr>
+<tr>
+<td>A full year ≈ 2,000 Folding@home-years</td>
+<td>~38 Folding@home-years</td>
+<td>Same</td>
+</tr>
+<tr>
+<td>95% overnight availability</td>
+<td>60.1%</td>
+<td>The original ignored that availability is a conjunction of three behaviours</td>
+</tr>
+<tr>
+<td>Availability floor ~6%</td>
+<td>~14.1%</td>
+<td>An artefact of modelling geography as four point clusters</td>
+</tr>
+</tbody>
+</table></div>
+<p>Two of those revisions are upward. Most are sharply downward.</p>
+<p>The reason to print this table rather than silently ship better numbers: the project's only real asset is that its numbers can be trusted. That is worth more than any of the claims we just deleted.</p>
+<hr />
+<h2 id="colophon">Colophon<a class="headerlink" href="#colophon" title="Permanent link">#</a></h2>
+<p><strong>Licence.</strong> This document is released under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. The code in this repository is Apache-2.0.</p>
+<p><strong>Reproduce every figure in this document:</strong></p>
+<pre><code class="language-bash">pip install numpy matplotlib
+python analysis/compute_model.py
+</code></pre>
+<p><strong>Found an error?</strong> That is the most useful thing you can do for this project. Open an issue: <a href="https://github.com/OWNER/meridian-moonlight/issues">https://github.com/OWNER/meridian-moonlight/issues</a></p>
+<p><strong>Accessibility note.</strong> No figure in this project uses red as a signal colour. Roughly 8% of men — including this project's author — cannot reliably distinguish red from green, and infrastructure documentation should be legible to the people writing it.</p>
+</main>
+
+<footer>
+  <p>
+    <a href="index.html">meridianmoonlight.com</a> &middot;
+    <a href="https://github.com/OWNER/meridian-moonlight" target="_blank" rel="noopener">GitHub</a> &middot;
+    <a href="https://github.com/OWNER/meridian-moonlight/issues/new" target="_blank" rel="noopener">Found an error? File it</a> &middot;
+    <a href="mailto:hello@meridianmoonlight.com">hello@meridianmoonlight.com</a>
+  </p>
+  <p class="fine">
+    This document is released under
+    <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
+    Code in the repository is Apache-2.0. Generated from
+    <code>WHITEPAPER.md</code> by <code>site/build.py</code> &mdash; edit the markdown, not this page.
+    No figure uses red as a signal colour.
+  </p>
+</footer>
+
+</body>
+</html>

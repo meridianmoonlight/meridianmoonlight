@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/OWNER/meridian-moonlight/security/advisories/new
+    about: Please report privately, not in a public issue. See SECURITY.md.
+  - name: Read the whitepaper first
+    url: https://meridianmoonlight.com/whitepaper.html
+    about: Includes the honest limits, the open questions, and what we already retract.
+  - name: Bring a research workload
+    url: mailto:hello@meridianmoonlight.com
+    about: Embarrassingly parallel problem and no budget? That is what the surplus is for.

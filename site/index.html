@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meridian Moonlight — a free AI network built from the world's sleeping phones</title>
+<meta name="description" content="A free, decentralized AI network powered by phones charging overnight. No data center. No token. No cost to you. We publish our own retractions.">
+<link rel="canonical" href="https://meridianmoonlight.com/">
+
+<meta property="og:title" content="Meridian Moonlight — a free AI network built from the world's sleeping phones">
+<meta property="og:description" content="Your phone works for the world while you sleep. Free AI for everyone, powered by volunteers, owned by no one. Every number is published, auditable, and one of them is a retraction.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://meridianmoonlight.com/">
+<meta property="og:image" content="https://meridianmoonlight.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Public+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  /* Night-side palette: deep sky, moonlight, charging amber, daylight cyan.
+     No red anywhere as a signal colour. */
+  --abyss:#0A0E20;
+  --night:#111735;
+  --raised:#1A2149;
+  --line:rgba(178,190,235,.14);
+  --moon:#EAEDFA;
+  --dim:#8D97C2;
+  --amber:#FFB454;
+  --amber-soft:rgba(255,180,84,.13);
+  --dawn:#6FC3E8;
+  --teal:#3FD0C9;
+
+  --display:'Archivo',system-ui,sans-serif;
+  --body:'Public Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+
+  --wrap:1120px;
+  --pad:clamp(20px,5vw,48px);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--abyss);color:var(--moon);
+  font-family:var(--body);font-weight:300;font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 120% 70% at 50% -10%,rgba(60,80,180,.20),transparent 60%);
+  background-repeat:no-repeat;
+}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:var(--pad);padding-right:var(--pad)}
+
+h1,h2,h3{font-family:var(--display);font-weight:700;font-variation-settings:'wdth' 112;
+  line-height:1.05;letter-spacing:-.02em;margin:0}
+h1{font-size:clamp(2.5rem,6.2vw,4.8rem);font-variation-settings:'wdth' 118}
+h2{font-size:clamp(1.8rem,3.5vw,2.8rem)}
+h3{font-size:1.14rem;font-variation-settings:'wdth' 108;letter-spacing:-.01em}
+p{margin:0 0 1.1em}
+a{color:inherit}
+
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--amber);margin:0 0 18px}
+.lede{font-size:clamp(1.06rem,2vw,1.28rem);color:var(--dim);max-width:64ch;font-weight:300}
+.small{font-size:.9rem;color:var(--dim)}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:rgba(10,14,32,.78);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;
+  padding-top:15px;padding-bottom:15px;gap:20px}
+.brand{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 116;
+  font-size:clamp(.82rem,2.6vw,.98rem);letter-spacing:.11em;text-decoration:none;white-space:nowrap}
+.brand span{color:var(--amber)}
+.navlinks{display:flex;gap:24px;align-items:center;font-size:.87rem;color:var(--dim)}
+.navlinks a{text-decoration:none;transition:color .2s}
+.navlinks a:hover{color:var(--moon)}
+@media(max-width:820px){.navlinks a.hide-sm{display:none}}
+
+/* ---------- status strip ---------- */
+.status{background:var(--night);border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--dim)}
+.status .wrap{padding-top:10px;padding-bottom:10px}
+.status b{color:var(--amber);font-weight:500}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(52px,9vw,92px) 0 0}
+.hero h1{margin-bottom:24px;max-width:17ch}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.actions{display:flex;flex-wrap:wrap;gap:13px;margin-top:34px}
+.btn{display:inline-block;font-family:var(--mono);font-size:.82rem;letter-spacing:.06em;
+  padding:14px 26px;border-radius:2px;text-decoration:none;border:1px solid transparent;
+  transition:transform .16s,background .2s,border-color .2s;cursor:pointer}
+.btn-primary{background:var(--amber);color:#241703;font-weight:500}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{border-color:var(--line);color:var(--moon);background:transparent}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+
+/* ---------- signature: terminator band ---------- */
+.band-shell{margin:clamp(48px,7vw,80px) 0 0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(17,23,53,.7),rgba(10,14,32,0))}
+.band-head{display:flex;justify-content:space-between;align-items:baseline;
+  flex-wrap:wrap;gap:8px;padding-top:20px}
+.band-head .label{font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--dim)}
+#band{display:block;width:100%;height:200px;margin:14px 0 0}
+@media(max-width:720px){#band{height:150px}}
+.readout{display:flex;flex-wrap:wrap;gap:26px;padding:14px 0 12px;font-family:var(--mono);font-size:.78rem}
+.readout div{color:var(--dim)}
+.readout b{display:block;font-size:1.42rem;font-weight:500;color:var(--moon);
+  letter-spacing:-.01em;line-height:1.3}
+.readout b.amber{color:var(--amber)}
+.bandnote{font-family:var(--mono);font-size:.68rem;color:var(--dim);
+  padding-bottom:22px;opacity:.8}
+
+/* ---------- sections ---------- */
+section{padding:clamp(62px,8.5vw,104px) 0}
+.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+/* the retraction — the signature section */
+.retraction{background:var(--night);border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line)}
+.retraction .badge{display:inline-block;font-family:var(--mono);font-size:.64rem;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--dawn);
+  border:1px solid var(--dawn);padding:4px 11px;margin-bottom:20px}
+.strike{color:var(--dim);text-decoration:line-through;text-decoration-thickness:1px;
+  text-decoration-color:rgba(141,151,194,.55)}
+.tbl{width:100%;border-collapse:collapse;margin-top:34px;font-size:.93rem}
+.tbl th{text-align:left;font-family:var(--mono);font-size:.64rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);font-weight:400;
+  padding:0 14px 12px 0;border-bottom:1px solid var(--line)}
+.tbl td{padding:14px 14px 14px 0;border-bottom:1px solid var(--line);
+  vertical-align:top;color:var(--dim)}
+.tbl td.now{color:var(--moon)}
+.tbl td.was{color:var(--dim);text-decoration:line-through;
+  text-decoration-color:rgba(141,151,194,.45)}
+@media(max-width:720px){
+  .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
+  .tbl thead{display:none}
+  .tbl tr{padding:16px 0;border-bottom:1px solid var(--line)}
+  .tbl td{border:0;padding:2px 0}
+  .tbl td::before{content:attr(data-l);display:block;font-family:var(--mono);
+    font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);
+    margin-top:8px}
+}
+
+/* the big stat */
+.stat{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:clamp(28px,5vw,64px);align-items:center}
+@media(max-width:760px){.stat{grid-template-columns:1fr}}
+.stat .big{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 125;
+  font-size:clamp(4.6rem,14vw,9.5rem);line-height:.82;color:var(--amber);letter-spacing:-.04em}
+.stat .big small{display:block;font-family:var(--mono);font-size:.68rem;font-weight:400;
+  letter-spacing:.18em;color:var(--dim);margin-top:20px;text-transform:uppercase;line-height:1.6}
+
+/* cards */
+.grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:44px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:840px){.grid-3,.grid-2{grid-template-columns:1fr}}
+.card{background:var(--abyss);padding:clamp(24px,3vw,34px)}
+.card.raised{background:var(--night)}
+.card .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--amber);display:block;margin-bottom:14px}
+.card h3{margin-bottom:10px}
+.card p{color:var(--dim);font-size:.95rem;margin:0}
+
+/* constraints — deliberately plain, credibility over polish */
+.limits{background:var(--night);border-left:2px solid var(--dawn);padding:clamp(26px,4vw,40px);margin-top:40px}
+.limits ul{margin:0;padding-left:20px;color:var(--dim)}
+.limits li{margin-bottom:15px;font-size:.97rem}
+.limits li:last-child{margin-bottom:0}
+.limits strong{color:var(--moon);font-weight:500}
+
+/* pledge block */
+.pledge{text-align:center;background:var(--amber-soft);border:1px solid rgba(255,180,84,.3);
+  padding:clamp(34px,6vw,64px)}
+.pledge h2{color:var(--amber);margin-bottom:18px}
+.pledge p{color:var(--moon);max-width:54ch;margin-left:auto;margin-right:auto;opacity:.85}
+
+/* roadmap */
+.phase{display:grid;grid-template-columns:96px minmax(0,1fr) 176px;gap:clamp(16px,3vw,36px);
+  padding:26px 0;border-top:1px solid var(--line);align-items:start}
+.phase:last-child{border-bottom:1px solid var(--line)}
+@media(max-width:760px){.phase{grid-template-columns:1fr;gap:8px}}
+.phase .id{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 125;
+  font-size:1.7rem;color:var(--amber);line-height:1}
+.phase .when{font-family:var(--mono);font-size:.74rem;color:var(--dim);letter-spacing:.06em}
+.phase h3{margin-bottom:6px}
+.phase p{color:var(--dim);font-size:.94rem;margin:0}
+.phase.live .id{color:var(--dawn)}
+.phase .badge{display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dawn);border:1px solid var(--dawn);
+  padding:2px 8px;margin-left:10px;vertical-align:2px;white-space:nowrap}
+
+/* asks */
+.ask{display:block;background:var(--night);border:1px solid var(--line);padding:26px;
+  text-decoration:none;transition:border-color .2s,transform .16s}
+.ask:hover{border-color:var(--amber);transform:translateY(-2px)}
+.ask .tag{color:var(--dawn)}
+.ask h3{margin-bottom:10px}
+.ask p{color:var(--dim);font-size:.95rem;margin:0}
+
+/* open questions */
+.oq{counter-reset:oq;margin-top:36px;padding:0;list-style:none}
+.oq li{counter-increment:oq;position:relative;padding:0 0 22px 46px;color:var(--dim);font-size:.97rem}
+.oq li::before{content:counter(oq);position:absolute;left:0;top:-2px;
+  font-family:var(--mono);font-size:.78rem;color:var(--dawn);
+  border:1px solid var(--dawn);width:26px;height:26px;display:grid;place-items:center}
+.oq strong{color:var(--moon);font-weight:500}
+
+footer{border-top:1px solid var(--line);padding:44px 0 60px;color:var(--dim);font-size:.85rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer a{color:var(--dim)}
+footer .note{flex-basis:100%;font-size:.78rem;opacity:.7;margin-top:8px}
+
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .btn:hover,.ask:hover{transform:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top">MERIDIAN <span>MOONLIGHT</span></a>
+    <div class="navlinks">
+      <a href="#how" class="hide-sm">How it works</a>
+      <a href="#wrong" class="hide-sm">What we got wrong</a>
+      <a href="#limits" class="hide-sm">Limits</a>
+      <a href="#roadmap" class="hide-sm">Roadmap</a>
+      <a href="whitepaper.html">Whitepaper</a>
+      <a href="https://github.com/OWNER/meridian-moonlight" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="status">
+  <div class="wrap">
+    STATUS: <b>PROPOSAL</b> · NO CODE WRITTEN YET · MILESTONE 0 IS ONE PHONE ANSWERING ONE QUESTION
+  </div>
+</div>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Decentralized AI · No data center · No token</p>
+    <h1>Your phone works for the world <em>while you sleep.</em></h1>
+    <p class="lede">Meridian Moonlight turns idle phones into a free AI network. Contribute only while
+      you're charging, on Wi-Fi, and asleep — and everyone gets free AI in return.
+      No data center. No token. No cost to you.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="whitepaper.html">Read the whitepaper</a>
+      <a class="btn btn-ghost" href="#wrong">See what we got wrong</a>
+    </div>
+  </div>
+
+  <!-- SIGNATURE: the terminator band. Night sweeps the planet; devices wake as it passes.
+       The availability curve below is the same one used in the whitepaper, so the numbers
+       in this readout match the published figures exactly. -->
+  <div class="band-shell">
+    <div class="wrap">
+      <div class="band-head">
+        <span class="label">Follow-the-moon · modelled global device availability</span>
+        <span class="label" id="cycle-note">Simulated 24-hour cycle</span>
+      </div>
+      <canvas id="band" aria-label="Visualization of night sweeping across the globe, with devices becoming available as darkness passes over each region"></canvas>
+      <div class="readout">
+        <div>Time (UTC)<b id="r-time">00:00</b></div>
+        <div>Fleet contributing<b class="amber" id="r-avail">—</b></div>
+        <div>Never below<b id="r-floor">14%</b></div>
+        <div>Night-side regions<b id="r-region">—</b></div>
+      </div>
+      <p class="bandnote">Modelled, not measured — publishing the real curve from real nodes is Milestone 2.</p>
+    </div>
+  </div>
+</header>
+
+<section class="retraction" id="wrong">
+  <div class="wrap">
+    <span class="badge">Start here</span>
+    <h2>We retract our own headline claim.</h2>
+    <p class="lede" style="margin-top:18px">An earlier draft of this project said
+      <span class="strike">1.4% adoption — about 30 million phones — would surpass the largest
+      AI data center on Earth.</span> That was wrong by roughly 400&times;, and we are not
+      going to quietly delete it.</p>
+
+    <p class="lede">Here's the error. Running an AI model on a phone is limited by
+      <strong style="color:var(--moon);font-weight:500">memory bandwidth, not raw processing
+      power.</strong> Generating a single word requires reading the entire model out of the
+      phone's memory. A flagship advertising 45 trillion operations per second actually
+      sustains about 0.098 — a <strong style="color:var(--amber);font-weight:500">457&times;
+      gap</strong> between the number on the box and the number that answers a question.</p>
+
+    <p class="lede">So: <strong style="color:var(--moon);font-weight:500">this network will
+      never out-compute a hyperscale data center.</strong> Not at 30 million phones, not at
+      any number of phones. Data centers serve hundreds of people from one read of the model.
+      A phone serves one. Per piece of hardware, they win decisively.</p>
+
+    <table class="tbl">
+      <thead>
+        <tr><th style="width:44%">Claim</th><th style="width:26%">Previous draft</th><th style="width:30%">Corrected</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="now" data-l="Claim">Phones that can run a small model, today</td>
+          <td class="was" data-l="Previously">2.2 billion</td>
+          <td class="now" data-l="Corrected">1.2 billion <span class="small">(2.2B is a ~2030 figure)</span></td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Adoption needed to pass the largest data center</td>
+          <td class="was" data-l="Previously">1.4% — 30 million</td>
+          <td class="now" data-l="Corrected">Not reachable at any adoption level</td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">One night of the full fleet</td>
+          <td class="was" data-l="Previously">More than a year of Folding@home</td>
+          <td class="now" data-l="Corrected">~10 days ≈ one Folding@home-year</td>
+        </tr>
+        <tr>
+          <td class="now" data-l="Claim">Devices available overnight</td>
+          <td class="was" data-l="Previously">95%</td>
+          <td class="now" data-l="Corrected">60% <span class="small">— charging <em>and</em> Wi-Fi <em>and</em> undisturbed</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="lede" style="margin-top:36px">Why publish this instead of shipping better numbers
+      quietly? Because the only asset a project like this has is that its numbers can be
+      trusted. <strong style="color:var(--moon);font-weight:500">Every figure on this site is
+      generated by one script you can run yourself.</strong> Find another error and we'll
+      publish that too.</p>
+
+    <div class="actions">
+      <a class="btn btn-ghost" href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener">Read the model &rarr;</a>
+      <a class="btn btn-ghost" href="whitepaper.html#appendix-b-what-we-retract">Full retraction table &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stat">
+    <div class="big">9&times;<small>More AI than<br>its members<br>can use</small></div>
+    <div>
+      <h2>The network doesn't need to beat a data center. It needs to serve the people in it.</h2>
+      <p class="lede" style="margin-top:18px">And it does that from the <em>first thousand
+        phones</em>. Capacity and membership grow together, so every participant's share is
+        about 274,000 words of AI output per day — roughly nine times what even a heavy user
+        consumes, and five times that at the quietest hour of the global day.</p>
+      <p class="lede">That ratio is identical at a thousand devices and at a billion. There is
+        no critical mass to reach, no chicken-and-egg problem that needs a token to solve, and
+        no point at which this becomes useful — it starts useful.</p>
+      <p class="lede"><strong style="color:var(--moon);font-weight:500">The ~89% surplus is a
+        research instrument.</strong></p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">How it works</p>
+    <h2>Whole models on each phone. Night does the scheduling.</h2>
+    <div class="grid grid-3">
+      <div class="card">
+        <span class="tag">On your device</span>
+        <h3>A complete model, not a fragment</h3>
+        <p>Every phone runs an entire small AI model locally. Nothing is split across the
+          internet, so there's no lag from shuttling data between devices — and your prompts
+          are answered on your own hardware first, before the network is ever involved.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Only when idle</span>
+        <h3>Charging, Wi-Fi, screen off, above 80%</h3>
+        <p>Contribution is gated to conditions where you'd never notice it. No battery drain,
+          no mobile data, no heat while you're using your phone. One switch turns it off,
+          with no dialog that argues.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Around the clock</span>
+        <h3>Somewhere it's always 3 a.m.</h3>
+        <p>Demand peaks during the working day; supply peaks overnight. Since night circles the
+          planet continuously, the network is always fed by the hemisphere that's asleep —
+          and never drops below about 14% of the fleet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">What it's for</p>
+    <h2>A private assistant that costs nothing. And a research instrument for everyone else.</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="tag">Every day</span>
+        <h3>An assistant that costs nothing</h3>
+        <p>A tutor, translator, and general assistant running privately on the device in your
+          hand — no account, no subscription, nothing leaving the phone. A 3-billion-parameter
+          model is genuinely useful and genuinely worse than a paid frontier model at hard
+          reasoning. We'd rather say so than oversell it.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Every night</span>
+        <h3>Open science while the world sleeps</h3>
+        <p>Idle hours become batch compute for public research: drug-candidate screening,
+          protein dynamics, materials discovery, climate ensembles. At about 31 million phones
+          the network continuously matches Folding@home at its peak — the largest volunteer
+          computing effort in history.</p>
+      </div>
+    </div>
+    <p class="small" style="margin-top:26px">The one thing no data center can offer at any
+      price: federated analysis, where models learn across millions of consenting people's
+      health data without a single record ever leaving a device. That research is blocked by
+      privacy law, not by compute — which means the architecture is the unlock, not the scale.</p>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="limits">
+  <div class="wrap">
+    <p class="eyebrow">Honest limits</p>
+    <h2>What this will never do.</h2>
+    <p class="lede" style="margin-top:16px">Every project in this space leads with what it can do.
+      Here's what physics forbids, stated up front — because a plan you can't poke holes in
+      isn't a plan.</p>
+    <div class="limits">
+      <ul>
+        <li><strong>It is not one giant brain.</strong> Splitting a single large model across
+          phones on the internet fails — generating each word means passing data through every
+          layer in sequence, and network hops are millions of times slower than the wiring
+          inside a chip. So we don't split models at all.</li>
+        <li><strong>It will not train frontier models from scratch.</strong> Training needs
+          terabytes per second of bandwidth between processors sitting inches apart. No amount
+          of adoption changes that. Fine-tuning an existing small model is a different, and
+          achievable, problem.</li>
+        <li><strong>The compute is throughput, not one pooled engine.</strong> Millions of
+          independent tasks at once — not a single task made a million times faster. A million
+          couriers, not one cargo jet.</li>
+        <li><strong>Data centers batch; phones can't.</strong> A data center reads the model
+          once from memory and serves hundreds of people with that read. A phone reads it once
+          per word, for one person. Per piece of hardware, a data center is far more efficient
+          at this. Our advantage is that the hardware is already bought and the marginal cost
+          of the next answer is zero.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <p class="eyebrow">Open questions</p>
+    <h2>Four things we haven't figured out.</h2>
+    <p class="lede" style="margin-top:16px">Listed because pretending they're settled would be
+      the actual problem.</p>
+    <ol class="oq">
+      <li><strong>Whose content runs on whose phone?</strong> Routing a stranger's prompt to a
+        volunteer's device puts legal exposure on that volunteer, in their home, in their
+        jurisdiction. Our current answer: it doesn't — inference stays on your own device, and
+        the shared network carries only vetted scientific work from identified institutions.
+        That defers the most compelling part of this whole idea. It may be the wrong call.</li>
+      <li><strong>Who pays for it.</strong> The plan is institutional research partnerships.
+        No institution has agreed to anything. The early phases have to be affordable to run
+        unfunded, and they are — but the funding model is unvalidated.</li>
+      <li><strong>Battery health over years.</strong> We gate on temperature and charge level,
+        which covers what we can control. Nobody has multi-year data on nightly compute loads
+        on phone batteries, and we won't for at least a year. If an unquantified risk to your
+        hardware isn't acceptable to you, don't install it — that's a reasonable position.</li>
+      <li><strong>iOS.</strong> Background execution limits effectively forbid this. An iPhone
+        can realistically only contribute with the app open and charging. Android is first;
+        we're not going to claim a parity the platform doesn't allow.</li>
+    </ol>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section>
+  <div class="wrap">
+    <div class="pledge">
+      <p class="eyebrow" style="color:inherit;opacity:.7">The promise</p>
+      <h2>No token. No wallet. No ads. Ever.</h2>
+      <p>Most decentralized compute networks pay contributors in cryptocurrency and sell the
+        compute back to developers. Moonlight isn't a marketplace. It's a public utility: free
+        to use, free to join, and open source end to end. Whatever eventually pays the hosting
+        bill, it will never be your access, your attention, or your data.</p>
+      <p style="font-size:.9rem;opacity:.7">If you ever see a Meridian Moonlight token for
+        sale anywhere, it's a scam — and we'd appreciate the heads-up.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="roadmap">
+  <div class="wrap">
+    <p class="eyebrow">Roadmap</p>
+    <h2>Every phase ships something that runs.</h2>
+
+    <div style="margin-top:40px">
+      <div class="phase live">
+        <div class="id">M0</div>
+        <div>
+          <h3>One node lives <span class="badge">Next</span></h3>
+          <p>A single phone runs a model on its charger overnight. The deliverable that matters
+            isn't the demo — it's <em>measured</em> speed, watts, and heat from real devices,
+            replacing the modelled numbers in our own whitepaper.</p>
+        </div>
+        <div class="when">1 device · Month 0–1</div>
+      </div>
+
+      <div class="phase">
+        <div class="id">M1</div>
+        <div>
+          <h3>The network answers</h3>
+          <p>Work routes between volunteers' devices, with duplicate execution to verify
+            results, reputation scoring, and a live map of who's online.</p>
+        </div>
+        <div class="when">~100 devices · Month 1–3</div>
+      </div>
+
+      <div class="phase">
+        <div class="id">M2</div>
+        <div>
+          <h3>Follow the moon</h3>
+          <p>Region-aware routing, the <em>measured</em> 24-hour availability curve published
+            against the modelled one, and the first real overnight science job.</p>
+        </div>
+        <div class="when">~10K devices · Month 3–9</div>
+      </div>
+
+      <div class="phase">
+        <div class="id">M3</div>
+        <div>
+          <h3>Open protocol</h3>
+          <p>Specification v1.0 so anyone can build a compatible node — or run a competing
+            coordinator without asking us. Plus governance, a legal structure, and the first
+            research partner. If this spec doesn't ship, the "we're centralized for now"
+            defence was a rationalisation.</p>
+        </div>
+        <div class="when">~100K devices · Month 9–18</div>
+      </div>
+
+      <div class="phase">
+        <div class="id">M4</div>
+        <div>
+          <h3>Public utility</h3>
+          <p>Full peer-to-peer discovery and a standing institutional research programme.
+            A network no single party can switch off.</p>
+        </div>
+        <div class="when">1M+ · Month 18+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section id="join">
+  <div class="wrap">
+    <p class="eyebrow">Join</p>
+    <h2>There's nothing to install yet. There is plenty to argue with.</h2>
+    <p class="lede" style="margin-top:16px">The most useful thing anyone can do right now is
+      find an error in the math. Everything is public and reproducible: two commands and you
+      have every number on this site.</p>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/OWNER/meridian-moonlight" target="_blank" rel="noopener">Star the repo</a>
+      <a class="btn btn-ghost" href="mailto:hello@meridianmoonlight.com?subject=Pledging%20a%20phone">Pledge a phone by email</a>
+    </div>
+    <p class="small" style="margin-top:16px">Email <a href="mailto:hello@meridianmoonlight.com">hello@meridianmoonlight.com</a>
+      and you'll hear once — when the first node is ready to test. No list, no newsletter,
+      no automation. Just a reply from a person.</p>
+
+    <div class="grid grid-3" style="margin-top:52px">
+      <a class="ask" href="https://github.com/OWNER/meridian-moonlight/blob/main/analysis/compute_model.py" target="_blank" rel="noopener">
+        <span class="tag">Skeptics</span>
+        <h3>Check the math &rarr;</h3>
+        <p>Every figure is generated by one script with named assumptions and stated
+          confidence. We've flagged our own four weakest inputs. Find a fifth.</p>
+      </a>
+      <a class="ask" href="https://github.com/OWNER/meridian-moonlight/blob/main/docs/MILESTONES.md" target="_blank" rel="noopener">
+        <span class="tag">Builders</span>
+        <h3>Read the plan &rarr;</h3>
+        <p>Android, Kotlin, llama.cpp, and a Node coordinator. Milestone 0 is a weekend
+          project for the right person — and it blocks everything else.</p>
+      </a>
+      <a class="ask" href="mailto:hello@meridianmoonlight.com?subject=Research%20workload">
+        <span class="tag">Researchers</span>
+        <h3>Bring a workload &rarr;</h3>
+        <p>If you have an embarrassingly parallel problem and no budget, that's exactly what
+          the surplus is for. Tell us its shape now — it changes what we build.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Meridian Moonlight — an open project. Owned by no one.</span>
+    <span>
+      <a href="https://meridianmoonlight.com">meridianmoonlight.com</a> ·
+      <a href="whitepaper.html">Whitepaper</a> ·
+      <a href="https://github.com/OWNER/meridian-moonlight" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="mailto:hello@meridianmoonlight.com">hello@</a>
+    </span>
+    <span class="note">Code Apache-2.0 · Documentation CC BY 4.0 · No figure on this site uses
+      red as a signal colour — roughly 8% of men, including this project's author, can't
+      reliably distinguish it from green.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ------------------------------------------------------------------
+     The availability model below is a direct port of
+     analysis/compute_model.py, so the readout on this page matches the
+     published figures exactly. If you change one, change both.
+     ------------------------------------------------------------------ */
+
+  var NIGHT_PEAK   = 0.72 * 0.86 * 0.97;   // charges overnight x wifi x undisturbed
+  var DAYTIME      = 0.05;
+  var NIGHT_CENTRE = 2.0;                   // local hour at the middle of the night
+  var HALF_WIDTH   = 4.5;
+  var SOFTNESS     = 1.0;
+
+  // Device density by longitude: weighted clusters, each smeared with a
+  // Gaussian. Point clusters alone create a fake global trough where every
+  // cluster happens to be in daylight at once.
+  var CLUSTERS = [
+    ['US West & Mexico',        -105, 0.045,  9],
+    ['Canada',                   -95, 0.010, 12],
+    ['US East',                  -77, 0.055,  8],
+    ['Andes & Colombia',         -72, 0.025,  7],
+    ['Brazil & Southern Cone',   -47, 0.045,  9],
+    ['UK & Ireland',              -3, 0.020,  3],
+    ['West Africa',                3, 0.030,  8],
+    ['Western Europe',             7, 0.055,  6],
+    ['Southern Africa',           28, 0.015,  7],
+    ['Eastern Europe & Turkey',   32, 0.040,  8],
+    ['East Africa',               37, 0.025,  6],
+    ['Middle East',               48, 0.030,  7],
+    ['Central Asia & Urals',      60, 0.020, 10],
+    ['Pakistan & W India',        70, 0.090,  6],
+    ['E India & Bangladesh',      85, 0.130,  6],
+    ['Siberia',                   90, 0.010, 20],
+    ['Mainland SE Asia',         105, 0.080,  7],
+    ['Eastern China',            115, 0.155,  7],
+    ['Maritime SE Asia',         122, 0.050,  8],
+    ['Japan & Korea',            133, 0.060,  5],
+    ['Australia & NZ',           148, 0.020, 10]
+  ];
+
+  // Longitude grid + normalised density.
+  var GRID = [], DENSITY = [];
+  for(var lon = -180; lon < 180; lon += 2) GRID.push(lon);
+  var total = 0;
+  for(var i = 0; i < GRID.length; i++){
+    var d = 0;
+    for(var c = 0; c < CLUSTERS.length; c++){
+      var delta = ((GRID[i] - CLUSTERS[c][1] + 180) % 360 + 360) % 360 - 180;
+      d += CLUSTERS[c][2] * Math.exp(-0.5 * Math.pow(delta / CLUSTERS[c][3], 2));
+    }
+    DENSITY.push(d); total += d;
+  }
+  for(var j = 0; j < DENSITY.length; j++) DENSITY[j] /= total;
+
+  function localHour(lon, utc){ return (((utc + lon / 15) % 24) + 24) % 24; }
+
+  function nightWeight(h){
+    var dist = Math.abs(((h - NIGHT_CENTRE + 12) % 24 + 24) % 24 - 12);
+    return 1 / (1 + Math.exp((dist - HALF_WIDTH) / SOFTNESS));
+  }
+
+  function availability(h){
+    return DAYTIME + (NIGHT_PEAK - DAYTIME) * nightWeight(h);
+  }
+
+  function globalAvailability(utc){
+    var s = 0;
+    for(var i = 0; i < GRID.length; i++) s += DENSITY[i] * availability(localHour(GRID[i], utc));
+    return s;
+  }
+
+  // Coarse regions, for the readout label only.
+  var REGIONS = [
+    {name:'Americas',      lo:-180, hi:-30},
+    {name:'Europe/Africa', lo: -30, hi: 45},
+    {name:'South Asia',    lo:  45, hi: 95},
+    {name:'East Asia',     lo:  95, hi:180}
+  ];
+
+  /* ---------- the visualization ---------- */
+  var cv = document.getElementById('band');
+  var ctx = cv.getContext('2d');
+  var rTime = document.getElementById('r-time');
+  var rAvail = document.getElementById('r-avail');
+  var rRegion = document.getElementById('r-region');
+  var rFloor = document.getElementById('r-floor');
+  var cycleNote = document.getElementById('cycle-note');
+
+  // Compute the true daily floor from the model rather than hard-coding it.
+  var floor = 1;
+  for(var t = 0; t < 24; t += 0.05) floor = Math.min(floor, globalAvailability(t));
+  rFloor.textContent = Math.round(floor * 100) + '%';
+
+  // Devices scattered by the same density function.
+  var DOTS = [];
+  (function(){
+    var cum = [], run = 0;
+    for(var i = 0; i < DENSITY.length; i++){ run += DENSITY[i]; cum.push(run); }
+    for(var n = 0; n < 170; n++){
+      var r = Math.random(), k = 0;
+      while(k < cum.length - 1 && cum[k] < r) k++;
+      DOTS.push({
+        lon: GRID[k] + (Math.random() - 0.5) * 2,
+        y: Math.random(),
+        r: 0.9 + Math.random() * 1.5,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  })();
+
+  var W = 0, H = 0, dpr = 1;
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var lonToX = function(lon){ return ((lon + 180) / 360) * W; };
+
+  function draw(utc){
+    ctx.clearRect(0, 0, W, H);
+
+    // Night shading, sampled across the strip.
+    var step = 3;
+    for(var x = 0; x < W; x += step){
+      var lon = (x / W) * 360 - 180;
+      var a = availability(localHour(lon, utc)) / NIGHT_PEAK;   // 0..1 for shading
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, 'rgba(26,33,73,' + (0.15 + a * 0.75) + ')');
+      g.addColorStop(1, 'rgba(10,14,32,' + (0.10 + a * 0.45) + ')');
+      ctx.fillStyle = g;
+      ctx.fillRect(x, 0, step + 1, H);
+    }
+
+    ctx.strokeStyle = 'rgba(178,190,235,.10)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, H - 0.5); ctx.lineTo(W, H - 0.5); ctx.stroke();
+
+    // Meridian ticks every 30 degrees.
+    ctx.font = '9px "JetBrains Mono", monospace';
+    ctx.fillStyle = 'rgba(141,151,194,.42)';
+    for(var lo = -180; lo <= 180; lo += 30){
+      var tx = lonToX(lo);
+      ctx.fillRect(tx, H - 6, 1, 6);
+      if(lo % 60 === 0 && lo > -180){
+        ctx.fillText((lo > 0 ? '+' : '') + lo + '°', tx + 4, H - 10);
+      }
+    }
+
+    // Devices. Brightness tracks availability rather than a hard threshold,
+    // because the underlying curve is continuous.
+    var now = performance.now() / 1000;
+    for(var i = 0; i < DOTS.length; i++){
+      var d = DOTS[i];
+      var av = availability(localHour(d.lon, utc));
+      var lit = (av - DAYTIME) / (NIGHT_PEAK - DAYTIME);       // 0..1
+      var px = lonToX(d.lon);
+      var py = 14 + d.y * (H - 42);
+      if(lit > 0.10){
+        var pulse = 0.72 + 0.28 * Math.sin(now * 1.6 + d.phase);
+        ctx.beginPath();
+        ctx.arc(px, py, d.r * 2.9, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,180,84,' + (0.10 * pulse * lit) + ')';
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(px, py, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,180,84,' + (0.85 * pulse * lit) + ')';
+        ctx.fill();
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py, d.r * 0.75, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(111,195,232,.20)';
+        ctx.fill();
+      }
+    }
+
+    // Readouts.
+    var hh = Math.floor(utc) % 24;
+    var mm = Math.floor((utc % 1) * 60);
+    rTime.textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+    rAvail.textContent = Math.round(globalAvailability(utc) * 100) + '%';
+
+    // Which coarse regions are currently in their night window.
+    var active = [];
+    for(var k = 0; k < REGIONS.length; k++){
+      var reg = REGIONS[k], num = 0, den = 0;
+      for(var m = 0; m < GRID.length; m++){
+        if(GRID[m] >= reg.lo && GRID[m] < reg.hi){
+          den += DENSITY[m];
+          num += DENSITY[m] * nightWeight(localHour(GRID[m], utc));
+        }
+      }
+      if(den > 0 && num / den > 0.5) active.push(reg.name);
+    }
+    rRegion.textContent = active.length ? active.join(' · ') : 'Transition';
+  }
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var startNow = new Date();
+
+  if(reduced){
+    cycleNote.textContent = 'Current UTC hour';
+    draw(startNow.getUTCHours() + startNow.getUTCMinutes() / 60);
+  } else {
+    var start = startNow.getUTCHours() + startNow.getUTCMinutes() / 60;
+    var t0 = performance.now();
+    (function loop(){
+      var elapsed = (performance.now() - t0) / 1000;
+      draw((start + (elapsed / 45) * 24) % 24);
+      requestAnimationFrame(loop);
+    })();
+  }
+})();
+</script>
+</body>
+</html>
