@@ -108,7 +108,7 @@ Three of these are physics. They will not be engineered away.
 These are flagged as unresolved rather than papered over. Opinions welcome.
 
 1. **Whose content runs on whose phone?** ([§9.2](WHITEPAPER.md#92-the-hard-problem-whose-content-runs-on-whose-phone)) Routing a stranger's prompt to a volunteer's device puts legal exposure on that volunteer. Current recommendation: **inference stays local-only; the network carries only vetted institutional batch work** through M2. That defers the most emotionally compelling part of the pitch. It may be the wrong call.
-2. **Funding.** No institution has agreed to pay for anything. M0–M2 must be affordable to run essentially unfunded.
+2. **Funding.** No institution has agreed to pay for anything. M0–M2 must be affordable to run essentially unfunded. (The obvious fix — sell compute to corporations and split the money with participants — [we costed it](analysis/ECONOMICS.md): a phone earns **$1.32/year** and burns **$1.58** of the owner's electricity to do it. In most of the world participants would pay to contribute.)
 3. **Battery health over years.** We have no longitudinal data and won't for a year. Currently an assumption.
 4. **iOS.** Background execution limits effectively forbid this model. iOS nodes will be app-open-and-charging only.
 

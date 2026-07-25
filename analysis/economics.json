@@ -1,0 +1,74 @@
+{
+  "inputs": {
+    "fp32_tflops_per_available_device": 0.29872499999999996,
+    "mean_availability": 0.2569655689212595,
+    "contributing_hours_per_year": 2252.7314875430416,
+    "tflop_hours_per_year": 672.947213616295,
+    "price_per_tflop_hour_cloud": 0.022,
+    "volunteer_discount": 0.55,
+    "utilisation": 0.3,
+    "verification_overhead": 1.3,
+    "platform_cut": 0.3,
+    "device_power_w": 3.5,
+    "kwh_per_year": 9.275953184000759
+  },
+  "revenue_chain": {
+    "gross_market_value_year": 8.14266128475717,
+    "after_utilisation": 2.442798385427151,
+    "after_verification_overhead": 1.8790756810978082,
+    "to_participant_year": 1.3153529767684657,
+    "to_participant_per_night": 0.0036037067856670296
+  },
+  "by_market": {
+    "India": {
+      "electricity_price_per_kwh": 0.08,
+      "electricity_cost_year": 0.7420762547200608,
+      "net_year": 0.573276722048405
+    },
+    "United States": {
+      "electricity_price_per_kwh": 0.17,
+      "electricity_cost_year": 1.5769120412801292,
+      "net_year": -0.26155906451166344
+    },
+    "United Kingdom": {
+      "electricity_price_per_kwh": 0.29,
+      "electricity_cost_year": 2.69002642336022,
+      "net_year": -1.374673446591754
+    },
+    "Germany": {
+      "electricity_price_per_kwh": 0.4,
+      "electricity_cost_year": 3.7103812736003037,
+      "net_year": -2.395028296831838
+    }
+  },
+  "baseline_market": "United States",
+  "baseline_net_year": -0.26155906451166344,
+  "payment_rails": {
+    "annual_payout": {
+      "amount": 1.3153529767684657,
+      "fee_fraction": 0.24187061719957387
+    },
+    "monthly_payout": {
+      "amount": 0.10961274806403881,
+      "fee_fraction": 1.0
+    }
+  },
+  "scenarios": {
+    "optimistic": {
+      "revenue": 9.269116403201838,
+      "net": 7.917477510676013
+    },
+    "central": {
+      "revenue": 1.3153529767684657,
+      "net": -0.26155906451166344
+    },
+    "pessimistic": {
+      "revenue": 0.1628532256951434,
+      "net": -1.864605113093594
+    }
+  },
+  "yardsticks": {
+    "minimum_wage_hour": 7.25,
+    "hours_of_minimum_wage_equivalent": 0.18142799679565044
+  }
+}

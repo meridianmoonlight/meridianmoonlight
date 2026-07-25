@@ -50,6 +50,20 @@ No, and there is no token, no wallet, no coin, and no plan for any. If you find 
 
 What you get is a free private AI assistant on your device and a share of a research instrument.
 
+### But why not sell the compute and split the money with us?
+
+We costed it, because this is the most common suggestion the project gets. Full workings in [`analysis/ECONOMICS.md`](../analysis/ECONOMICS.md).
+
+**Your phone's spare compute is worth about $1.32 a year to you** after utilisation, verification overhead, and platform costs. Your electricity to produce it costs $1.58 in the US, $2.69 in the UK, $3.71 in Germany. **In most of the world you would be paying us to participate.** Even a deliberately optimistic scenario reaches only ~$8/year — about one hour of minimum wage, annually.
+
+And a monthly payout of eleven cents against a $0.28 transaction fee means the fees exceed the payment. The only rail that makes micropayments that small work is a token.
+
+There are worse problems than the arithmetic. Paying people would attach a cash bounty to [the one security problem we admit we haven't solved](threat-model.md#sybil-attacks) — right now a fake node earns nothing; under payment every fake node is revenue. It would make app-store approval harder, turn volunteers into paid contractors with tax and worker-classification consequences, and create a group of participants lobbying to let their phones run hotter for longer.
+
+**What we do instead:** sell batch compute to institutions and corporations, but distribute it as a commons — hosting, development, and a published research grant pool, with open books. Contributors get priority routing, bigger models, and higher quotas: real value, no payment rails. And you can direct your notional share to a research project you choose.
+
+If you think our price-per-TFLOP-hour assumption is far too low, it's one named constant — change it and re-run. The optimistic column already tests roughly five times our central figure.
+
 ### Is this crypto?
 
 No. No blockchain, no token, no wallet, no yield, nothing to speculate on. The closest relatives are SETI@home and Folding@home.
