@@ -13,7 +13,7 @@ Everything in **`deploy/public_html/`** goes into `public_html`:
 ```
 index.html          whitepaper.html     subscribe.php       .htaccess
 og.png              robots.txt          sitemap.xml         figures/
-meridian-moonlight-whitepaper.pdf
+diagrams/           meridian-moonlight-whitepaper.pdf
 ```
 
 And the one file in **`deploy/above_public_html/`** goes **one level above** `public_html`, in your home directory:
@@ -78,7 +78,7 @@ git remote add origin https://github.com/meridianmoonlight/meridianmoonlight.git
 git push -u origin main
 ```
 
-I have **not** pushed anything. Two commits are waiting locally.
+I have **not** pushed anything. Three commits are waiting locally.
 
 **Before you push, know that this replaces the current repo contents** — the live README carries the retracted numbers, and this rewrite corrects them.
 

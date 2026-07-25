@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 620" width="1020" height="620" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <rect width="1020" height="620" fill="#0A0E20"/>
+
+  <text x="40" y="44" fill="#FFB454" font-size="11.5" letter-spacing="3">MERIDIAN MOONLIGHT — DEFENCE LAYERS</text>
+  <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">What stops someone tying into the compute</text>
+
+  <!-- layer 0 -->
+  <rect x="40" y="104" width="940" height="76" rx="3" fill="#111735" stroke="#FFB454" stroke-width="1.5"/>
+  <text x="62" y="132" fill="#FFB454" font-size="10" letter-spacing="2">LAYER 0 — THE FOUNDATION</text>
+  <text x="62" y="158" fill="#EAEDFA" font-size="15" font-weight="600">Inference only. No arbitrary code, ever.</text>
+  <text x="530" y="140" fill="#8D97C2" font-size="11.5">Eliminates mining, cracking, malware, and proxy abuse</text>
+  <text x="530" y="158" fill="#8D97C2" font-size="11.5">outright — not by policy, but because there is no</text>
+  <text x="530" y="176" fill="#8D97C2" font-size="11.5">execution path for them to use.</text>
+
+  <!-- layer grid -->
+  <g>
+    <rect x="40" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="62" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 1 — WHO CAN JOIN</text>
+    <text x="62" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Device attestation</text>
+    <text x="62" y="276" fill="#8D97C2" font-size="11">Play Integrity and DeviceCheck prove</text>
+    <text x="62" y="292" fill="#8D97C2" font-size="11">a genuine device running an official</text>
+    <text x="62" y="308" fill="#8D97C2" font-size="11">build. Fake fleets stop being free.</text>
+
+    <rect x="358" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="380" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 2 — IS THE WORK REAL</text>
+    <text x="380" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Redundant execution</text>
+    <text x="380" y="276" fill="#8D97C2" font-size="11">Every job runs on 2–3 independent</text>
+    <text x="380" y="292" fill="#8D97C2" font-size="11">nodes. Numeric work compares exactly;</text>
+    <text x="380" y="308" fill="#8D97C2" font-size="11">text compares within tolerance.</text>
+
+    <rect x="676" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="698" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 3 — CATCHING LIARS</text>
+    <text x="698" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Canary tasks</text>
+    <text x="698" y="276" fill="#8D97C2" font-size="11">Jobs with known answers are mixed in</text>
+    <text x="698" y="292" fill="#8D97C2" font-size="11">indistinguishably. Returning garbage</text>
+    <text x="698" y="308" fill="#8D97C2" font-size="11">to save battery gets caught.</text>
+
+    <rect x="40" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="62" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 4 — EARNED STANDING</text>
+    <text x="62" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Slow reputation</text>
+    <text x="62" y="420" fill="#8D97C2" font-size="11">New nodes start at zero and gain trust</text>
+    <text x="62" y="436" fill="#8D97C2" font-size="11">over weeks. Influence can't be bought,</text>
+    <text x="62" y="452" fill="#8D97C2" font-size="11">only waited for — and waiting is visible.</text>
+
+    <rect x="358" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="380" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 5 — MODEL INTEGRITY</text>
+    <text x="380" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Hash-verified weights</text>
+    <text x="380" y="420" fill="#8D97C2" font-size="11">Models are content-addressed and</text>
+    <text x="380" y="436" fill="#8D97C2" font-size="11">checked at load. Tampered weights</text>
+    <text x="380" y="452" fill="#8D97C2" font-size="11">fail before a single token is produced.</text>
+
+    <rect x="676" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
+    <text x="698" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 6 — NO PRIZE TO WIN</text>
+    <text x="698" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Nothing to cash out</text>
+    <text x="698" y="420" fill="#8D97C2" font-size="11">Credits can't be sold or transferred, so</text>
+    <text x="698" y="436" fill="#8D97C2" font-size="11">a fake fleet's earnings are stranded.</text>
+    <text x="698" y="452" fill="#8D97C2" font-size="11">Remove the money, remove the motive.</text>
+  </g>
+
+  <!-- honest limits -->
+  <rect x="40" y="496" width="940" height="92" rx="3" fill="#0A0E20" stroke="#6FC3E8" stroke-width="1.5"/>
+  <text x="62" y="524" fill="#6FC3E8" font-size="10" letter-spacing="2">WHAT THESE LAYERS DO NOT SOLVE</text>
+  <text x="62" y="550" fill="#EAEDFA" font-size="12.5">A node operator can read the prompts their own device processes. Inference needs plaintext in memory.</text>
+  <text x="62" y="572" fill="#8D97C2" font-size="12">Only hardware TEEs fix this, and coverage is patchy across the mid-range devices that form most of the fleet.</text>
+</svg>

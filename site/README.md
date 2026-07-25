@@ -15,7 +15,7 @@ Four files into `public_html`:
 | `subscribe.php` | Pledge handler — validates, honeypot, rate limits, stores, emails via SMTP |
 | `.htaccess` | HTTPS redirect, www→apex, security headers, blocks data files |
 
-Plus `figures/`, `og.png`, `robots.txt`, `sitemap.xml`.
+Plus `figures/`, `diagrams/`, `og.png`, `robots.txt`, `sitemap.xml`.
 
 And **one level above** `public_html`, in the home directory:
 

@@ -189,6 +189,16 @@ input[type=range]::-moz-range-thumb{width:17px;height:17px;border-radius:50%;
 .verdict{margin-top:22px;padding:15px 18px;background:rgba(255,180,84,.07);
   border-left:2px solid var(--amber);font-size:.95rem;color:var(--moon)}
 
+
+/* system diagrams */
+.diagram{margin:40px 0 0;border:1px solid var(--line);background:var(--night);
+  overflow-x:auto;-webkit-overflow-scrolling:touch}
+.diagram img{display:block;width:100%;min-width:760px;height:auto}
+.diagram figcaption{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dim);padding:12px 16px;border-top:1px solid var(--line)}
+@media(max-width:820px){.diagram::after{content:'scroll →';position:sticky;left:0;display:block;
+  font-family:var(--mono);font-size:.6rem;color:var(--dim);padding:0 16px 10px}}
+
 /* cards */
 .grid{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);margin-top:42px}
 .grid-3{grid-template-columns:repeat(3,1fr)}
@@ -561,6 +571,11 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
   <div class="wrap">
     <p class="eyebrow">How it works</p>
     <h2>Whole models on each machine. Night does the scheduling.</h2>
+
+    <figure class="diagram" style="margin-bottom:0">
+      <img src="diagrams/architecture.svg" alt="A request flows from anyone, to a coordinator that picks night-side nodes, out to three phones each running a whole model locally, then results are compared and the agreed answer returns to the asker. A job is a prompt plus a model ID, never a script, binary, or container.">
+      <figcaption>One prompt, three machines, one verified answer</figcaption>
+    </figure>
     <div class="grid grid-3">
       <div class="card">
         <span class="tag">On your device</span>
@@ -598,7 +613,12 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
       PCs alike. That removes crypto mining, password cracking, malware, and using your connection
       as a proxy — not as a rule we promise to enforce, but because there is no way to run them.</p>
 
-    <div class="grid grid-3">
+    <figure class="diagram">
+      <img src="diagrams/security.svg" alt="Seven defence layers. Layer 0, the foundation: inference only, no arbitrary code ever. Then device attestation, redundant execution, canary tasks, slow reputation, hash-verified weights, and nothing to cash out. Plus a panel stating what these layers do not solve: a node operator can read the prompts their own device processes.">
+      <figcaption>Defence layers — and what they don't solve</figcaption>
+    </figure>
+
+    <div class="grid grid-3" style="margin-top:1px">
       <div class="card raised">
         <span class="tag">The foundation</span>
         <h3>Inference only. No exceptions.</h3>
@@ -647,6 +667,11 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
   <div class="wrap">
     <p class="eyebrow">The compute economy</p>
     <h2>Earn compute by giving compute. No money crosses here.</h2>
+
+    <figure class="diagram" style="margin-bottom:0">
+      <img src="diagrams/economy.svg" alt="Contribute hours, not horsepower, to earn credits: a usage allowance that decays and cannot be sold. Spend them on priority and headroom. Below, an unconditional free floor for everyone at zero balance. Separately, actual money: institutions and companies buy batch time, paying for hosting, audits, and research grants on a public ledger.">
+      <figcaption>Earn compute by giving compute — and the separate ledger where money lives</figcaption>
+    </figure>
 
     <div class="flow">
       <div class="step">
