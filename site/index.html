@@ -610,7 +610,7 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
     <h2>Whole models on each machine. Night does the scheduling.</h2>
 
     <figure class="diagram" style="margin-bottom:0">
-      <img src="diagrams/architecture.svg" alt="A request flows from anyone, to a coordinator that picks night-side nodes, out to three phones each running a whole model locally, then results are compared and the agreed answer returns to the asker. A job is a prompt plus a model ID, never a script, binary, or container.">
+      <img src="diagrams/architecture.svg" alt="Right work, right machine. Three classes of job arrive: a quick question needing speed, a hard question needing a big model, and overnight science needing floating-point. The coordinator matches each against three things — capability, meaning what will actually fit and run fast enough; trust, meaning whether the machine may answer alone or must be corroborated; and availability, meaning idle, powered, and on the night side. The fleet is not uniform: a PC with a 24GB card hosts 32B for hard questions and heavy science, a PC with an 8 to 12GB card hosts 8 to 14B and real FP32 work, a charging phone hosts 3B for quick questions, and a CPU-only box with 64GB RAM can hold a large model but is batch-only. Answers are checked by hidden known-answer tasks, silent re-checks against a trusted reference, and redundancy scaled to stakes. A job is a prompt plus a task-type ID, never a script, binary, or container.">
       <figcaption>One prompt, three machines, one verified answer</figcaption>
     </figure>
     <div class="grid grid-3">
@@ -651,7 +651,7 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
       as a proxy — not as a rule we promise to enforce, but because there is no way to run them.</p>
 
     <figure class="diagram">
-      <img src="diagrams/security.svg" alt="Seven defence layers. Layer 0, the foundation: inference only, no arbitrary code ever. Then device attestation, redundant execution, canary tasks, slow reputation, hash-verified weights, and nothing to cash out. Plus a panel stating what these layers do not solve: a node operator can read the prompts their own device processes.">
+      <img src="diagrams/security.svg" alt="Layer 0, the foundation: inference only, no arbitrary code ever, on PCs exactly as on phones. Below it a trust ladder showing what each machine may do alone: an attested phone may do any work including answering alone; a PC with TPM 2.0 or Secure Enclave answers alone once reputation is earned; an unattested PC — the largest tier — does corroborated work only, permanently; anything behaving anomalously is served nothing. Unattested machines are never excluded, only never trusted alone. Trust is earned through canaries and silent re-checks, bounded by the fact that a Sybil attack buys identity but not capacity, and made pointless by there being nothing to cash out. Not solved: whoever runs a machine can read what it processes.">
       <figcaption>Defence layers — and what they don't solve</figcaption>
     </figure>
 
@@ -706,7 +706,7 @@ footer .note{flex-basis:100%;font-size:.77rem;opacity:.7;margin-top:8px}
     <h2>Earn compute by giving compute. No money crosses here.</h2>
 
     <figure class="diagram" style="margin-bottom:0">
-      <img src="diagrams/economy.svg" alt="Contribute hours, not horsepower, to earn credits: a usage allowance that decays and cannot be sold. Spend them on priority and headroom. Below, an unconditional free floor for everyone at zero balance. Separately, actual money: institutions and companies buy batch time, paying for hosting, audits, and research grants on a public ledger.">
+      <img src="diagrams/economy.svg" alt="Contribute hours, not horsepower — a four-year-old phone earns what a 24GB graphics card earns. That yields credits, a usage allowance for verified work only, capped per machine per day and decaying so it never becomes savings. Credits are spent on priority, longer context, access to the bigger models only PCs can host, and the right to submit your own batch job against an audited task. The obvious objection is answered: paying by speed would hand the most free AI to whoever already owns the best hardware, so recognition is weighted by contribution but allocation never is. Below, an unconditional free floor for everyone at zero balance forever. Separately, actual money: institutions and companies buy batch time from surplus only, every buyer named, no single buyer above 25 percent of revenue, funding hosting, audits, and research grants on a public ledger. Contributors are never paid.">
       <figcaption>Earn compute by giving compute — and the separate ledger where money lives</figcaption>
     </figure>
 

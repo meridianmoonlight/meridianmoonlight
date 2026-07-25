@@ -358,7 +358,35 @@ footer .fine{font-size:.76rem;opacity:.7;margin-top:14px}
 </ol>
 <p>This ordering is not an optimisation. It is the privacy architecture, the cost architecture, and — as <a href="#92-the-hard-problem-whose-content-runs-on-whose-phone">§9.2</a> argues — most of the safety architecture. Every request served locally is a request that generates no bandwidth bill, no log, and no liability.</p>
 <h3 id="32-the-contribution-gate">3.2 The contribution gate<a class="headerlink" href="#32-the-contribution-gate" title="Permanent link">#</a></h3>
-<p>A device contributes only when <strong>all</strong> of the following hold:</p>
+<p>A machine contributes only when <strong>all</strong> of the conditions for its tier hold. They differ, because what a participant notices differs.</p>
+<p><strong>Desktop — the primary tier:</strong></p>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>On mains power</td>
+<td>Never drain a laptop battery</td>
+</tr>
+<tr>
+<td>Unmetered connection</td>
+<td>Never spend a participant's data allowance</td>
+</tr>
+<tr>
+<td>No input, no fullscreen application</td>
+<td>Never compete for a machine someone is using — or gaming on</td>
+</tr>
+<tr>
+<td>Thermal headroom</td>
+<td><strong>Stop before the fans become audible</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Mobile — the extension tier:</strong></p>
 <div class="tablewrap"><table>
 <thead>
 <tr>
@@ -389,8 +417,9 @@ footer .fine{font-size:.76rem;opacity:.7;margin-top:14px}
 </tr>
 </tbody>
 </table></div>
+<p>Fan noise is the desktop's equivalent of the thing phone users forgive least. <strong>A machine that gets loud at 2 a.m. gets uninstalled</strong>, so the thermal gate carries as much weight on a PC as the battery gate does on a phone — and it is the reason the desktop tier's availability assumption is conservative rather than optimistic.</p>
 <p>The gate is enforced in the client, checked continuously, and fails closed. Withdrawal is immediate and needs no explanation: one switch, always visible, and uninstalling is a complete exit.</p>
-<p>We publish our own thermal and battery measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal device does not get to be selective about its data.</p>
+<p>We publish our own thermal, acoustic, and power measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal machine does not get to be selective about its data.</p>
 <h3 id="33-verification">3.3 Verification<a class="headerlink" href="#33-verification" title="Permanent link">#</a></h3>
 <p>A coordinator matches requests to nodes by capability, current load, geography, and reputation. Then it has to establish that the work was actually done, because a node returning plausible garbage while claiming credit is the cheapest available attack.</p>
 <h4 id="the-correction">The correction<a class="headerlink" href="#the-correction" title="Permanent link">#</a></h4>

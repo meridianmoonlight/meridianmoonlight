@@ -42,9 +42,21 @@ Credits accrue for **verified** work only. Unverified results earn nothing — w
 
 This is the most important design choice in the whole system.
 
-Credits are weighted by **hours of reliable contribution**, not by raw throughput. A four-year-old mid-range phone contributing every night earns comparably to a current flagship doing the same.
+Credits are weighted by **hours of reliable contribution**, not by raw throughput. A four-year-old mid-range phone contributing every night earns comparably to a current flagship doing the same — and, now that desktops are the primary tier, **a 24GB graphics card earns exactly what that old phone earns.**
 
 The alternative — paying by tokens generated — would systematically reward whoever owns the best hardware, meaning the people who least need free AI would accumulate the most access to it. For a project whose reason to exist is serving people locked out by cost, that would be a quiet betrayal of the mission. Availability is the contribution that actually matters anyway: the network's whole thesis is *coverage across time zones*, not peak performance.
+
+#### The objection this invites, and why the answer is not more credits
+
+If a 24GB card earns no more than an old phone, why would anyone contribute the expensive machine? It is a fair question and it got sharper when [the model ladder](../analysis/LADDER.md) showed that the flagship capability depends on a small pool of exactly those cards.
+
+The answer is not to pay them more credits, for three reasons:
+
+1. **It would invert the mission.** Paying by throughput hands the most free AI to whoever already owns the best hardware — the people who least need it.
+2. **Recognition can carry the load instead.** Public acknowledgement weighted by contribution is explicitly permitted below; what is forbidden is letting it affect *allocation*. Folding@home recruited enthusiast hardware for two decades on exactly that basis.
+3. **The capability is its own reward.** Someone hosting the 32B model gets to use the 32B model. So does everyone else — that is the point — but they are not giving something away and receiving nothing back.
+
+**This remains the least settled part of the design.** If the flagship pool fails to materialise, the honest response is to say so and revisit, not to quietly introduce throughput-weighted earning and hope nobody notices the mission drifting.
 
 It also has a security dividend. Because credits track hours rather than throughput, [a fake fleet gains nothing from claiming fast hardware](desktop-security.md#behavioural-fingerprinting) — it would have to genuinely stay online and genuinely pass canaries.
 

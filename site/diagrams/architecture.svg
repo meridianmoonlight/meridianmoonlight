@@ -1,95 +1,128 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 600" width="1020" height="600" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 700" width="1020" height="700" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
   <defs>
-    <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#8D97C2"/>
-    </marker>
-    <marker id="arwA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="a-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#FFB454"/>
     </marker>
-    <marker id="arwC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="a-arwc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0 0 L10 5 L0 10 z" fill="#6FC3E8"/>
     </marker>
-    <linearGradient id="nightband" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#1A2149" stop-opacity="0.2"/>
-      <stop offset="50%" stop-color="#1A2149" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#1A2149" stop-opacity="0.2"/>
-    </linearGradient>
+    <marker id="a-arwt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#3FD0C9"/>
+    </marker>
   </defs>
 
-  <rect width="1020" height="600" fill="#0A0E20"/>
+  <rect width="1020" height="700" fill="#0A0E20"/>
 
   <text x="40" y="44" fill="#FFB454" font-size="11.5" letter-spacing="3">MERIDIAN MOONLIGHT — REQUEST FLOW</text>
-  <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">One prompt, three phones, one verified answer</text>
+  <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">Right work, right machine.</text>
+  <text x="40" y="96" fill="#8D97C2" font-size="12.5">The network is not a pool of identical workers. Every job is matched against what a machine can host, what it has earned</text>
+  <text x="40" y="113" fill="#8D97C2" font-size="12.5">the right to do alone, and whether it is idle right now.</text>
 
-  <!-- ROW 1 -->
-  <rect x="40" y="112" width="180" height="104" rx="3" fill="#111735" stroke="#2A3468"/>
-  <text x="58" y="139" fill="#6FC3E8" font-size="10" letter-spacing="2">1 · ASKS</text>
-  <text x="58" y="166" fill="#EAEDFA" font-size="15" font-weight="600">Anyone</text>
-  <text x="58" y="188" fill="#8D97C2" font-size="11.5">No account.</text>
-  <text x="58" y="206" fill="#8D97C2" font-size="11.5">No payment.</text>
+  <!-- ============ COLUMN 1: WORK ARRIVES ============ -->
+  <text x="40" y="152" fill="#6FC3E8" font-size="10" letter-spacing="2">1 &#183; WORK ARRIVES</text>
 
-  <line x1="222" y1="164" x2="296" y2="164" stroke="#8D97C2" stroke-width="1.5" marker-end="url(#arw)"/>
-  <text x="230" y="153" fill="#8D97C2" font-size="10">encrypted</text>
+  <rect x="40" y="164" width="232" height="62" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="58" y="186" fill="#EAEDFA" font-size="12.5" font-weight="600">A quick question</text>
+  <text x="58" y="204" fill="#8D97C2" font-size="10.5">Translate this. Summarise that.</text>
+  <text x="58" y="218" fill="#8D97C2" font-size="10.5">Needs speed, not depth.</text>
 
-  <rect x="298" y="112" width="200" height="104" rx="3" fill="#111735" stroke="#2A3468"/>
-  <text x="316" y="139" fill="#6FC3E8" font-size="10" letter-spacing="2">2 · ROUTES</text>
-  <text x="316" y="166" fill="#EAEDFA" font-size="15" font-weight="600">Coordinator</text>
-  <text x="316" y="188" fill="#8D97C2" font-size="11.5">Picks night-side nodes.</text>
-  <text x="316" y="206" fill="#8D97C2" font-size="11.5">Never sees content.</text>
+  <rect x="40" y="236" width="232" height="62" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.5"/>
+  <text x="58" y="258" fill="#FFB454" font-size="12.5" font-weight="600">A hard question</text>
+  <text x="58" y="276" fill="#8D97C2" font-size="10.5">Reasoning, code, long context.</text>
+  <text x="58" y="290" fill="#8D97C2" font-size="10.5">Needs a big model.</text>
 
-  <line x1="500" y1="164" x2="576" y2="164" stroke="#FFB454" stroke-width="1.5" marker-end="url(#arwA)"/>
-  <text x="506" y="153" fill="#FFB454" font-size="10">same job &#215;3</text>
+  <rect x="40" y="308" width="232" height="62" rx="3" fill="#111735" stroke="#3FD0C9" stroke-opacity="0.5"/>
+  <text x="58" y="330" fill="#3FD0C9" font-size="12.5" font-weight="600">Overnight science</text>
+  <text x="58" y="348" fill="#8D97C2" font-size="10.5">Screening, ensembles, embedding.</text>
+  <text x="58" y="362" fill="#8D97C2" font-size="10.5">Needs floating-point, not speed.</text>
 
-  <rect x="578" y="94" width="402" height="182" rx="3" fill="url(#nightband)"/>
-  <text x="596" y="116" fill="#8D97C2" font-size="9.5" letter-spacing="2">NIGHT-SIDE FLEET &#183; CHARGING &#183; WI-FI &#183; IDLE</text>
+  <text x="40" y="398" fill="#8D97C2" font-size="10.5">No account. No payment.</text>
+  <text x="40" y="414" fill="#8D97C2" font-size="10.5">Answered on your own machine</text>
+  <text x="40" y="430" fill="#8D97C2" font-size="10.5">first, whenever it can.</text>
 
-  <rect x="596" y="130" width="112" height="74" rx="3" fill="#0A0E20" stroke="#FFB454" stroke-opacity="0.5"/>
-  <circle cx="614" cy="152" r="4" fill="#FFB454"/>
-  <text x="628" y="156" fill="#EAEDFA" font-size="12.5" font-weight="600">Phone A</text>
-  <text x="612" y="178" fill="#8D97C2" font-size="10.5">whole model,</text>
-  <text x="612" y="194" fill="#8D97C2" font-size="10.5">run locally</text>
+  <!-- ============ COLUMN 2: THE MATCH ============ -->
+  <text x="320" y="152" fill="#6FC3E8" font-size="10" letter-spacing="2">2 &#183; MATCHED ON THREE THINGS</text>
 
-  <rect x="722" y="130" width="112" height="74" rx="3" fill="#0A0E20" stroke="#FFB454" stroke-opacity="0.5"/>
-  <circle cx="740" cy="152" r="4" fill="#FFB454"/>
-  <text x="754" y="156" fill="#EAEDFA" font-size="12.5" font-weight="600">Phone B</text>
-  <text x="738" y="178" fill="#8D97C2" font-size="10.5">whole model,</text>
-  <text x="738" y="194" fill="#8D97C2" font-size="10.5">run locally</text>
+  <rect x="320" y="164" width="290" height="206" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.6" stroke-width="1.5"/>
 
-  <rect x="848" y="130" width="112" height="74" rx="3" fill="#0A0E20" stroke="#FFB454" stroke-opacity="0.5"/>
-  <circle cx="866" cy="152" r="4" fill="#FFB454"/>
-  <text x="880" y="156" fill="#EAEDFA" font-size="12.5" font-weight="600">Phone C</text>
-  <text x="864" y="178" fill="#8D97C2" font-size="10.5">whole model,</text>
-  <text x="864" y="194" fill="#8D97C2" font-size="10.5">run locally</text>
+  <rect x="340" y="182" width="250" height="56" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="356" y="202" fill="#FFB454" font-size="10" letter-spacing="1.6">CAPABILITY</text>
+  <text x="356" y="220" fill="#EAEDFA" font-size="11">What will actually fit and run</text>
+  <text x="356" y="233" fill="#8D97C2" font-size="10">fast enough to be worth sending</text>
 
-  <text x="596" y="230" fill="#EAEDFA" font-size="11" font-weight="700" letter-spacing="1">3 &#183; COMPUTE</text>
-  <text x="596" y="250" fill="#8D97C2" font-size="11">No model is ever split across the internet, so there are</text>
-  <text x="596" y="266" fill="#8D97C2" font-size="11">no per-token network hops. Nodes keep nothing.</text>
+  <rect x="340" y="246" width="250" height="56" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="356" y="266" fill="#FFB454" font-size="10" letter-spacing="1.6">TRUST</text>
+  <text x="356" y="284" fill="#EAEDFA" font-size="11">May it answer alone, or must the</text>
+  <text x="356" y="297" fill="#8D97C2" font-size="10">answer be corroborated first?</text>
 
-  <!-- down to verification -->
-  <line x1="779" y1="278" x2="779" y2="322" stroke="#8D97C2" stroke-width="1.5" marker-end="url(#arw)"/>
+  <rect x="340" y="310" width="250" height="46" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="356" y="330" fill="#FFB454" font-size="10" letter-spacing="1.6">AVAILABILITY</text>
+  <text x="356" y="348" fill="#EAEDFA" font-size="11">Idle, powered, on the night side</text>
 
-  <!-- ROW 2 -->
-  <rect x="578" y="324" width="402" height="112" rx="3" fill="#111735" stroke="#2A3468"/>
-  <text x="596" y="351" fill="#6FC3E8" font-size="10" letter-spacing="2">4 &#183; VERIFIES</text>
-  <text x="596" y="378" fill="#EAEDFA" font-size="15" font-weight="600">Results compared</text>
-  <text x="596" y="400" fill="#8D97C2" font-size="11.5">Output is not bit-identical across different hardware, so</text>
-  <text x="596" y="418" fill="#8D97C2" font-size="11.5">canaries and re-derivation audits carry the check.</text>
+  <text x="320" y="398" fill="#8D97C2" font-size="10.5">The coordinator never sees content,</text>
+  <text x="320" y="414" fill="#8D97C2" font-size="10.5">never tells a machine who asked, and</text>
+  <text x="320" y="430" fill="#8D97C2" font-size="10.5">cannot send it anything new to run.</text>
 
-  <!-- verification -> coordinator (below both rows) -->
-  <path d="M578 380 L398 380 L398 230" fill="none" stroke="#8D97C2" stroke-width="1.5" marker-end="url(#arw)"/>
-  <text x="410" y="374" fill="#8D97C2" font-size="10">agreed answer</text>
+  <!-- ============ COLUMN 3: THE FLEET, TIERED ============ -->
+  <text x="658" y="152" fill="#6FC3E8" font-size="10" letter-spacing="2">3 &#183; THE FLEET IS NOT UNIFORM</text>
 
-  <!-- coordinator -> requester, routed below -->
-  <path d="M348 218 L348 268 L130 268 L130 222" fill="none" stroke="#6FC3E8" stroke-width="1.5" marker-end="url(#arwC)"/>
-  <text x="150" y="290" fill="#6FC3E8" font-size="11" font-weight="700" letter-spacing="1">5 &#183; ANSWERS</text>
-  <text x="150" y="310" fill="#8D97C2" font-size="11">Returned to the asker. The node</text>
-  <text x="150" y="326" fill="#8D97C2" font-size="11">never learns who it served, and</text>
-  <text x="150" y="342" fill="#8D97C2" font-size="11">the asker never learns which</text>
-  <text x="150" y="358" fill="#8D97C2" font-size="11">device answered.</text>
+  <rect x="658" y="164" width="322" height="62" rx="3" fill="#111735" stroke="#FFB454" stroke-opacity="0.65" stroke-width="1.5"/>
+  <text x="676" y="186" fill="#FFB454" font-size="12.5" font-weight="600">PC &#183; 24GB graphics card</text>
+  <text x="676" y="204" fill="#EAEDFA" font-size="10.5">Hosts 32B — the hard questions,</text>
+  <text x="676" y="218" fill="#8D97C2" font-size="10.5">and the heaviest science. Scarce.</text>
 
-  <!-- footnote -->
-  <line x1="40" y1="500" x2="980" y2="500" stroke="#2A3468"/>
-  <text x="40" y="526" fill="#EAEDFA" font-size="11.5" font-weight="600">A job is a prompt plus a model ID — never a script, a binary, or a container.</text>
-  <text x="40" y="548" fill="#8D97C2" font-size="11.5">The network cannot execute arbitrary code on a volunteer's phone. That constraint is the</text>
-  <text x="40" y="566" fill="#8D97C2" font-size="11.5">foundation of the security model, not a feature that can be relaxed later.</text>
+  <rect x="658" y="236" width="322" height="62" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="676" y="258" fill="#EAEDFA" font-size="12.5" font-weight="600">PC &#183; 8&#8211;12GB card</text>
+  <text x="676" y="276" fill="#EAEDFA" font-size="10.5">Hosts 8&#8211;14B, and real FP32 work.</text>
+  <text x="676" y="290" fill="#8D97C2" font-size="10.5">The bulk of the network's capacity.</text>
+
+  <rect x="658" y="308" width="322" height="62" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="676" y="330" fill="#EAEDFA" font-size="12.5" font-weight="600">Phone &#183; charging, idle</text>
+  <text x="676" y="348" fill="#EAEDFA" font-size="10.5">Hosts 3B — quick questions.</text>
+  <text x="676" y="362" fill="#8D97C2" font-size="10.5">Enormous reach, every time zone.</text>
+
+  <rect x="658" y="380" width="322" height="56" rx="3" fill="#111735" stroke="#2A3468" stroke-dasharray="3 3"/>
+  <text x="676" y="401" fill="#8D97C2" font-size="12" font-weight="600">CPU-only box &#183; 64GB RAM</text>
+  <text x="676" y="418" fill="#8D97C2" font-size="10.5">Can hold a large model but streams it far</text>
+  <text x="676" y="431" fill="#8D97C2" font-size="10.5">too slowly to chat. Batch work only.</text>
+
+  <!-- arrows: work -> coordinator -->
+  <path d="M272 195 L314 195" stroke="#6FC3E8" stroke-width="1.4" fill="none" marker-end="url(#a-arwc)" stroke-opacity="0.75"/>
+  <path d="M272 267 L314 267" stroke="#FFB454" stroke-width="1.6" fill="none" marker-end="url(#a-arw)"/>
+  <path d="M272 339 L314 339" stroke="#3FD0C9" stroke-width="1.5" fill="none" marker-end="url(#a-arwt)"/>
+
+  <!-- arrows: coordinator -> fleet, deliberately crossing to show matching -->
+  <path d="M610 262 C634 262 632 195 652 195" stroke="#FFB454" stroke-width="1.6" fill="none" marker-end="url(#a-arw)"/>
+  <path d="M610 300 C636 300 634 267 652 267" stroke="#3FD0C9" stroke-width="1.5" fill="none" marker-end="url(#a-arwt)"/>
+  <path d="M610 228 C640 228 636 339 652 339" stroke="#6FC3E8" stroke-width="1.4" fill="none" marker-end="url(#a-arwc)" stroke-opacity="0.75"/>
+  <path d="M610 340 C630 340 634 405 652 405" stroke="#3FD0C9" stroke-width="1.3" fill="none" marker-end="url(#a-arwt)" stroke-opacity="0.55"/>
+
+  <!-- ============ VERIFICATION BAND ============ -->
+  <line x1="40" y1="462" x2="980" y2="462" stroke="#2A3468"/>
+  <text x="40" y="488" fill="#6FC3E8" font-size="10" letter-spacing="2">4 &#183; THE ANSWER IS CHECKED BEFORE IT IS TRUSTED</text>
+
+  <rect x="40" y="500" width="298" height="86" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="522" fill="#EAEDFA" font-size="12.5" font-weight="600">Hidden known-answer tasks</text>
+  <text x="60" y="542" fill="#8D97C2" font-size="10.5">Jobs whose correct answer we already</text>
+  <text x="60" y="556" fill="#8D97C2" font-size="10.5">know, mixed in indistinguishably. The</text>
+  <text x="60" y="570" fill="#8D97C2" font-size="10.5">only way to pass is to actually compute.</text>
+
+  <rect x="354" y="500" width="298" height="86" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="374" y="522" fill="#EAEDFA" font-size="12.5" font-weight="600">Silent re-checks</text>
+  <text x="374" y="542" fill="#8D97C2" font-size="10.5">A sampled fraction is quietly re-run</text>
+  <text x="374" y="556" fill="#8D97C2" font-size="10.5">against a trusted reference machine, so</text>
+  <text x="374" y="570" fill="#8D97C2" font-size="10.5">mixed hardware never confuses the check.</text>
+
+  <rect x="668" y="500" width="312" height="86" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="688" y="522" fill="#EAEDFA" font-size="12.5" font-weight="600">Redundancy scaled to stakes</text>
+  <text x="688" y="542" fill="#8D97C2" font-size="10.5">Casual chat: two machines. Research</text>
+  <text x="688" y="556" fill="#8D97C2" font-size="10.5">work: three or more, never sharing a</text>
+  <text x="688" y="570" fill="#8D97C2" font-size="10.5">subnet, provider, or region.</text>
+
+  <text x="40" y="612" fill="#8D97C2" font-size="11">Output is not bit-identical across different hardware, so two honest machines disagree slightly. Verification never assumes otherwise.</text>
+
+  <!-- ============ FOOTER RULE ============ -->
+  <line x1="40" y1="636" x2="980" y2="636" stroke="#2A3468"/>
+  <text x="40" y="662" fill="#EAEDFA" font-size="12.5" font-weight="600">A job is a prompt plus a task-type ID — never a script, a binary, or a container.</text>
+  <text x="40" y="682" fill="#8D97C2" font-size="11.5">The network cannot execute arbitrary code on a volunteer's machine. That constraint is the foundation of the security model, not a feature to be relaxed later.</text>
 </svg>

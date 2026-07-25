@@ -88,6 +88,20 @@ Weights must be openly licensed with terms that survive planetary scale. Some wi
 
 All conditions must hold. Evaluated continuously, not once at start. Fails closed.
 
+The conditions differ by tier, because the things a participant notices differ.
+
+**Desktop (primary tier):**
+
+| Condition | Threshold | Why |
+|---|---|---|
+| Mains power | Connected | Never drain a laptop battery |
+| Network | Unmetered | Never spend a participant's data allowance |
+| User idle | No input for N minutes, no fullscreen app | Never compete for a machine someone is using or gaming on |
+| Thermal headroom | Below platform-nominal | Stop before fans become audible — the desktop equivalent of "felt warmth" |
+| User switch | On | Always visible; off is immediate and permanent |
+
+**Mobile (extension tier):**
+
 | Condition | Threshold | Why |
 |---|---|---|
 | Power connected | AC or USB | Battery life is what users notice first and forgive last |
@@ -96,6 +110,8 @@ All conditions must hold. Evaluated continuously, not once at start. Fails close
 | Battery level | ≥ 80% | Don't slow the charge they actually wanted |
 | Battery temperature | Below platform-nominal | Stop before the user ever feels warmth |
 | User switch | On | Always visible; off is immediate and permanent |
+
+Fan noise is the desktop's version of the thing users forgive least. A machine that gets loud at 2 a.m. gets uninstalled, so the thermal gate matters as much here as the battery gate does on a phone.
 
 Implementation notes: `BatteryManager` for power and level, `ConnectivityManager.isActiveNetworkMetered` for the Wi-Fi test (metered Wi-Fi hotspots must count as cellular), `PowerManager.isInteractive` for screen state, and a thermal check via `PowerManager.getCurrentThermalStatus`. Any gate condition failing mid-request aborts the request and returns it to the coordinator for rerouting — a partially served request is discarded, never returned as a result.
 

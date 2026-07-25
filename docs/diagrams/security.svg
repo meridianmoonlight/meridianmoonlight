@@ -1,65 +1,87 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 620" width="1020" height="620" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
-  <rect width="1020" height="620" fill="#0A0E20"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 760" width="1020" height="760" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <rect width="1020" height="760" fill="#0A0E20"/>
 
   <text x="40" y="44" fill="#FFB454" font-size="11.5" letter-spacing="3">MERIDIAN MOONLIGHT — DEFENCE LAYERS</text>
   <text x="40" y="72" fill="#EAEDFA" font-size="21" font-weight="700">What stops someone tying into the compute</text>
+  <text x="40" y="96" fill="#8D97C2" font-size="12.5">The primary tier is the one we can prove the least about. A PC cannot attest itself the way a phone can, so trust has to be</text>
+  <text x="40" y="113" fill="#8D97C2" font-size="12.5">earned through behaviour rather than asserted by hardware.</text>
 
-  <!-- layer 0 -->
-  <rect x="40" y="104" width="940" height="76" rx="3" fill="#111735" stroke="#FFB454" stroke-width="1.5"/>
-  <text x="62" y="132" fill="#FFB454" font-size="10" letter-spacing="2">LAYER 0 — THE FOUNDATION</text>
-  <text x="62" y="158" fill="#EAEDFA" font-size="15" font-weight="600">Inference only. No arbitrary code, ever.</text>
-  <text x="530" y="140" fill="#8D97C2" font-size="11.5">Eliminates mining, cracking, malware, and proxy abuse</text>
-  <text x="530" y="158" fill="#8D97C2" font-size="11.5">outright — not by policy, but because there is no</text>
-  <text x="530" y="176" fill="#8D97C2" font-size="11.5">execution path for them to use.</text>
+  <!-- ============ LAYER 0 ============ -->
+  <rect x="40" y="136" width="940" height="96" rx="3" fill="#111735" stroke="#FFB454" stroke-width="1.5"/>
+  <text x="62" y="162" fill="#FFB454" font-size="10" letter-spacing="2">LAYER 0 — THE FOUNDATION</text>
+  <text x="62" y="188" fill="#EAEDFA" font-size="16" font-weight="700">Inference only. No arbitrary code, ever.</text>
+  <text x="62" y="210" fill="#8D97C2" font-size="11.5">A job is a prompt plus a task-type ID from a list compiled into the client. Science runs as audited</text>
+  <text x="62" y="224" fill="#8D97C2" font-size="11.5">kernels, never as submitted code — on PCs exactly as on phones. There is no privileged tier.</text>
+  <text x="560" y="188" fill="#6FC3E8" font-size="11.5">Eliminates mining, cracking, malware, and proxy abuse</text>
+  <text x="560" y="205" fill="#6FC3E8" font-size="11.5">outright — not by policy, but because there is no</text>
+  <text x="560" y="222" fill="#6FC3E8" font-size="11.5">execution path for them to use.</text>
 
-  <!-- layer grid -->
-  <g>
-    <rect x="40" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="62" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 1 — WHO CAN JOIN</text>
-    <text x="62" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Device attestation</text>
-    <text x="62" y="276" fill="#8D97C2" font-size="11">Play Integrity and DeviceCheck prove</text>
-    <text x="62" y="292" fill="#8D97C2" font-size="11">a genuine device running an official</text>
-    <text x="62" y="308" fill="#8D97C2" font-size="11">build. Fake fleets stop being free.</text>
+  <!-- ============ TRUST LADDER ============ -->
+  <text x="40" y="266" fill="#6FC3E8" font-size="10" letter-spacing="2">THE TRUST LADDER — WHAT A MACHINE IS ALLOWED TO DO ALONE</text>
 
-    <rect x="358" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="380" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 2 — IS THE WORK REAL</text>
-    <text x="380" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Redundant execution</text>
-    <text x="380" y="276" fill="#8D97C2" font-size="11">Every job runs on 2–3 independent</text>
-    <text x="380" y="292" fill="#8D97C2" font-size="11">nodes. Numeric work compares exactly;</text>
-    <text x="380" y="308" fill="#8D97C2" font-size="11">text compares within tolerance.</text>
+  <rect x="40" y="278" width="940" height="30" rx="2" fill="#0A0E20" stroke="#2A3468"/>
+  <text x="60" y="298" fill="#8D97C2" font-size="10" letter-spacing="1.4">TIER</text>
+  <text x="330" y="298" fill="#8D97C2" font-size="10" letter-spacing="1.4">CAN IT PROVE WHAT IT IS?</text>
+  <text x="650" y="298" fill="#8D97C2" font-size="10" letter-spacing="1.4">WHAT IT MAY DO</text>
 
-    <rect x="676" y="200" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="698" y="228" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 3 — CATCHING LIARS</text>
-    <text x="698" y="254" fill="#EAEDFA" font-size="14" font-weight="600">Canary tasks</text>
-    <text x="698" y="276" fill="#8D97C2" font-size="11">Jobs with known answers are mixed in</text>
-    <text x="698" y="292" fill="#8D97C2" font-size="11">indistinguishably. Returning garbage</text>
-    <text x="698" y="308" fill="#8D97C2" font-size="11">to save battery gets caught.</text>
+  <rect x="40" y="312" width="940" height="34" rx="2" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="334" fill="#EAEDFA" font-size="11.5">Phone, attested</text>
+  <text x="330" y="334" fill="#3FD0C9" font-size="11">Yes — Play Integrity / DeviceCheck</text>
+  <text x="650" y="334" fill="#EAEDFA" font-size="11">Any work, including answering alone</text>
 
-    <rect x="40" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="62" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 4 — EARNED STANDING</text>
-    <text x="62" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Slow reputation</text>
-    <text x="62" y="420" fill="#8D97C2" font-size="11">New nodes start at zero and gain trust</text>
-    <text x="62" y="436" fill="#8D97C2" font-size="11">over weeks. Influence can't be bought,</text>
-    <text x="62" y="452" fill="#8D97C2" font-size="11">only waited for — and waiting is visible.</text>
+  <rect x="40" y="350" width="940" height="34" rx="2" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="372" fill="#EAEDFA" font-size="11.5">PC with TPM 2.0 or Secure Enclave</text>
+  <text x="330" y="372" fill="#3FD0C9" font-size="11">Partly — hardware root of trust</text>
+  <text x="650" y="372" fill="#EAEDFA" font-size="11">Answers alone once reputation is earned</text>
 
-    <rect x="358" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="380" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 5 — MODEL INTEGRITY</text>
-    <text x="380" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Hash-verified weights</text>
-    <text x="380" y="420" fill="#8D97C2" font-size="11">Models are content-addressed and</text>
-    <text x="380" y="436" fill="#8D97C2" font-size="11">checked at load. Tampered weights</text>
-    <text x="380" y="452" fill="#8D97C2" font-size="11">fail before a single token is produced.</text>
+  <rect x="40" y="388" width="940" height="34" rx="2" fill="#1A2149" stroke="#FFB454" stroke-opacity="0.7"/>
+  <text x="60" y="410" fill="#FFB454" font-size="11.5" font-weight="600">PC, unattested — the largest tier</text>
+  <text x="330" y="410" fill="#FFB454" font-size="11">No. Anyone can fake a thousand.</text>
+  <text x="650" y="410" fill="#FFB454" font-size="11">Corroborated work only, permanently</text>
 
-    <rect x="676" y="344" width="304" height="128" rx="3" fill="#111735" stroke="#2A3468"/>
-    <text x="698" y="372" fill="#6FC3E8" font-size="10" letter-spacing="2">LAYER 6 — NO PRIZE TO WIN</text>
-    <text x="698" y="398" fill="#EAEDFA" font-size="14" font-weight="600">Nothing to cash out</text>
-    <text x="698" y="420" fill="#8D97C2" font-size="11">Credits can't be sold or transferred, so</text>
-    <text x="698" y="436" fill="#8D97C2" font-size="11">a fake fleet's earnings are stranded.</text>
-    <text x="698" y="452" fill="#8D97C2" font-size="11">Remove the money, remove the motive.</text>
-  </g>
+  <rect x="40" y="426" width="940" height="34" rx="2" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="448" fill="#8D97C2" font-size="11.5">Anything behaving anomalously</text>
+  <text x="330" y="448" fill="#8D97C2" font-size="11">Fails timing or capability checks</text>
+  <text x="650" y="448" fill="#8D97C2" font-size="11">Served nothing; its results discarded</text>
 
-  <!-- honest limits -->
-  <rect x="40" y="496" width="940" height="92" rx="3" fill="#0A0E20" stroke="#6FC3E8" stroke-width="1.5"/>
-  <text x="62" y="524" fill="#6FC3E8" font-size="10" letter-spacing="2">WHAT THESE LAYERS DO NOT SOLVE</text>
-  <text x="62" y="550" fill="#EAEDFA" font-size="12.5">A node operator can read the prompts their own device processes. Inference needs plaintext in memory.</text>
-  <text x="62" y="572" fill="#8D97C2" font-size="12">Only hardware TEEs fix this, and coverage is patchy across the mid-range devices that form most of the fleet.</text>
+  <text x="40" y="482" fill="#8D97C2" font-size="11">Unattested machines are never excluded — that would discard most of the network, and the machines least likely to have a TPM belong to</text>
+  <text x="40" y="498" fill="#8D97C2" font-size="11">exactly the people this project exists for. They are simply never trusted alone.</text>
+
+  <!-- ============ MECHANISMS ============ -->
+  <text x="40" y="534" fill="#6FC3E8" font-size="10" letter-spacing="2">HOW TRUST IS ACTUALLY EARNED AND CHECKED</text>
+
+  <rect x="40" y="546" width="304" height="112" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="570" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">IS THE WORK REAL</text>
+  <text x="60" y="592" fill="#EAEDFA" font-size="13.5" font-weight="600">Canaries and re-checks</text>
+  <text x="60" y="612" fill="#8D97C2" font-size="10.5">Known-answer jobs hidden in real work,</text>
+  <text x="60" y="626" fill="#8D97C2" font-size="10.5">plus silent re-runs against a trusted</text>
+  <text x="60" y="640" fill="#8D97C2" font-size="10.5">machine. New PCs get canaries far more</text>
+  <text x="60" y="652" fill="#8D97C2" font-size="10.5">often than established ones.</text>
+
+  <rect x="358" y="546" width="304" height="112" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="378" y="570" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">CAN A FAKE FLEET WIN</text>
+  <text x="378" y="592" fill="#EAEDFA" font-size="13.5" font-weight="600">Sybil buys identity, not capacity</text>
+  <text x="378" y="612" fill="#8D97C2" font-size="10.5">A thousand VMs on one machine still</text>
+  <text x="378" y="626" fill="#8D97C2" font-size="10.5">have one machine's compute. Copies of a</text>
+  <text x="378" y="640" fill="#8D97C2" font-size="10.5">job never share a subnet, provider, or</text>
+  <text x="378" y="652" fill="#8D97C2" font-size="10.5">region — a VM farm fails all three.</text>
+
+  <rect x="676" y="546" width="304" height="112" rx="3" fill="#111735" stroke="#2A3468"/>
+  <text x="696" y="570" fill="#6FC3E8" font-size="9.5" letter-spacing="1.6">NO PRIZE TO WIN</text>
+  <text x="696" y="592" fill="#EAEDFA" font-size="13.5" font-weight="600">Nothing to cash out</text>
+  <text x="696" y="612" fill="#8D97C2" font-size="10.5">Credits cannot be sold or transferred, so</text>
+  <text x="696" y="626" fill="#8D97C2" font-size="10.5">a fake fleet's earnings are stranded. And</text>
+  <text x="696" y="640" fill="#8D97C2" font-size="10.5">because credits track hours rather than</text>
+  <text x="696" y="652" fill="#8D97C2" font-size="10.5">speed, faking fast hardware gains nothing.</text>
+
+  <!-- ============ INTEGRITY STRIP ============ -->
+  <rect x="40" y="672" width="464" height="34" rx="2" fill="#111735" stroke="#2A3468"/>
+  <text x="60" y="694" fill="#EAEDFA" font-size="11.5">Model weights are hash-verified at load — tampered weights never run</text>
+
+  <rect x="516" y="672" width="464" height="34" rx="2" fill="#111735" stroke="#2A3468"/>
+  <text x="536" y="694" fill="#EAEDFA" font-size="11.5">Reputation starts at zero and is earned over weeks. It cannot be bought</text>
+
+  <!-- ============ WHAT IT DOES NOT SOLVE ============ -->
+  <rect x="40" y="716" width="940" height="30" rx="3" fill="#111735" stroke="#6FC3E8"/>
+  <text x="60" y="736" fill="#EAEDFA" font-size="11.5">Not solved: whoever runs a machine can read what it processes, and a patient attacker with genuinely distributed hardware can still poison some results.</text>
 </svg>

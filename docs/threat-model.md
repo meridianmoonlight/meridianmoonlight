@@ -39,6 +39,12 @@ Scientific batch work is supported the same way: as a fixed set of audited task 
 
 **Out of scope:** an adversary with physical access to an unlocked participant device, and a compromised host OS. We cannot defend those and won't pretend to.
 
+### The primary tier is the one we can prove least about
+
+Worth stating plainly, because the reframe changed which risk matters most. When phones were the primary path, attestation carried most of the anti-Sybil weight. **Desktops are now the primary path, and no general-purpose attestation exists for them.**
+
+The consequence is that behaviour-based verification — canaries, coordinator re-derivation, diversity constraints, slow reputation — is not a supporting layer for the desktop tier. It *is* the security model. [desktop-security.md](desktop-security.md) is therefore the load-bearing document, not an appendix to this one.
+
 ### What the absence of money already removes
 
 Worth stating early because it does more work than any single control: **there is no token, no payout, and no transferable credit.** Nearly every attack on comparable networks is economically motivated. Removing the money removes most of the motive — and it is why [DESKTOP_SECURITY](desktop-security.md#reframe-1-sybil-buys-identity-not-capacity) can narrow a long threat list down to two real items.
@@ -52,7 +58,7 @@ The people donating hardware take the most risk and get the least attention in m
 | Threat | Defence |
 |---|---|
 | Device abused for illegal work | Layer 0 — inference and audited task types only. No general compute path exists. |
-| Battery, heat, or data cost | Hard client-side gate: charging + Wi-Fi + screen off + battery above 80% + thermal nominal. Backoff pauses work if the device warms. Enforced, not requested politely. |
+| Slowing the machine down, or costing money to run | Hard client-side gate. **PC:** powered, idle, unmetered connection, thermal headroom. **Phone:** charging, Wi-Fi, screen off, above 80%, cool. Backoff pauses work if either warms. Enforced, not requested politely. |
 | Volunteer's address tied to a request | Requests are relayed; node and requester never learn each other's addresses. Nodes are never told who asked. |
 | Legal exposure from content processed | Content policy enforced **at dispatch, not at the node** — volunteers should never be the filter. Volunteers may opt out of open request-serving entirely and contribute only to vetted research batch jobs. |
 | Malicious clone of the app | Signed official builds with reproducible-build instructions. The protocol rejects clients without a valid build signature. |
@@ -100,7 +106,7 @@ And two that are scoped to where they hold:
 
 ### Sybil resistance
 
-- **Device attestation** on mobile — Play Integrity, DeviceCheck. Proves genuine hardware running an unmodified official build. The strongest single control available, and it makes large fake fleets expensive rather than free.
+- **Device attestation, where it exists.** Play Integrity and DeviceCheck prove genuine hardware running an unmodified build — on phones. **This used to be described as the strongest single control, and with the desktop tier as the primary path that is no longer true.** A PC cannot attest itself the same way, so the largest tier in the network is also the one that can prove the least about itself. Partial roots of trust (TPM 2.0, Secure Enclave) produce a [trust ladder rather than a binary](desktop-security.md#partial-attestation-is-still-available), and unattested machines are never trusted alone.
 - **Reputation earned slowly.** New nodes start at zero, receive only redundantly verified work, and gain standing over weeks. Influence cannot be bought, only waited for — and waiting is visible.
 - **No financial reward.** See [above](#what-the-absence-of-money-already-removes).
 - **Diversity constraints on assignment.** Redundant copies of a job never go to nodes sharing a subnet, ASN, region, or join cohort. A VM farm fails all four at once. Detailed in [desktop-security.md](desktop-security.md#diversity-constraints-on-node-selection).

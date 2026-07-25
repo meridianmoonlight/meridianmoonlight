@@ -139,7 +139,18 @@ This ordering is not an optimisation. It is the privacy architecture, the cost a
 
 ### 3.2 The contribution gate
 
-A device contributes only when **all** of the following hold:
+A machine contributes only when **all** of the conditions for its tier hold. They differ, because what a participant notices differs.
+
+**Desktop — the primary tier:**
+
+| Condition | Why |
+|---|---|
+| On mains power | Never drain a laptop battery |
+| Unmetered connection | Never spend a participant's data allowance |
+| No input, no fullscreen application | Never compete for a machine someone is using — or gaming on |
+| Thermal headroom | **Stop before the fans become audible** |
+
+**Mobile — the extension tier:**
 
 | Condition | Why |
 |---|---|
@@ -149,9 +160,11 @@ A device contributes only when **all** of the following hold:
 | Battery above 80% | Do not slow the charge the user actually wanted |
 | Device temperature nominal | Stop before the user ever feels warmth |
 
+Fan noise is the desktop's equivalent of the thing phone users forgive least. **A machine that gets loud at 2 a.m. gets uninstalled**, so the thermal gate carries as much weight on a PC as the battery gate does on a phone — and it is the reason the desktop tier's availability assumption is conservative rather than optimistic.
+
 The gate is enforced in the client, checked continuously, and fails closed. Withdrawal is immediate and needs no explanation: one switch, always visible, and uninstalling is a complete exit.
 
-We publish our own thermal and battery measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal device does not get to be selective about its data.
+We publish our own thermal, acoustic, and power measurements from the M0 overnight runs, including any bad results. A project asking for space on someone's personal machine does not get to be selective about its data.
 
 ### 3.3 Verification
 
